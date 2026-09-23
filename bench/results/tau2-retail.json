@@ -1,0 +1,4655 @@
+{
+  "commit": "1217d74",
+  "dataset": "tau2-retail",
+  "title": "τ²-bench retail",
+  "domain": "customer service (retail)",
+  "source": "github.com/sierra-research/tau2-bench @ b7ea907, data/tau2/results/final",
+  "licence": "MIT",
+  "licence_confirmed": true,
+  "cost_source": "recorded USD per model call",
+  "cost_unit": "USD",
+  "runs": 1824,
+  "successes": 1324,
+  "failures": 500,
+  "steps": 36882,
+  "batches": {
+    "claude-3-7-sonnet-20250219": 456,
+    "gpt-4.1-2025-04-14": 456,
+    "gpt-4.1-mini-2025-04-14": 456,
+    "o4-mini-2025-04-16": 456
+  },
+  "settings": {
+    "delta": "0.05",
+    "min_steps": 3,
+    "min_savings_share": "0.02"
+  },
+  "protocols": {
+    "batch-normalized": {
+      "targets": {
+        "0.90": {
+          "status": "rejected",
+          "reason": "test_false_abort_rate_above_alpha,savings_share_below_minimum,auroc_below_minimum",
+          "counts": {
+            "train_success": 790,
+            "train_failure": 304,
+            "calibration_success": 270,
+            "calibration_failure": 95,
+            "test_success": 264,
+            "test_failure": 101
+          },
+          "calibration": {
+            "threshold": 0.5109582554828115,
+            "successes": 270,
+            "false_aborts": 18,
+            "ucb": 0.09725931527850495
+          },
+          "training": {
+            "runs": 1092,
+            "rows": 18926,
+            "l2_c": 1.0
+          },
+          "test": {
+            "successes": 264,
+            "failures": 101,
+            "successes_lost": 28,
+            "successes_lost_share": 0.10606060606060606,
+            "successes_lost_ci95": [
+              0.07164226675145004,
+              0.14963073081719092
+            ],
+            "successes_kept_share": 0.8939393939393939,
+            "failures_caught": 13,
+            "saved": "0.399589900",
+            "total_spend": "42.205906300",
+            "failed_spend": "11.819768300",
+            "savings_share": 0.009467629889516199,
+            "failed_spend_saved_share": 0.03380691481067357,
+            "auroc": 0.5424167416741674
+          }
+        },
+        "0.95": {
+          "status": "rejected",
+          "reason": "savings_share_below_minimum,auroc_below_minimum",
+          "counts": {
+            "train_success": 790,
+            "train_failure": 304,
+            "calibration_success": 270,
+            "calibration_failure": 95,
+            "test_success": 264,
+            "test_failure": 101
+          },
+          "calibration": {
+            "threshold": 0.5608754739371028,
+            "successes": 270,
+            "false_aborts": 7,
+            "ucb": 0.04814327073993518
+          },
+          "training": {
+            "runs": 1092,
+            "rows": 18926,
+            "l2_c": 1.0
+          },
+          "test": {
+            "successes": 264,
+            "failures": 101,
+            "successes_lost": 8,
+            "successes_lost_share": 0.030303030303030304,
+            "successes_lost_ci95": [
+              0.013171666871379713,
+              0.05883363061319722
+            ],
+            "successes_kept_share": 0.9696969696969697,
+            "failures_caught": 5,
+            "saved": "0.074388800",
+            "total_spend": "42.205906300",
+            "failed_spend": "11.819768300",
+            "savings_share": 0.0017625210905612041,
+            "failed_spend_saved_share": 0.0062935920664367,
+            "auroc": 0.5424167416741674
+          }
+        }
+      },
+      "curve": [
+        {
+          "threshold": 1.0,
+          "successes_lost": 0.0,
+          "failed_spend_saved": 0.0,
+          "savings_share": 0.0
+        },
+        {
+          "threshold": 0.7787128285394708,
+          "successes_lost": 0.003787878787878788,
+          "failed_spend_saved": 0.0,
+          "savings_share": 0.0
+        },
+        {
+          "threshold": 0.6646389977186551,
+          "successes_lost": 0.007575757575757576,
+          "failed_spend_saved": 0.0,
+          "savings_share": 0.0
+        },
+        {
+          "threshold": 0.5964991724952798,
+          "successes_lost": 0.011363636363636364,
+          "failed_spend_saved": 0.00033093711320889425,
+          "savings_share": 9.267897180542238e-05
+        },
+        {
+          "threshold": 0.5923274625395699,
+          "successes_lost": 0.011363636363636364,
+          "failed_spend_saved": 0.0017700516176784953,
+          "savings_share": 0.0004957031333787517
+        },
+        {
+          "threshold": 0.5879212307344682,
+          "successes_lost": 0.015151515151515152,
+          "failed_spend_saved": 0.004186850261692525,
+          "savings_share": 0.0011725278364653907
+        },
+        {
+          "threshold": 0.5760492265006555,
+          "successes_lost": 0.01893939393939394,
+          "failed_spend_saved": 0.004186850261692525,
+          "savings_share": 0.0011725278364653907
+        },
+        {
+          "threshold": 0.5741095404505119,
+          "successes_lost": 0.022727272727272728,
+          "failed_spend_saved": 0.0044276333234044875,
+          "savings_share": 0.0012399591570907698
+        },
+        {
+          "threshold": 0.5709450970337262,
+          "successes_lost": 0.026515151515151516,
+          "failed_spend_saved": 0.0044276333234044875,
+          "savings_share": 0.0012399591570907698
+        },
+        {
+          "threshold": 0.5619702426451477,
+          "successes_lost": 0.030303030303030304,
+          "failed_spend_saved": 0.0062015428847281215,
+          "savings_share": 0.0017367427079749735
+        },
+        {
+          "threshold": 0.5594972646268392,
+          "successes_lost": 0.030303030303030304,
+          "failed_spend_saved": 0.007198246009610865,
+          "savings_share": 0.0020158695182432317
+        },
+        {
+          "threshold": 0.5575770406235705,
+          "successes_lost": 0.03787878787878788,
+          "failed_spend_saved": 0.007198246009610865,
+          "savings_share": 0.0020158695182432317
+        },
+        {
+          "threshold": 0.556036199848868,
+          "successes_lost": 0.041666666666666664,
+          "failed_spend_saved": 0.007198246009610865,
+          "savings_share": 0.0020158695182432317
+        },
+        {
+          "threshold": 0.5477989151855345,
+          "successes_lost": 0.04924242424242424,
+          "failed_spend_saved": 0.007198246009610865,
+          "savings_share": 0.0020158695182432317
+        },
+        {
+          "threshold": 0.5457291964480654,
+          "successes_lost": 0.04924242424242424,
+          "failed_spend_saved": 0.008559694017013852,
+          "savings_share": 0.002397143169509429
+        },
+        {
+          "threshold": 0.5439536195836869,
+          "successes_lost": 0.05303030303030303,
+          "failed_spend_saved": 0.01991423131365443,
+          "savings_share": 0.005576982480293285
+        },
+        {
+          "threshold": 0.5434156992137829,
+          "successes_lost": 0.056818181818181816,
+          "failed_spend_saved": 0.01991423131365443,
+          "savings_share": 0.005576982480293285
+        },
+        {
+          "threshold": 0.5357056101161561,
+          "successes_lost": 0.06060606060606061,
+          "failed_spend_saved": 0.020830154513265708,
+          "savings_share": 0.005833486864372817
+        },
+        {
+          "threshold": 0.533454715416472,
+          "successes_lost": 0.06060606060606061,
+          "failed_spend_saved": 0.021029109343877743,
+          "savings_share": 0.005889204184675924
+        },
+        {
+          "threshold": 0.530372761780159,
+          "successes_lost": 0.06439393939393939,
+          "failed_spend_saved": 0.02232971013484249,
+          "savings_share": 0.006253437566864901
+        },
+        {
+          "threshold": 0.530115842782932,
+          "successes_lost": 0.06818181818181818,
+          "failed_spend_saved": 0.02232971013484249,
+          "savings_share": 0.006253437566864901
+        },
+        {
+          "threshold": 0.5270220950811094,
+          "successes_lost": 0.07196969696969698,
+          "failed_spend_saved": 0.03192586270917003,
+          "savings_share": 0.008940841059489345
+        },
+        {
+          "threshold": 0.5236756473851611,
+          "successes_lost": 0.07575757575757576,
+          "failed_spend_saved": 0.03308053847383794,
+          "savings_share": 0.009264208123401913
+        },
+        {
+          "threshold": 0.5216990941074577,
+          "successes_lost": 0.08333333333333333,
+          "failed_spend_saved": 0.03308053847383794,
+          "savings_share": 0.009264208123401913
+        },
+        {
+          "threshold": 0.5211100436224898,
+          "successes_lost": 0.08712121212121213,
+          "failed_spend_saved": 0.03308053847383794,
+          "savings_share": 0.009264208123401913
+        },
+        {
+          "threshold": 0.5146938203905519,
+          "successes_lost": 0.0946969696969697,
+          "failed_spend_saved": 0.03308053847383794,
+          "savings_share": 0.009264208123401913
+        },
+        {
+          "threshold": 0.5144645332633055,
+          "successes_lost": 0.0946969696969697,
+          "failed_spend_saved": 0.03380691481067357,
+          "savings_share": 0.009467629889516197
+        },
+        {
+          "threshold": 0.5126538781733815,
+          "successes_lost": 0.10227272727272728,
+          "failed_spend_saved": 0.03380691481067357,
+          "savings_share": 0.009467629889516197
+        },
+        {
+          "threshold": 0.5110391767428379,
+          "successes_lost": 0.10606060606060606,
+          "failed_spend_saved": 0.03380691481067357,
+          "savings_share": 0.009467629889516197
+        },
+        {
+          "threshold": 0.5064653375443179,
+          "successes_lost": 0.11363636363636363,
+          "failed_spend_saved": 0.03380691481067357,
+          "savings_share": 0.009467629889516197
+        },
+        {
+          "threshold": 0.5053544044035544,
+          "successes_lost": 0.11742424242424243,
+          "failed_spend_saved": 0.03380691481067357,
+          "savings_share": 0.009467629889516197
+        },
+        {
+          "threshold": 0.5025724716222506,
+          "successes_lost": 0.12121212121212122,
+          "failed_spend_saved": 0.035129512648737794,
+          "savings_share": 0.009838023546955559
+        },
+        {
+          "threshold": 0.49974635526119154,
+          "successes_lost": 0.12878787878787878,
+          "failed_spend_saved": 0.035129512648737794,
+          "savings_share": 0.009838023546955559
+        },
+        {
+          "threshold": 0.494428814253749,
+          "successes_lost": 0.13257575757575757,
+          "failed_spend_saved": 0.035129512648737794,
+          "savings_share": 0.009838023546955559
+        },
+        {
+          "threshold": 0.4925143866257936,
+          "successes_lost": 0.13636363636363635,
+          "failed_spend_saved": 0.03860683969583397,
+          "savings_share": 0.010811849335883115
+        },
+        {
+          "threshold": 0.4918033337044796,
+          "successes_lost": 0.13636363636363635,
+          "failed_spend_saved": 0.04048623355840233,
+          "savings_share": 0.011338173775929555
+        },
+        {
+          "threshold": 0.4898599891502876,
+          "successes_lost": 0.14015151515151514,
+          "failed_spend_saved": 0.049847973754274015,
+          "savings_share": 0.013959930058414595
+        },
+        {
+          "threshold": 0.4892547276125096,
+          "successes_lost": 0.14393939393939395,
+          "failed_spend_saved": 0.049847973754274015,
+          "savings_share": 0.013959930058414595
+        },
+        {
+          "threshold": 0.48666744036296333,
+          "successes_lost": 0.14772727272727273,
+          "failed_spend_saved": 0.05031532640111058,
+          "savings_share": 0.01409081221411895
+        },
+        {
+          "threshold": 0.4851452112420407,
+          "successes_lost": 0.14772727272727273,
+          "failed_spend_saved": 0.05229962925753798,
+          "savings_share": 0.01464651642843646
+        },
+        {
+          "threshold": 0.481388787464638,
+          "successes_lost": 0.1553030303030303,
+          "failed_spend_saved": 0.05229962925753798,
+          "savings_share": 0.01464651642843646
+        },
+        {
+          "threshold": 0.4809604029812406,
+          "successes_lost": 0.1553030303030303,
+          "failed_spend_saved": 0.052539600120587816,
+          "savings_share": 0.014713720292744904
+        },
+        {
+          "threshold": 0.4807373120547883,
+          "successes_lost": 0.1553030303030303,
+          "failed_spend_saved": 0.05798975771800874,
+          "savings_share": 0.016240037475513232
+        },
+        {
+          "threshold": 0.4788681385933113,
+          "successes_lost": 0.1553030303030303,
+          "failed_spend_saved": 0.05952142902835075,
+          "savings_share": 0.016668982179870877
+        },
+        {
+          "threshold": 0.47626021596116186,
+          "successes_lost": 0.1590909090909091,
+          "failed_spend_saved": 0.06365739842802164,
+          "savings_share": 0.017827260825814796
+        },
+        {
+          "threshold": 0.47613146572267345,
+          "successes_lost": 0.1590909090909091,
+          "failed_spend_saved": 0.06532788802636681,
+          "savings_share": 0.018295081605675646
+        },
+        {
+          "threshold": 0.4743206991612992,
+          "successes_lost": 0.1590909090909091,
+          "failed_spend_saved": 0.07012236441216871,
+          "savings_share": 0.019637775199249773
+        },
+        {
+          "threshold": 0.4733374582245338,
+          "successes_lost": 0.16287878787878787,
+          "failed_spend_saved": 0.07012236441216871,
+          "savings_share": 0.019637775199249773
+        },
+        {
+          "threshold": 0.4720578416999112,
+          "successes_lost": 0.16666666666666666,
+          "failed_spend_saved": 0.07246721579136199,
+          "savings_share": 0.02029445106359438
+        },
+        {
+          "threshold": 0.47184018139431455,
+          "successes_lost": 0.17045454545454544,
+          "failed_spend_saved": 0.07246721579136199,
+          "savings_share": 0.02029445106359438
+        },
+        {
+          "threshold": 0.46984223325781643,
+          "successes_lost": 0.17803030303030304,
+          "failed_spend_saved": 0.07368331407985382,
+          "savings_share": 0.020635019511475335
+        },
+        {
+          "threshold": 0.46868474849927627,
+          "successes_lost": 0.17803030303030304,
+          "failed_spend_saved": 0.07556362166591707,
+          "savings_share": 0.021161599839878326
+        },
+        {
+          "threshold": 0.46807346070781614,
+          "successes_lost": 0.17803030303030304,
+          "failed_spend_saved": 0.07754274675587336,
+          "savings_share": 0.021715854020175365
+        },
+        {
+          "threshold": 0.4667569470536032,
+          "successes_lost": 0.18181818181818182,
+          "failed_spend_saved": 0.07754274675587336,
+          "savings_share": 0.021715854020175365
+        },
+        {
+          "threshold": 0.46670282731360385,
+          "successes_lost": 0.1893939393939394,
+          "failed_spend_saved": 0.07754274675587336,
+          "savings_share": 0.021715854020175365
+        },
+        {
+          "threshold": 0.46653419241505717,
+          "successes_lost": 0.19318181818181818,
+          "failed_spend_saved": 0.07913990158334998,
+          "savings_share": 0.022163137390086084
+        },
+        {
+          "threshold": 0.4655192494968685,
+          "successes_lost": 0.20075757575757575,
+          "failed_spend_saved": 0.07913990158334998,
+          "savings_share": 0.022163137390086084
+        },
+        {
+          "threshold": 0.465174701836912,
+          "successes_lost": 0.20454545454545456,
+          "failed_spend_saved": 0.07913990158334998,
+          "savings_share": 0.022163137390086084
+        },
+        {
+          "threshold": 0.46440662915512254,
+          "successes_lost": 0.21212121212121213,
+          "failed_spend_saved": 0.08178834605412695,
+          "savings_share": 0.022904834530232555
+        },
+        {
+          "threshold": 0.4639647005109079,
+          "successes_lost": 0.2159090909090909,
+          "failed_spend_saved": 0.08178834605412695,
+          "savings_share": 0.022904834530232555
+        },
+        {
+          "threshold": 0.4635527143054385,
+          "successes_lost": 0.22348484848484848,
+          "failed_spend_saved": 0.08178834605412695,
+          "savings_share": 0.022904834530232555
+        },
+        {
+          "threshold": 0.46327184010633143,
+          "successes_lost": 0.22348484848484848,
+          "failed_spend_saved": 0.08373542313853984,
+          "savings_share": 0.0234501136633571
+        },
+        {
+          "threshold": 0.4629514400805182,
+          "successes_lost": 0.23106060606060605,
+          "failed_spend_saved": 0.08373542313853984,
+          "savings_share": 0.0234501136633571
+        },
+        {
+          "threshold": 0.45969267494864247,
+          "successes_lost": 0.23863636363636365,
+          "failed_spend_saved": 0.08528130792546922,
+          "savings_share": 0.023883038853261155
+        },
+        {
+          "threshold": 0.4582123650473711,
+          "successes_lost": 0.24242424242424243,
+          "failed_spend_saved": 0.08528130792546922,
+          "savings_share": 0.023883038853261155
+        },
+        {
+          "threshold": 0.4575134112268627,
+          "successes_lost": 0.25,
+          "failed_spend_saved": 0.08528130792546922,
+          "savings_share": 0.023883038853261155
+        },
+        {
+          "threshold": 0.45661570089184417,
+          "successes_lost": 0.2537878787878788,
+          "failed_spend_saved": 0.08528130792546922,
+          "savings_share": 0.023883038853261155
+        },
+        {
+          "threshold": 0.4546957674447768,
+          "successes_lost": 0.25757575757575757,
+          "failed_spend_saved": 0.08584148811106558,
+          "savings_share": 0.024039917370522138
+        },
+        {
+          "threshold": 0.4546726155364496,
+          "successes_lost": 0.26136363636363635,
+          "failed_spend_saved": 0.08584148811106558,
+          "savings_share": 0.024039917370522138
+        },
+        {
+          "threshold": 0.45303843845615377,
+          "successes_lost": 0.2689393939393939,
+          "failed_spend_saved": 0.08584148811106558,
+          "savings_share": 0.024039917370522138
+        },
+        {
+          "threshold": 0.45288944789116303,
+          "successes_lost": 0.2727272727272727,
+          "failed_spend_saved": 0.08584148811106558,
+          "savings_share": 0.024039917370522138
+        },
+        {
+          "threshold": 0.4474842846889018,
+          "successes_lost": 0.2765151515151515,
+          "failed_spend_saved": 0.09288807294132831,
+          "savings_share": 0.0260133141602506
+        },
+        {
+          "threshold": 0.4474761444318835,
+          "successes_lost": 0.2803030303030303,
+          "failed_spend_saved": 0.09288807294132831,
+          "savings_share": 0.0260133141602506
+        },
+        {
+          "threshold": 0.4464730752481045,
+          "successes_lost": 0.2878787878787879,
+          "failed_spend_saved": 0.09288807294132831,
+          "savings_share": 0.0260133141602506
+        },
+        {
+          "threshold": 0.44627117330040944,
+          "successes_lost": 0.2916666666666667,
+          "failed_spend_saved": 0.09288807294132831,
+          "savings_share": 0.0260133141602506
+        },
+        {
+          "threshold": 0.44423652115472334,
+          "successes_lost": 0.29924242424242425,
+          "failed_spend_saved": 0.09316269761396252,
+          "savings_share": 0.026090222827415032
+        },
+        {
+          "threshold": 0.44410863676131823,
+          "successes_lost": 0.30303030303030304,
+          "failed_spend_saved": 0.09316269761396252,
+          "savings_share": 0.026090222827415032
+        },
+        {
+          "threshold": 0.44232883756235153,
+          "successes_lost": 0.3068181818181818,
+          "failed_spend_saved": 0.09521434527612527,
+          "savings_share": 0.02666478696134527
+        },
+        {
+          "threshold": 0.4421338928367276,
+          "successes_lost": 0.3068181818181818,
+          "failed_spend_saved": 0.0957685693381993,
+          "savings_share": 0.026819997465615374
+        },
+        {
+          "threshold": 0.43985855520579786,
+          "successes_lost": 0.3143939393939394,
+          "failed_spend_saved": 0.0957685693381993,
+          "savings_share": 0.026819997465615374
+        },
+        {
+          "threshold": 0.4398331932955379,
+          "successes_lost": 0.3181818181818182,
+          "failed_spend_saved": 0.0957685693381993,
+          "savings_share": 0.026819997465615374
+        },
+        {
+          "threshold": 0.4388986671340354,
+          "successes_lost": 0.32196969696969696,
+          "failed_spend_saved": 0.09667684433374214,
+          "savings_share": 0.027074359969377078
+        },
+        {
+          "threshold": 0.43745384110314717,
+          "successes_lost": 0.32575757575757575,
+          "failed_spend_saved": 0.0979870223005979,
+          "savings_share": 0.02744127544063661
+        },
+        {
+          "threshold": 0.4361419853600129,
+          "successes_lost": 0.32954545454545453,
+          "failed_spend_saved": 0.09907289807026085,
+          "savings_share": 0.027745375059035286
+        },
+        {
+          "threshold": 0.4349089006623598,
+          "successes_lost": 0.3333333333333333,
+          "failed_spend_saved": 0.09932711625150893,
+          "savings_share": 0.027816568886236664
+        },
+        {
+          "threshold": 0.43410399483639706,
+          "successes_lost": 0.3371212121212121,
+          "failed_spend_saved": 0.10291048598643004,
+          "savings_share": 0.02882009194054435
+        },
+        {
+          "threshold": 0.433451923574823,
+          "successes_lost": 0.3371212121212121,
+          "failed_spend_saved": 0.10329530740462993,
+          "savings_share": 0.028927861217376585
+        },
+        {
+          "threshold": 0.4318017869746706,
+          "successes_lost": 0.3409090909090909,
+          "failed_spend_saved": 0.10610348427896003,
+          "savings_share": 0.0297142914331874
+        },
+        {
+          "threshold": 0.4315606074406236,
+          "successes_lost": 0.3446969696969697,
+          "failed_spend_saved": 0.10610348427896003,
+          "savings_share": 0.0297142914331874
+        },
+        {
+          "threshold": 0.431334449178537,
+          "successes_lost": 0.3522727272727273,
+          "failed_spend_saved": 0.1064146240497794,
+          "savings_share": 0.029801426157267476
+        },
+        {
+          "threshold": 0.4312879369041627,
+          "successes_lost": 0.3560606060606061,
+          "failed_spend_saved": 0.1064146240497794,
+          "savings_share": 0.029801426157267476
+        },
+        {
+          "threshold": 0.4283471441954459,
+          "successes_lost": 0.36363636363636365,
+          "failed_spend_saved": 0.10657476255266361,
+          "savings_share": 0.029846272961090294
+        },
+        {
+          "threshold": 0.4278083670039637,
+          "successes_lost": 0.3712121212121212,
+          "failed_spend_saved": 0.10657476255266361,
+          "savings_share": 0.029846272961090294
+        },
+        {
+          "threshold": 0.42647069761487166,
+          "successes_lost": 0.375,
+          "failed_spend_saved": 0.1072303760810608,
+          "savings_share": 0.030029877595591416
+        },
+        {
+          "threshold": 0.42507180857141963,
+          "successes_lost": 0.3787878787878788,
+          "failed_spend_saved": 0.10769234791176069,
+          "savings_share": 0.03015925285319605
+        },
+        {
+          "threshold": 0.4226678241484032,
+          "successes_lost": 0.38257575757575757,
+          "failed_spend_saved": 0.10769234791176069,
+          "savings_share": 0.03015925285319605
+        },
+        {
+          "threshold": 0.42170354220608675,
+          "successes_lost": 0.39015151515151514,
+          "failed_spend_saved": 0.10769234791176069,
+          "savings_share": 0.03015925285319605
+        },
+        {
+          "threshold": 0.42147012141357576,
+          "successes_lost": 0.39015151515151514,
+          "failed_spend_saved": 0.11017735432258857,
+          "savings_share": 0.030855179148232156
+        },
+        {
+          "threshold": 0.42033785489737474,
+          "successes_lost": 0.3977272727272727,
+          "failed_spend_saved": 0.11246044476184869,
+          "savings_share": 0.03149455885514298
+        },
+        {
+          "threshold": 0.4199338499987334,
+          "successes_lost": 0.4015151515151515,
+          "failed_spend_saved": 0.11246044476184869,
+          "savings_share": 0.03149455885514298
+        },
+        {
+          "threshold": 0.41887428868065246,
+          "successes_lost": 0.4053030303030303,
+          "failed_spend_saved": 0.11283000361352263,
+          "savings_share": 0.03159805384868611
+        },
+        {
+          "threshold": 0.41841472368673377,
+          "successes_lost": 0.4053030303030303,
+          "failed_spend_saved": 0.11329625640800421,
+          "savings_share": 0.031728627990627936
+        },
+        {
+          "threshold": 0.41658157301171655,
+          "successes_lost": 0.4128787878787879,
+          "failed_spend_saved": 0.11329625640800421,
+          "savings_share": 0.031728627990627936
+        },
+        {
+          "threshold": 0.4163435044516274,
+          "successes_lost": 0.4166666666666667,
+          "failed_spend_saved": 0.11329625640800421,
+          "savings_share": 0.031728627990627936
+        },
+        {
+          "threshold": 0.41506775727053813,
+          "successes_lost": 0.42424242424242425,
+          "failed_spend_saved": 0.11445482395792816,
+          "savings_share": 0.03205308494939249
+        },
+        {
+          "threshold": 0.41449626016287294,
+          "successes_lost": 0.42803030303030304,
+          "failed_spend_saved": 0.11445482395792816,
+          "savings_share": 0.03205308494939249
+        },
+        {
+          "threshold": 0.41165606676192706,
+          "successes_lost": 0.4318181818181818,
+          "failed_spend_saved": 0.11565693720070638,
+          "savings_share": 0.03238973688381619
+        },
+        {
+          "threshold": 0.41118447475240366,
+          "successes_lost": 0.4356060606060606,
+          "failed_spend_saved": 0.11565693720070638,
+          "savings_share": 0.03238973688381619
+        },
+        {
+          "threshold": 0.41020551865978466,
+          "successes_lost": 0.4393939393939394,
+          "failed_spend_saved": 0.1170263041450652,
+          "savings_share": 0.03277322823417252
+        },
+        {
+          "threshold": 0.4101226800828997,
+          "successes_lost": 0.4431818181818182,
+          "failed_spend_saved": 0.1170263041450652,
+          "savings_share": 0.03277322823417252
+        },
+        {
+          "threshold": 0.4087023471329392,
+          "successes_lost": 0.44696969696969696,
+          "failed_spend_saved": 0.11939075827738517,
+          "savings_share": 0.03343539385149987
+        },
+        {
+          "threshold": 0.40843361160300284,
+          "successes_lost": 0.45075757575757575,
+          "failed_spend_saved": 0.11939075827738517,
+          "savings_share": 0.03343539385149987
+        },
+        {
+          "threshold": 0.40669576928226886,
+          "successes_lost": 0.4583333333333333,
+          "failed_spend_saved": 0.11939075827738517,
+          "savings_share": 0.03343539385149987
+        },
+        {
+          "threshold": 0.4059898469342376,
+          "successes_lost": 0.4621212121212121,
+          "failed_spend_saved": 0.11939075827738517,
+          "savings_share": 0.03343539385149987
+        },
+        {
+          "threshold": 0.4050413239904555,
+          "successes_lost": 0.4696969696969697,
+          "failed_spend_saved": 0.12057481702073636,
+          "savings_share": 0.03376698962154498
+        },
+        {
+          "threshold": 0.40305681785418424,
+          "successes_lost": 0.4734848484848485,
+          "failed_spend_saved": 0.12057481702073636,
+          "savings_share": 0.03376698962154498
+        },
+        {
+          "threshold": 0.4017767649363122,
+          "successes_lost": 0.4772727272727273,
+          "failed_spend_saved": 0.13664414216985962,
+          "savings_share": 0.03826720574414012
+        },
+        {
+          "threshold": 0.4017199596733736,
+          "successes_lost": 0.4810606060606061,
+          "failed_spend_saved": 0.13664414216985962,
+          "savings_share": 0.03826720574414012
+        },
+        {
+          "threshold": 0.4014976244673899,
+          "successes_lost": 0.48484848484848486,
+          "failed_spend_saved": 0.13830999546750844,
+          "savings_share": 0.038733728127525124
+        },
+        {
+          "threshold": 0.4010260261881064,
+          "successes_lost": 0.48863636363636365,
+          "failed_spend_saved": 0.13830999546750844,
+          "savings_share": 0.038733728127525124
+        },
+        {
+          "threshold": 0.40054408560040816,
+          "successes_lost": 0.4962121212121212,
+          "failed_spend_saved": 0.13830999546750844,
+          "savings_share": 0.038733728127525124
+        },
+        {
+          "threshold": 0.4004104393817268,
+          "successes_lost": 0.5,
+          "failed_spend_saved": 0.13830999546750844,
+          "savings_share": 0.038733728127525124
+        },
+        {
+          "threshold": 0.3997337290456733,
+          "successes_lost": 0.5075757575757576,
+          "failed_spend_saved": 0.13889229960624525,
+          "savings_share": 0.03889680246008601
+        },
+        {
+          "threshold": 0.3967610597469006,
+          "successes_lost": 0.5151515151515151,
+          "failed_spend_saved": 0.1396631945822491,
+          "savings_share": 0.03911269167557242
+        },
+        {
+          "threshold": 0.3957323252042924,
+          "successes_lost": 0.5151515151515151,
+          "failed_spend_saved": 0.14675047394964585,
+          "savings_share": 0.04109748497451409
+        },
+        {
+          "threshold": 0.3949597250692645,
+          "successes_lost": 0.5189393939393939,
+          "failed_spend_saved": 0.14689846331420892,
+          "savings_share": 0.04113892941092938
+        },
+        {
+          "threshold": 0.3948972396918164,
+          "successes_lost": 0.5189393939393939,
+          "failed_spend_saved": 0.14727704941559638,
+          "savings_share": 0.04124495248666179
+        },
+        {
+          "threshold": 0.39291841120182613,
+          "successes_lost": 0.5265151515151515,
+          "failed_spend_saved": 0.14776917412162804,
+          "savings_share": 0.041382772060032734
+        },
+        {
+          "threshold": 0.3922301307797498,
+          "successes_lost": 0.5265151515151515,
+          "failed_spend_saved": 0.14825580802628757,
+          "savings_share": 0.04151905393392771
+        },
+        {
+          "threshold": 0.39153093143316037,
+          "successes_lost": 0.5303030303030303,
+          "failed_spend_saved": 0.1576631328720716,
+          "savings_share": 0.04415357620220087
+        },
+        {
+          "threshold": 0.3907589657873884,
+          "successes_lost": 0.5303030303030303,
+          "failed_spend_saved": 0.1583169866367008,
+          "savings_share": 0.04433668801468195
+        },
+        {
+          "threshold": 0.3903922805192733,
+          "successes_lost": 0.5378787878787878,
+          "failed_spend_saved": 0.1583169866367008,
+          "savings_share": 0.04433668801468195
+        },
+        {
+          "threshold": 0.39036454384133945,
+          "successes_lost": 0.5416666666666666,
+          "failed_spend_saved": 0.1583169866367008,
+          "savings_share": 0.04433668801468195
+        },
+        {
+          "threshold": 0.3893811481153457,
+          "successes_lost": 0.5454545454545454,
+          "failed_spend_saved": 0.15879107376411086,
+          "savings_share": 0.04446945616234757
+        },
+        {
+          "threshold": 0.3885989559400222,
+          "successes_lost": 0.5454545454545454,
+          "failed_spend_saved": 0.16070210953289157,
+          "savings_share": 0.04500464192140804
+        },
+        {
+          "threshold": 0.3828808350694747,
+          "successes_lost": 0.553030303030303,
+          "failed_spend_saved": 0.16485982216758002,
+          "savings_share": 0.0461690097625033
+        },
+        {
+          "threshold": 0.38257122430043594,
+          "successes_lost": 0.5568181818181818,
+          "failed_spend_saved": 0.16485982216758002,
+          "savings_share": 0.0461690097625033
+        },
+        {
+          "threshold": 0.3816068174460709,
+          "successes_lost": 0.5606060606060606,
+          "failed_spend_saved": 0.16997064993228334,
+          "savings_share": 0.047600297591524524
+        },
+        {
+          "threshold": 0.3803054108764489,
+          "successes_lost": 0.5643939393939394,
+          "failed_spend_saved": 0.16997064993228334,
+          "savings_share": 0.047600297591524524
+        },
+        {
+          "threshold": 0.3784610917092768,
+          "successes_lost": 0.5681818181818182,
+          "failed_spend_saved": 0.17597752741058384,
+          "savings_share": 0.04928252423287022
+        },
+        {
+          "threshold": 0.3781297750896284,
+          "successes_lost": 0.571969696969697,
+          "failed_spend_saved": 0.17597752741058384,
+          "savings_share": 0.04928252423287022
+        },
+        {
+          "threshold": 0.37560176988175453,
+          "successes_lost": 0.5757575757575758,
+          "failed_spend_saved": 0.18528130538734844,
+          "savings_share": 0.0518880481900705
+        },
+        {
+          "threshold": 0.37474888562719527,
+          "successes_lost": 0.5757575757575758,
+          "failed_spend_saved": 0.18644292714265817,
+          "savings_share": 0.05221336047936022
+        },
+        {
+          "threshold": 0.3719642827394862,
+          "successes_lost": 0.5757575757575758,
+          "failed_spend_saved": 0.18942541369444613,
+          "savings_share": 0.053048606137857064
+        },
+        {
+          "threshold": 0.3715149427380664,
+          "successes_lost": 0.5757575757575758,
+          "failed_spend_saved": 0.19232513212632102,
+          "savings_share": 0.053860672576056035
+        },
+        {
+          "threshold": 0.36934539282968437,
+          "successes_lost": 0.5757575757575758,
+          "failed_spend_saved": 0.1959706181380899,
+          "savings_share": 0.054881591299936146
+        },
+        {
+          "threshold": 0.36878027631251165,
+          "successes_lost": 0.5795454545454546,
+          "failed_spend_saved": 0.1959706181380899,
+          "savings_share": 0.054881591299936146
+        },
+        {
+          "threshold": 0.3672388465448623,
+          "successes_lost": 0.5833333333333334,
+          "failed_spend_saved": 0.199973065461867,
+          "savings_share": 0.056002477075110225
+        },
+        {
+          "threshold": 0.3639182897330785,
+          "successes_lost": 0.5833333333333334,
+          "failed_spend_saved": 0.2025754768813869,
+          "savings_share": 0.05673128265462694
+        },
+        {
+          "threshold": 0.3612638621340418,
+          "successes_lost": 0.5871212121212122,
+          "failed_spend_saved": 0.2054464384043806,
+          "savings_share": 0.05753529571760434
+        },
+        {
+          "threshold": 0.3611732752323213,
+          "successes_lost": 0.5909090909090909,
+          "failed_spend_saved": 0.2054464384043806,
+          "savings_share": 0.05753529571760434
+        },
+        {
+          "threshold": 0.3583354673872714,
+          "successes_lost": 0.5984848484848485,
+          "failed_spend_saved": 0.21158413909010387,
+          "savings_share": 0.0592541594113334
+        },
+        {
+          "threshold": 0.3563292430432513,
+          "successes_lost": 0.6060606060606061,
+          "failed_spend_saved": 0.2141540710235412,
+          "savings_share": 0.059973869107509264
+        },
+        {
+          "threshold": 0.355260066809105,
+          "successes_lost": 0.6060606060606061,
+          "failed_spend_saved": 0.21499131247775816,
+          "savings_share": 0.06020833866088548
+        },
+        {
+          "threshold": 0.35445656985817925,
+          "successes_lost": 0.6136363636363636,
+          "failed_spend_saved": 0.21499131247775816,
+          "savings_share": 0.06020833866088548
+        },
+        {
+          "threshold": 0.3544559287312429,
+          "successes_lost": 0.6174242424242424,
+          "failed_spend_saved": 0.21499131247775816,
+          "savings_share": 0.06020833866088548
+        },
+        {
+          "threshold": 0.35348116691895254,
+          "successes_lost": 0.625,
+          "failed_spend_saved": 0.21499131247775816,
+          "savings_share": 0.06020833866088548
+        },
+        {
+          "threshold": 0.3512318203935782,
+          "successes_lost": 0.6287878787878788,
+          "failed_spend_saved": 0.21549779448722364,
+          "savings_share": 0.06035017899852563
+        },
+        {
+          "threshold": 0.34959930035292247,
+          "successes_lost": 0.6363636363636364,
+          "failed_spend_saved": 0.21594430070173204,
+          "savings_share": 0.06047522310876191
+        },
+        {
+          "threshold": 0.34874584105354506,
+          "successes_lost": 0.6401515151515151,
+          "failed_spend_saved": 0.21671272524013863,
+          "savings_share": 0.06069042047795098
+        },
+        {
+          "threshold": 0.34761606240221343,
+          "successes_lost": 0.6477272727272727,
+          "failed_spend_saved": 0.21671272524013863,
+          "savings_share": 0.06069042047795098
+        },
+        {
+          "threshold": 0.3472340015685169,
+          "successes_lost": 0.6515151515151515,
+          "failed_spend_saved": 0.21671272524013863,
+          "savings_share": 0.06069042047795098
+        },
+        {
+          "threshold": 0.3448065567756702,
+          "successes_lost": 0.6590909090909091,
+          "failed_spend_saved": 0.21741119916876883,
+          "savings_share": 0.060886028171843805
+        },
+        {
+          "threshold": 0.3446602832325713,
+          "successes_lost": 0.6590909090909091,
+          "failed_spend_saved": 0.2187167323745255,
+          "savings_share": 0.06125164287729085
+        },
+        {
+          "threshold": 0.33983593398312767,
+          "successes_lost": 0.6666666666666666,
+          "failed_spend_saved": 0.21964133594733837,
+          "savings_share": 0.06151057820075766
+        },
+        {
+          "threshold": 0.3395859466165536,
+          "successes_lost": 0.6666666666666666,
+          "failed_spend_saved": 0.21991978472200682,
+          "savings_share": 0.06158855780808101
+        },
+        {
+          "threshold": 0.3356019046886228,
+          "successes_lost": 0.6742424242424242,
+          "failed_spend_saved": 0.22388839043486158,
+          "savings_share": 0.06269996623671602
+        },
+        {
+          "threshold": 0.3331719210446657,
+          "successes_lost": 0.6742424242424242,
+          "failed_spend_saved": 0.22581868208025704,
+          "savings_share": 0.0632405446059572
+        },
+        {
+          "threshold": 0.33174340059909513,
+          "successes_lost": 0.678030303030303,
+          "failed_spend_saved": 0.22650214725444323,
+          "savings_share": 0.06343194909665996
+        },
+        {
+          "threshold": 0.3315887899769139,
+          "successes_lost": 0.6818181818181818,
+          "failed_spend_saved": 0.22650214725444323,
+          "savings_share": 0.06343194909665996
+        },
+        {
+          "threshold": 0.3306500866464777,
+          "successes_lost": 0.6893939393939394,
+          "failed_spend_saved": 0.22655839201179606,
+          "savings_share": 0.06344770044660787
+        },
+        {
+          "threshold": 0.32964190536529364,
+          "successes_lost": 0.6931818181818182,
+          "failed_spend_saved": 0.22655839201179606,
+          "savings_share": 0.06344770044660787
+        },
+        {
+          "threshold": 0.3217759050632604,
+          "successes_lost": 0.7007575757575758,
+          "failed_spend_saved": 0.23413799067448723,
+          "savings_share": 0.06557036781366307
+        },
+        {
+          "threshold": 0.32142424210803855,
+          "successes_lost": 0.7007575757575758,
+          "failed_spend_saved": 0.23552823789278504,
+          "savings_share": 0.065959706686834
+        },
+        {
+          "threshold": 0.3196285302082542,
+          "successes_lost": 0.7083333333333334,
+          "failed_spend_saved": 0.236398483378054,
+          "savings_share": 0.06620341902242245
+        },
+        {
+          "threshold": 0.3195680569203133,
+          "successes_lost": 0.7121212121212122,
+          "failed_spend_saved": 0.236398483378054,
+          "savings_share": 0.06620341902242245
+        },
+        {
+          "threshold": 0.3187672718033463,
+          "successes_lost": 0.7196969696969697,
+          "failed_spend_saved": 0.2367101561542454,
+          "savings_share": 0.06629070301471052
+        },
+        {
+          "threshold": 0.3183778312114641,
+          "successes_lost": 0.7196969696969697,
+          "failed_spend_saved": 0.24638266386321628,
+          "savings_share": 0.06899948977046369
+        },
+        {
+          "threshold": 0.31269275004571895,
+          "successes_lost": 0.7234848484848485,
+          "failed_spend_saved": 0.2509824240801742,
+          "savings_share": 0.07028765308138873
+        },
+        {
+          "threshold": 0.3109875281959619,
+          "successes_lost": 0.7272727272727273,
+          "failed_spend_saved": 0.256551247286294,
+          "savings_share": 0.07184720257979625
+        },
+        {
+          "threshold": 0.3099616789286332,
+          "successes_lost": 0.7348484848484849,
+          "failed_spend_saved": 0.256551247286294,
+          "savings_share": 0.07184720257979625
+        },
+        {
+          "threshold": 0.30769217980703334,
+          "successes_lost": 0.7386363636363636,
+          "failed_spend_saved": 0.2570941851711254,
+          "savings_share": 0.07199925238899557
+        },
+        {
+          "threshold": 0.30621381248117935,
+          "successes_lost": 0.7424242424242424,
+          "failed_spend_saved": 0.25815651563998926,
+          "savings_share": 0.07229675814353971
+        },
+        {
+          "threshold": 0.3039785821128009,
+          "successes_lost": 0.7462121212121212,
+          "failed_spend_saved": 0.2891522416729606,
+          "savings_share": 0.0809771143334031
+        },
+        {
+          "threshold": 0.30307410651935,
+          "successes_lost": 0.75,
+          "failed_spend_saved": 0.28935610353715635,
+          "savings_share": 0.08103420586895438
+        },
+        {
+          "threshold": 0.3025323194023588,
+          "successes_lost": 0.7575757575757576,
+          "failed_spend_saved": 0.28935610353715635,
+          "savings_share": 0.08103420586895438
+        },
+        {
+          "threshold": 0.30185349837981085,
+          "successes_lost": 0.7575757575757576,
+          "failed_spend_saved": 0.2947559555799414,
+          "savings_share": 0.0825464349760924
+        },
+        {
+          "threshold": 0.30140541303079543,
+          "successes_lost": 0.7613636363636364,
+          "failed_spend_saved": 0.2977392627907942,
+          "savings_share": 0.08338191046024283
+        },
+        {
+          "threshold": 0.2977262162541476,
+          "successes_lost": 0.7613636363636364,
+          "failed_spend_saved": 0.31000990941590617,
+          "savings_share": 0.0868183062805122
+        },
+        {
+          "threshold": 0.2966131862909615,
+          "successes_lost": 0.7651515151515151,
+          "failed_spend_saved": 0.3408643213420689,
+          "savings_share": 0.09545908744056514
+        },
+        {
+          "threshold": 0.294676234101419,
+          "successes_lost": 0.7689393939393939,
+          "failed_spend_saved": 0.3416728651102238,
+          "savings_share": 0.09568552020407625
+        },
+        {
+          "threshold": 0.29385014813498866,
+          "successes_lost": 0.7765151515151515,
+          "failed_spend_saved": 0.34441621837883235,
+          "savings_share": 0.09645379656259151
+        },
+        {
+          "threshold": 0.2934447230641109,
+          "successes_lost": 0.7803030303030303,
+          "failed_spend_saved": 0.3446160530913283,
+          "savings_share": 0.09650976029390464
+        },
+        {
+          "threshold": 0.2903622101682229,
+          "successes_lost": 0.7878787878787878,
+          "failed_spend_saved": 0.3478239839946778,
+          "savings_share": 0.09740814166570805
+        },
+        {
+          "threshold": 0.29003701527211617,
+          "successes_lost": 0.7916666666666666,
+          "failed_spend_saved": 0.36347060204217363,
+          "savings_share": 0.10178997862202047
+        },
+        {
+          "threshold": 0.28583667625786097,
+          "successes_lost": 0.7954545454545454,
+          "failed_spend_saved": 0.3699867027004244,
+          "savings_share": 0.10361481326607598
+        },
+        {
+          "threshold": 0.2855050870977995,
+          "successes_lost": 0.7992424242424242,
+          "failed_spend_saved": 0.371089795389644,
+          "savings_share": 0.1039237344845264
+        },
+        {
+          "threshold": 0.2840931527326132,
+          "successes_lost": 0.803030303030303,
+          "failed_spend_saved": 0.38133035145875077,
+          "savings_share": 0.10679160324061092
+        },
+        {
+          "threshold": 0.28323804415656445,
+          "successes_lost": 0.8068181818181818,
+          "failed_spend_saved": 0.38133035145875077,
+          "savings_share": 0.10679160324061092
+        },
+        {
+          "threshold": 0.2822540077593291,
+          "successes_lost": 0.8143939393939394,
+          "failed_spend_saved": 0.3826069162455579,
+          "savings_share": 0.10714910533742052
+        },
+        {
+          "threshold": 0.2814984323433736,
+          "successes_lost": 0.8181818181818182,
+          "failed_spend_saved": 0.38351829620890293,
+          "savings_share": 0.10740433738772719
+        },
+        {
+          "threshold": 0.2795034882883426,
+          "successes_lost": 0.821969696969697,
+          "failed_spend_saved": 0.4053389946738636,
+          "savings_share": 0.11351522618529818
+        },
+        {
+          "threshold": 0.278627597335798,
+          "successes_lost": 0.8257575757575758,
+          "failed_spend_saved": 0.4053389946738636,
+          "savings_share": 0.11351522618529818
+        },
+        {
+          "threshold": 0.27404461040172945,
+          "successes_lost": 0.8295454545454546,
+          "failed_spend_saved": 0.44414691276139495,
+          "savings_share": 0.12438338754497973
+        },
+        {
+          "threshold": 0.2737027500102849,
+          "successes_lost": 0.8333333333333334,
+          "failed_spend_saved": 0.44414691276139495,
+          "savings_share": 0.12438338754497973
+        },
+        {
+          "threshold": 0.26519321467486234,
+          "successes_lost": 0.8371212121212122,
+          "failed_spend_saved": 0.46087563323893593,
+          "savings_share": 0.12906826739555172
+        },
+        {
+          "threshold": 0.26374128381352174,
+          "successes_lost": 0.8409090909090909,
+          "failed_spend_saved": 0.46087563323893593,
+          "savings_share": 0.12906826739555172
+        },
+        {
+          "threshold": 0.25940279780875314,
+          "successes_lost": 0.8446969696969697,
+          "failed_spend_saved": 0.49670149625521864,
+          "savings_share": 0.1391013039329048
+        },
+        {
+          "threshold": 0.25890648192376875,
+          "successes_lost": 0.8484848484848485,
+          "failed_spend_saved": 0.4967394665426734,
+          "savings_share": 0.13911193751572162
+        },
+        {
+          "threshold": 0.25823378897834326,
+          "successes_lost": 0.8560606060606061,
+          "failed_spend_saved": 0.4967394665426734,
+          "savings_share": 0.13911193751572162
+        },
+        {
+          "threshold": 0.25648639651475535,
+          "successes_lost": 0.8598484848484849,
+          "failed_spend_saved": 0.4967394665426734,
+          "savings_share": 0.13911193751572162
+        },
+        {
+          "threshold": 0.2559924205807826,
+          "successes_lost": 0.8636363636363636,
+          "failed_spend_saved": 0.49894915452784316,
+          "savings_share": 0.13973076085798924
+        },
+        {
+          "threshold": 0.2546049971985625,
+          "successes_lost": 0.8712121212121212,
+          "failed_spend_saved": 0.532544990750792,
+          "savings_share": 0.14913927816780476
+        },
+        {
+          "threshold": 0.25393254646424035,
+          "successes_lost": 0.875,
+          "failed_spend_saved": 0.5327049685060243,
+          "savings_share": 0.14918407995423152
+        },
+        {
+          "threshold": 0.25263194877523676,
+          "successes_lost": 0.875,
+          "failed_spend_saved": 0.5808833240834345,
+          "savings_share": 0.16267643327445866
+        },
+        {
+          "threshold": 0.25112236752602235,
+          "successes_lost": 0.875,
+          "failed_spend_saved": 0.6223090092214417,
+          "savings_share": 0.17427770055964903
+        },
+        {
+          "threshold": 0.24927459426602114,
+          "successes_lost": 0.8787878787878788,
+          "failed_spend_saved": 0.6285105098041561,
+          "savings_share": 0.1760144314209408
+        },
+        {
+          "threshold": 0.24575771314265765,
+          "successes_lost": 0.8787878787878788,
+          "failed_spend_saved": 0.6705840841228676,
+          "savings_share": 0.18779714013628473
+        },
+        {
+          "threshold": 0.24433849787965892,
+          "successes_lost": 0.8863636363636364,
+          "failed_spend_saved": 0.7027276076130867,
+          "savings_share": 0.1967989371193766
+        },
+        {
+          "threshold": 0.24301002797553858,
+          "successes_lost": 0.8901515151515151,
+          "failed_spend_saved": 0.7039003124959734,
+          "savings_share": 0.19712735323965783
+        },
+        {
+          "threshold": 0.24009959596791938,
+          "successes_lost": 0.8939393939393939,
+          "failed_spend_saved": 0.7060917260112451,
+          "savings_share": 0.19774105881479437
+        },
+        {
+          "threshold": 0.2387907862618479,
+          "successes_lost": 0.8977272727272727,
+          "failed_spend_saved": 0.707709380394538,
+          "savings_share": 0.19819408308737113
+        },
+        {
+          "threshold": 0.23504950578018718,
+          "successes_lost": 0.9053030303030303,
+          "failed_spend_saved": 0.7114333366416329,
+          "savings_share": 0.19923697740853868
+        },
+        {
+          "threshold": 0.23462277370949783,
+          "successes_lost": 0.9090909090909091,
+          "failed_spend_saved": 0.7133013935645424,
+          "savings_share": 0.19976012693749456
+        },
+        {
+          "threshold": 0.2336370709619278,
+          "successes_lost": 0.9166666666666666,
+          "failed_spend_saved": 0.7133013935645424,
+          "savings_share": 0.19976012693749456
+        },
+        {
+          "threshold": 0.2334095459694894,
+          "successes_lost": 0.9204545454545454,
+          "failed_spend_saved": 0.7133013935645424,
+          "savings_share": 0.19976012693749456
+        },
+        {
+          "threshold": 0.22693370732904936,
+          "successes_lost": 0.9242424242424242,
+          "failed_spend_saved": 0.7759170879855571,
+          "savings_share": 0.21729565845148072
+        },
+        {
+          "threshold": 0.22572586956804494,
+          "successes_lost": 0.928030303030303,
+          "failed_spend_saved": 0.7774277774971272,
+          "savings_share": 0.21771872720098412
+        },
+        {
+          "threshold": 0.2220123399219509,
+          "successes_lost": 0.9356060606060606,
+          "failed_spend_saved": 0.7824227992692546,
+          "savings_share": 0.2191175835501487
+        },
+        {
+          "threshold": 0.22151230450508713,
+          "successes_lost": 0.9393939393939394,
+          "failed_spend_saved": 0.7824227992692546,
+          "savings_share": 0.2191175835501487
+        },
+        {
+          "threshold": 0.21684098421161951,
+          "successes_lost": 0.946969696969697,
+          "failed_spend_saved": 0.7990563740576877,
+          "savings_share": 0.22377581784092618
+        },
+        {
+          "threshold": 0.21604808965743094,
+          "successes_lost": 0.9507575757575758,
+          "failed_spend_saved": 0.7990563740576877,
+          "savings_share": 0.22377581784092618
+        },
+        {
+          "threshold": 0.21509472925446205,
+          "successes_lost": 0.9583333333333334,
+          "failed_spend_saved": 0.8005802617975176,
+          "savings_share": 0.22420258275557986
+        },
+        {
+          "threshold": 0.21493623577661572,
+          "successes_lost": 0.9621212121212122,
+          "failed_spend_saved": 0.8005802617975176,
+          "savings_share": 0.22420258275557986
+        },
+        {
+          "threshold": 0.21264753911675668,
+          "successes_lost": 0.9696969696969697,
+          "failed_spend_saved": 0.8038371784326769,
+          "savings_share": 0.2251146825864985
+        },
+        {
+          "threshold": 0.21184283742440344,
+          "successes_lost": 0.9696969696969697,
+          "failed_spend_saved": 0.8195019525044325,
+          "savings_share": 0.22950160413922913
+        },
+        {
+          "threshold": 0.21056210490896668,
+          "successes_lost": 0.9772727272727273,
+          "failed_spend_saved": 0.8195019525044325,
+          "savings_share": 0.22950160413922913
+        },
+        {
+          "threshold": 0.20924659644673044,
+          "successes_lost": 0.9810606060606061,
+          "failed_spend_saved": 0.8218428613359534,
+          "savings_share": 0.23015717589270196
+        },
+        {
+          "threshold": 0.2076896188254652,
+          "successes_lost": 0.9886363636363636,
+          "failed_spend_saved": 0.8248822610169099,
+          "savings_share": 0.23100836007874084
+        },
+        {
+          "threshold": 0.20732432419395974,
+          "successes_lost": 0.9924242424242424,
+          "failed_spend_saved": 0.8248822610169099,
+          "savings_share": 0.23100836007874084
+        },
+        {
+          "threshold": 0.20235695029435238,
+          "successes_lost": 0.9962121212121212,
+          "failed_spend_saved": 0.8478509853699924,
+          "savings_share": 0.2374407536416295
+        },
+        {
+          "threshold": 0.1967326228669494,
+          "successes_lost": 1.0,
+          "failed_spend_saved": 0.855249607557874,
+          "savings_share": 0.23951273852873048
+        }
+      ],
+      "test_runs_with_task_in_train": 1.0
+    },
+    "shuffled": {
+      "targets": {
+        "0.90": {
+          "status": "rejected",
+          "reason": "savings_share_below_minimum",
+          "counts": {
+            "train_success": 781,
+            "train_failure": 313,
+            "calibration_success": 268,
+            "calibration_failure": 97,
+            "test_success": 275,
+            "test_failure": 90
+          },
+          "calibration": {
+            "threshold": 0.45125305218193285,
+            "successes": 268,
+            "false_aborts": 18,
+            "ucb": 0.09797304503769735
+          },
+          "training": {
+            "runs": 1092,
+            "rows": 18946,
+            "l2_c": 1.0
+          },
+          "test": {
+            "successes": 275,
+            "failures": 90,
+            "successes_lost": 25,
+            "successes_lost_share": 0.09090909090909091,
+            "successes_lost_ci95": [
+              0.059697320222577795,
+              0.13127291454181128
+            ],
+            "successes_kept_share": 0.9090909090909091,
+            "failures_caught": 22,
+            "saved": "0.444942000",
+            "total_spend": "41.731135200",
+            "failed_spend": "9.309590700",
+            "savings_share": 0.010662111104037256,
+            "failed_spend_saved_share": 0.047793937922534016,
+            "auroc": 0.6505454545454545
+          }
+        },
+        "0.95": {
+          "status": "rejected",
+          "reason": "savings_share_below_minimum",
+          "counts": {
+            "train_success": 781,
+            "train_failure": 313,
+            "calibration_success": 268,
+            "calibration_failure": 97,
+            "test_success": 275,
+            "test_failure": 90
+          },
+          "calibration": {
+            "threshold": 0.5276460907992222,
+            "successes": 268,
+            "false_aborts": 7,
+            "ucb": 0.048498395156854536
+          },
+          "training": {
+            "runs": 1092,
+            "rows": 18946,
+            "l2_c": 1.0
+          },
+          "test": {
+            "successes": 275,
+            "failures": 90,
+            "successes_lost": 6,
+            "successes_lost_share": 0.02181818181818182,
+            "successes_lost_ci95": [
+              0.008047994583139302,
+              0.04688164328936857
+            ],
+            "successes_kept_share": 0.9781818181818182,
+            "failures_caught": 6,
+            "saved": "0.104524500",
+            "total_spend": "41.731135200",
+            "failed_spend": "9.309590700",
+            "savings_share": 0.0025047125964596335,
+            "failed_spend_saved_share": 0.011227614979893798,
+            "auroc": 0.6505454545454545
+          }
+        }
+      },
+      "curve": [
+        {
+          "threshold": 1.0,
+          "successes_lost": 0.0,
+          "failed_spend_saved": 0.0,
+          "savings_share": 0.0
+        },
+        {
+          "threshold": 0.65791820781042,
+          "successes_lost": 0.0,
+          "failed_spend_saved": 0.003500905791701455,
+          "savings_share": 0.0007809996024263439
+        },
+        {
+          "threshold": 0.6110110552978865,
+          "successes_lost": 0.0036363636363636364,
+          "failed_spend_saved": 0.003500905791701455,
+          "savings_share": 0.0007809996024263439
+        },
+        {
+          "threshold": 0.5712187175295704,
+          "successes_lost": 0.007272727272727273,
+          "failed_spend_saved": 0.003813357766630922,
+          "savings_share": 0.0008507029542776493
+        },
+        {
+          "threshold": 0.5621341105254894,
+          "successes_lost": 0.007272727272727273,
+          "failed_spend_saved": 0.006881806307553351,
+          "savings_share": 0.0015352278267282797
+        },
+        {
+          "threshold": 0.5396257713724917,
+          "successes_lost": 0.01090909090909091,
+          "failed_spend_saved": 0.009892819455532024,
+          "savings_share": 0.0022069397239881457
+        },
+        {
+          "threshold": 0.5368185755716842,
+          "successes_lost": 0.014545454545454545,
+          "failed_spend_saved": 0.009892819455532024,
+          "savings_share": 0.0022069397239881457
+        },
+        {
+          "threshold": 0.5323019553489219,
+          "successes_lost": 0.01818181818181818,
+          "failed_spend_saved": 0.010147739363020547,
+          "savings_share": 0.0022638085340175463
+        },
+        {
+          "threshold": 0.5306820556548905,
+          "successes_lost": 0.01818181818181818,
+          "failed_spend_saved": 0.0112276149798938,
+          "savings_share": 0.0025047125964596335
+        },
+        {
+          "threshold": 0.5256299228281627,
+          "successes_lost": 0.025454545454545455,
+          "failed_spend_saved": 0.0112276149798938,
+          "savings_share": 0.0025047125964596335
+        },
+        {
+          "threshold": 0.5254206293960149,
+          "successes_lost": 0.025454545454545455,
+          "failed_spend_saved": 0.011480214699449676,
+          "savings_share": 0.0025610638073416225
+        },
+        {
+          "threshold": 0.5136204765873525,
+          "successes_lost": 0.03272727272727273,
+          "failed_spend_saved": 0.011480214699449676,
+          "savings_share": 0.0025610638073416225
+        },
+        {
+          "threshold": 0.5136114444062507,
+          "successes_lost": 0.03272727272727273,
+          "failed_spend_saved": 0.019594105248902087,
+          "savings_share": 0.004371151159099072
+        },
+        {
+          "threshold": 0.5124962041600784,
+          "successes_lost": 0.04,
+          "failed_spend_saved": 0.019594105248902087,
+          "savings_share": 0.004371151159099072
+        },
+        {
+          "threshold": 0.5101423872160813,
+          "successes_lost": 0.04,
+          "failed_spend_saved": 0.020921510545033956,
+          "savings_share": 0.004667275382434362
+        },
+        {
+          "threshold": 0.49824667847977,
+          "successes_lost": 0.04,
+          "failed_spend_saved": 0.02309699823860141,
+          "savings_share": 0.005152594075610003
+        },
+        {
+          "threshold": 0.49530481901833345,
+          "successes_lost": 0.04,
+          "failed_spend_saved": 0.024094893881854554,
+          "savings_share": 0.005375209634843579
+        },
+        {
+          "threshold": 0.4897823694388624,
+          "successes_lost": 0.04363636363636364,
+          "failed_spend_saved": 0.025017125618637566,
+          "savings_share": 0.005580945710769929
+        },
+        {
+          "threshold": 0.4855023850085943,
+          "successes_lost": 0.04363636363636364,
+          "failed_spend_saved": 0.025907175489465938,
+          "savings_share": 0.005779502494818306
+        },
+        {
+          "threshold": 0.48350891661290507,
+          "successes_lost": 0.04727272727272727,
+          "failed_spend_saved": 0.02772680435886403,
+          "savings_share": 0.006185434418759833
+        },
+        {
+          "threshold": 0.47981606201104066,
+          "successes_lost": 0.04727272727272727,
+          "failed_spend_saved": 0.028399014362683,
+          "savings_share": 0.006335394393967985
+        },
+        {
+          "threshold": 0.473416629604034,
+          "successes_lost": 0.05090909090909091,
+          "failed_spend_saved": 0.029808743363980556,
+          "savings_share": 0.006649883801866959
+        },
+        {
+          "threshold": 0.4731634397315035,
+          "successes_lost": 0.05090909090909091,
+          "failed_spend_saved": 0.03408368962987815,
+          "savings_share": 0.0076035602309711455
+        },
+        {
+          "threshold": 0.4706776876697764,
+          "successes_lost": 0.05454545454545454,
+          "failed_spend_saved": 0.04060780029781547,
+          "savings_share": 0.009058991522473612
+        },
+        {
+          "threshold": 0.47058896674120176,
+          "successes_lost": 0.05818181818181818,
+          "failed_spend_saved": 0.04060780029781547,
+          "savings_share": 0.009058991522473612
+        },
+        {
+          "threshold": 0.46735987784798116,
+          "successes_lost": 0.06545454545454546,
+          "failed_spend_saved": 0.04060780029781547,
+          "savings_share": 0.009058991522473612
+        },
+        {
+          "threshold": 0.4620898794038013,
+          "successes_lost": 0.06909090909090909,
+          "failed_spend_saved": 0.04060780029781547,
+          "savings_share": 0.009058991522473612
+        },
+        {
+          "threshold": 0.46003902228695037,
+          "successes_lost": 0.07272727272727272,
+          "failed_spend_saved": 0.04286001531732218,
+          "savings_share": 0.009561426931899042
+        },
+        {
+          "threshold": 0.4600258403228565,
+          "successes_lost": 0.07272727272727272,
+          "failed_spend_saved": 0.043504297133063016,
+          "savings_share": 0.009705156546999471
+        },
+        {
+          "threshold": 0.45825903825934194,
+          "successes_lost": 0.08,
+          "failed_spend_saved": 0.043504297133063016,
+          "savings_share": 0.009705156546999471
+        },
+        {
+          "threshold": 0.45756112647193825,
+          "successes_lost": 0.08363636363636363,
+          "failed_spend_saved": 0.043504297133063016,
+          "savings_share": 0.009705156546999471
+        },
+        {
+          "threshold": 0.453412370723466,
+          "successes_lost": 0.09090909090909091,
+          "failed_spend_saved": 0.043504297133063016,
+          "savings_share": 0.009705156546999471
+        },
+        {
+          "threshold": 0.452451950638253,
+          "successes_lost": 0.09090909090909091,
+          "failed_spend_saved": 0.04779393792253402,
+          "savings_share": 0.010662111104037258
+        },
+        {
+          "threshold": 0.4479110799983064,
+          "successes_lost": 0.09818181818181818,
+          "failed_spend_saved": 0.04980202835340549,
+          "savings_share": 0.011110085977244158
+        },
+        {
+          "threshold": 0.4469237840026163,
+          "successes_lost": 0.10181818181818182,
+          "failed_spend_saved": 0.04980202835340549,
+          "savings_share": 0.011110085977244158
+        },
+        {
+          "threshold": 0.443133329224495,
+          "successes_lost": 0.10909090909090909,
+          "failed_spend_saved": 0.04980202835340549,
+          "savings_share": 0.011110085977244158
+        },
+        {
+          "threshold": 0.44188007799867846,
+          "successes_lost": 0.11272727272727273,
+          "failed_spend_saved": 0.04980202835340549,
+          "savings_share": 0.011110085977244158
+        },
+        {
+          "threshold": 0.4406159201679602,
+          "successes_lost": 0.12,
+          "failed_spend_saved": 0.04980202835340549,
+          "savings_share": 0.011110085977244158
+        },
+        {
+          "threshold": 0.44056624976442954,
+          "successes_lost": 0.12,
+          "failed_spend_saved": 0.05149920285969179,
+          "savings_share": 0.011488700168405678
+        },
+        {
+          "threshold": 0.43477782330254355,
+          "successes_lost": 0.12727272727272726,
+          "failed_spend_saved": 0.05149920285969179,
+          "savings_share": 0.011488700168405678
+        },
+        {
+          "threshold": 0.43332570908373735,
+          "successes_lost": 0.13090909090909092,
+          "failed_spend_saved": 0.05149920285969179,
+          "savings_share": 0.011488700168405678
+        },
+        {
+          "threshold": 0.43315657506001676,
+          "successes_lost": 0.13818181818181818,
+          "failed_spend_saved": 0.05149920285969179,
+          "savings_share": 0.011488700168405678
+        },
+        {
+          "threshold": 0.432952780309422,
+          "successes_lost": 0.14545454545454545,
+          "failed_spend_saved": 0.05149920285969179,
+          "savings_share": 0.011488700168405678
+        },
+        {
+          "threshold": 0.4306984149301674,
+          "successes_lost": 0.14909090909090908,
+          "failed_spend_saved": 0.05814997860217421,
+          "savings_share": 0.012972388539289007
+        },
+        {
+          "threshold": 0.4293353832391979,
+          "successes_lost": 0.15272727272727274,
+          "failed_spend_saved": 0.061746764011870056,
+          "savings_share": 0.01377477744722363
+        },
+        {
+          "threshold": 0.428247645055796,
+          "successes_lost": 0.15272727272727274,
+          "failed_spend_saved": 0.06232183762923113,
+          "savings_share": 0.013903067750718657
+        },
+        {
+          "threshold": 0.42722550556473016,
+          "successes_lost": 0.15636363636363637,
+          "failed_spend_saved": 0.0626265126779419,
+          "savings_share": 0.013971036186909196
+        },
+        {
+          "threshold": 0.4270948458951774,
+          "successes_lost": 0.15636363636363637,
+          "failed_spend_saved": 0.07076569972082661,
+          "savings_share": 0.015786766807148828
+        },
+        {
+          "threshold": 0.42600242644811004,
+          "successes_lost": 0.16,
+          "failed_spend_saved": 0.07167714688036717,
+          "savings_share": 0.01599009700555666
+        },
+        {
+          "threshold": 0.4259924350324471,
+          "successes_lost": 0.16,
+          "failed_spend_saved": 0.07310956216367279,
+          "savings_share": 0.01630964738289698
+        },
+        {
+          "threshold": 0.4231608688080969,
+          "successes_lost": 0.16363636363636364,
+          "failed_spend_saved": 0.07565033981569137,
+          "savings_share": 0.016876456789989266
+        },
+        {
+          "threshold": 0.4222435326705274,
+          "successes_lost": 0.16363636363636364,
+          "failed_spend_saved": 0.08149098327169206,
+          "savings_share": 0.018179416791901697
+        },
+        {
+          "threshold": 0.4220351314851373,
+          "successes_lost": 0.16727272727272727,
+          "failed_spend_saved": 0.08194122862995469,
+          "savings_share": 0.01827985978200756
+        },
+        {
+          "threshold": 0.4211147089357163,
+          "successes_lost": 0.1709090909090909,
+          "failed_spend_saved": 0.08411318233356918,
+          "savings_share": 0.01876439009500034
+        },
+        {
+          "threshold": 0.41925804513796217,
+          "successes_lost": 0.1709090909090909,
+          "failed_spend_saved": 0.08787910514691047,
+          "savings_share": 0.019604511022264254
+        },
+        {
+          "threshold": 0.4192483738606678,
+          "successes_lost": 0.17454545454545456,
+          "failed_spend_saved": 0.08787910514691047,
+          "savings_share": 0.019604511022264254
+        },
+        {
+          "threshold": 0.4179275552150781,
+          "successes_lost": 0.18181818181818182,
+          "failed_spend_saved": 0.09084937536512747,
+          "savings_share": 0.020267133782643894
+        },
+        {
+          "threshold": 0.4178851192950247,
+          "successes_lost": 0.18545454545454546,
+          "failed_spend_saved": 0.09084937536512747,
+          "savings_share": 0.020267133782643894
+        },
+        {
+          "threshold": 0.4173117936093983,
+          "successes_lost": 0.19272727272727272,
+          "failed_spend_saved": 0.09084937536512747,
+          "savings_share": 0.020267133782643894
+        },
+        {
+          "threshold": 0.417143940640009,
+          "successes_lost": 0.19272727272727272,
+          "failed_spend_saved": 0.09174099351113253,
+          "savings_share": 0.020466040425375243
+        },
+        {
+          "threshold": 0.4137506129056206,
+          "successes_lost": 0.19272727272727272,
+          "failed_spend_saved": 0.09533453495436699,
+          "savings_share": 0.021267705653020427
+        },
+        {
+          "threshold": 0.41371100384947723,
+          "successes_lost": 0.19272727272727272,
+          "failed_spend_saved": 0.09692064120498872,
+          "savings_share": 0.02162154218129201
+        },
+        {
+          "threshold": 0.41235668392470515,
+          "successes_lost": 0.2,
+          "failed_spend_saved": 0.09692064120498872,
+          "savings_share": 0.02162154218129201
+        },
+        {
+          "threshold": 0.4116663968026961,
+          "successes_lost": 0.2,
+          "failed_spend_saved": 0.097283621717118,
+          "savings_share": 0.021702517692353592
+        },
+        {
+          "threshold": 0.4102924284035165,
+          "successes_lost": 0.20363636363636364,
+          "failed_spend_saved": 0.09833758856874339,
+          "savings_share": 0.021937641897649594
+        },
+        {
+          "threshold": 0.4102710794180437,
+          "successes_lost": 0.20363636363636364,
+          "failed_spend_saved": 0.09960875079073024,
+          "savings_share": 0.022221219134244876
+        },
+        {
+          "threshold": 0.4096044315399856,
+          "successes_lost": 0.2109090909090909,
+          "failed_spend_saved": 0.09960875079073024,
+          "savings_share": 0.022221219134244876
+        },
+        {
+          "threshold": 0.409553768134013,
+          "successes_lost": 0.2109090909090909,
+          "failed_spend_saved": 0.10125930670614765,
+          "savings_share": 0.0225894334166112
+        },
+        {
+          "threshold": 0.4088393060293925,
+          "successes_lost": 0.21818181818181817,
+          "failed_spend_saved": 0.10125930670614765,
+          "savings_share": 0.0225894334166112
+        },
+        {
+          "threshold": 0.4083455343432967,
+          "successes_lost": 0.22181818181818183,
+          "failed_spend_saved": 0.10125930670614765,
+          "savings_share": 0.0225894334166112
+        },
+        {
+          "threshold": 0.40297647767248135,
+          "successes_lost": 0.2290909090909091,
+          "failed_spend_saved": 0.1045095677514587,
+          "savings_share": 0.023314517933363095
+        },
+        {
+          "threshold": 0.40246022497335043,
+          "successes_lost": 0.2290909090909091,
+          "failed_spend_saved": 0.10507393198285289,
+          "savings_share": 0.023440419133386042
+        },
+        {
+          "threshold": 0.40187336156532694,
+          "successes_lost": 0.23636363636363636,
+          "failed_spend_saved": 0.10507393198285289,
+          "savings_share": 0.023440419133386042
+        },
+        {
+          "threshold": 0.40127685379131445,
+          "successes_lost": 0.24,
+          "failed_spend_saved": 0.10595952408519956,
+          "savings_share": 0.023637981456109534
+        },
+        {
+          "threshold": 0.39966696869686347,
+          "successes_lost": 0.24727272727272728,
+          "failed_spend_saved": 0.1092306560802936,
+          "savings_share": 0.024367721968895775
+        },
+        {
+          "threshold": 0.39853157730454764,
+          "successes_lost": 0.2509090909090909,
+          "failed_spend_saved": 0.1092306560802936,
+          "savings_share": 0.024367721968895775
+        },
+        {
+          "threshold": 0.3971462980135536,
+          "successes_lost": 0.2581818181818182,
+          "failed_spend_saved": 0.11019525273006897,
+          "savings_share": 0.024582909021847066
+        },
+        {
+          "threshold": 0.3964583675708476,
+          "successes_lost": 0.26181818181818184,
+          "failed_spend_saved": 0.11575125424149957,
+          "savings_share": 0.02582236967280008
+        },
+        {
+          "threshold": 0.3962120399358951,
+          "successes_lost": 0.2690909090909091,
+          "failed_spend_saved": 0.11575125424149957,
+          "savings_share": 0.02582236967280008
+        },
+        {
+          "threshold": 0.39613512790966693,
+          "successes_lost": 0.2690909090909091,
+          "failed_spend_saved": 0.11690990883197475,
+          "savings_share": 0.026080848143330643
+        },
+        {
+          "threshold": 0.39314925136402695,
+          "successes_lost": 0.27636363636363637,
+          "failed_spend_saved": 0.11953837025294785,
+          "savings_share": 0.02666721848486882
+        },
+        {
+          "threshold": 0.392316214598788,
+          "successes_lost": 0.28,
+          "failed_spend_saved": 0.11953837025294785,
+          "savings_share": 0.02666721848486882
+        },
+        {
+          "threshold": 0.39197567349872836,
+          "successes_lost": 0.28363636363636363,
+          "failed_spend_saved": 0.12394733959678805,
+          "savings_share": 0.02765079345361302
+        },
+        {
+          "threshold": 0.3910814474101059,
+          "successes_lost": 0.2872727272727273,
+          "failed_spend_saved": 0.12737821008607822,
+          "savings_share": 0.02841616922992308
+        },
+        {
+          "threshold": 0.3904542907570772,
+          "successes_lost": 0.2909090909090909,
+          "failed_spend_saved": 0.12815697686902605,
+          "savings_share": 0.028589900425234537
+        },
+        {
+          "threshold": 0.3897715907621163,
+          "successes_lost": 0.29818181818181816,
+          "failed_spend_saved": 0.12948141748057732,
+          "savings_share": 0.028885363271881466
+        },
+        {
+          "threshold": 0.389204799421144,
+          "successes_lost": 0.3018181818181818,
+          "failed_spend_saved": 0.12948141748057732,
+          "savings_share": 0.028885363271881466
+        },
+        {
+          "threshold": 0.38881759338535654,
+          "successes_lost": 0.3018181818181818,
+          "failed_spend_saved": 0.13174086160415194,
+          "savings_share": 0.02938941138605786
+        },
+        {
+          "threshold": 0.3879130392951444,
+          "successes_lost": 0.3054545454545455,
+          "failed_spend_saved": 0.1320636255254487,
+          "savings_share": 0.029461415178564324
+        },
+        {
+          "threshold": 0.38660813997421123,
+          "successes_lost": 0.3090909090909091,
+          "failed_spend_saved": 0.1371449982221023,
+          "savings_share": 0.03059499325577896
+        },
+        {
+          "threshold": 0.3863748990517154,
+          "successes_lost": 0.31272727272727274,
+          "failed_spend_saved": 0.1371449982221023,
+          "savings_share": 0.03059499325577896
+        },
+        {
+          "threshold": 0.38498919015837924,
+          "successes_lost": 0.32,
+          "failed_spend_saved": 0.14067672169518688,
+          "savings_share": 0.03138286782095494
+        },
+        {
+          "threshold": 0.38323493682368204,
+          "successes_lost": 0.3236363636363636,
+          "failed_spend_saved": 0.14133060651098228,
+          "savings_share": 0.03152873972141548
+        },
+        {
+          "threshold": 0.3823864374921498,
+          "successes_lost": 0.33090909090909093,
+          "failed_spend_saved": 0.14133060651098228,
+          "savings_share": 0.03152873972141548
+        },
+        {
+          "threshold": 0.3821236617573482,
+          "successes_lost": 0.33454545454545453,
+          "failed_spend_saved": 0.14133060651098228,
+          "savings_share": 0.03152873972141548
+        },
+        {
+          "threshold": 0.3808556996919382,
+          "successes_lost": 0.3418181818181818,
+          "failed_spend_saved": 0.14133060651098228,
+          "savings_share": 0.03152873972141548
+        },
+        {
+          "threshold": 0.38055802758134943,
+          "successes_lost": 0.34545454545454546,
+          "failed_spend_saved": 0.14133060651098228,
+          "savings_share": 0.03152873972141548
+        },
+        {
+          "threshold": 0.37752900764686126,
+          "successes_lost": 0.3490909090909091,
+          "failed_spend_saved": 0.14453869599229532,
+          "savings_share": 0.032244416394404715
+        },
+        {
+          "threshold": 0.37655475721375137,
+          "successes_lost": 0.3490909090909091,
+          "failed_spend_saved": 0.14566458866983273,
+          "savings_share": 0.03249558617327045
+        },
+        {
+          "threshold": 0.3740528243176012,
+          "successes_lost": 0.3563636363636364,
+          "failed_spend_saved": 0.14792969362229857,
+          "savings_share": 0.03300089713351483
+        },
+        {
+          "threshold": 0.3737236786062787,
+          "successes_lost": 0.3563636363636364,
+          "failed_spend_saved": 0.1485025222430026,
+          "savings_share": 0.033128686611908896
+        },
+        {
+          "threshold": 0.37356503338105906,
+          "successes_lost": 0.36,
+          "failed_spend_saved": 0.1487812025935791,
+          "savings_share": 0.033190856020614556
+        },
+        {
+          "threshold": 0.3730220162319427,
+          "successes_lost": 0.36363636363636365,
+          "failed_spend_saved": 0.1487812025935791,
+          "savings_share": 0.033190856020614556
+        },
+        {
+          "threshold": 0.3718313205685673,
+          "successes_lost": 0.36363636363636365,
+          "failed_spend_saved": 0.1553667230504559,
+          "savings_share": 0.034659986915476955
+        },
+        {
+          "threshold": 0.37178043595660193,
+          "successes_lost": 0.36363636363636365,
+          "failed_spend_saved": 0.15573357054247294,
+          "savings_share": 0.03474182509178423
+        },
+        {
+          "threshold": 0.36911822011996576,
+          "successes_lost": 0.3709090909090909,
+          "failed_spend_saved": 0.15754847310311934,
+          "savings_share": 0.03514670264709214
+        },
+        {
+          "threshold": 0.36869688254528693,
+          "successes_lost": 0.37454545454545457,
+          "failed_spend_saved": 0.15754847310311934,
+          "savings_share": 0.03514670264709214
+        },
+        {
+          "threshold": 0.3685105990532965,
+          "successes_lost": 0.3781818181818182,
+          "failed_spend_saved": 0.15867806089477166,
+          "savings_share": 0.03539869675052597
+        },
+        {
+          "threshold": 0.3681279261567793,
+          "successes_lost": 0.3781818181818182,
+          "failed_spend_saved": 0.15921664526024756,
+          "savings_share": 0.035518846848911025
+        },
+        {
+          "threshold": 0.36766379411249817,
+          "successes_lost": 0.38181818181818183,
+          "failed_spend_saved": 0.15940453751634856,
+          "savings_share": 0.035560762794681886
+        },
+        {
+          "threshold": 0.36687266539785707,
+          "successes_lost": 0.38545454545454544,
+          "failed_spend_saved": 0.16468242798257496,
+          "savings_share": 0.036738181040423736
+        },
+        {
+          "threshold": 0.3647645485921177,
+          "successes_lost": 0.3927272727272727,
+          "failed_spend_saved": 0.16542695051029468,
+          "savings_share": 0.036904272855726186
+        },
+        {
+          "threshold": 0.3644528197049583,
+          "successes_lost": 0.39636363636363636,
+          "failed_spend_saved": 0.16542695051029468,
+          "savings_share": 0.036904272855726186
+        },
+        {
+          "threshold": 0.3636035432954295,
+          "successes_lost": 0.4,
+          "failed_spend_saved": 0.1674315391760456,
+          "savings_share": 0.03735146653762728
+        },
+        {
+          "threshold": 0.36337347004388926,
+          "successes_lost": 0.4036363636363636,
+          "failed_spend_saved": 0.1674315391760456,
+          "savings_share": 0.03735146653762728
+        },
+        {
+          "threshold": 0.3628784342682763,
+          "successes_lost": 0.4109090909090909,
+          "failed_spend_saved": 0.1674315391760456,
+          "savings_share": 0.03735146653762728
+        },
+        {
+          "threshold": 0.36272235088068483,
+          "successes_lost": 0.41454545454545455,
+          "failed_spend_saved": 0.1674315391760456,
+          "savings_share": 0.03735146653762728
+        },
+        {
+          "threshold": 0.3616462521671103,
+          "successes_lost": 0.4218181818181818,
+          "failed_spend_saved": 0.17533877187533065,
+          "savings_share": 0.03911545162087993
+        },
+        {
+          "threshold": 0.361535284813935,
+          "successes_lost": 0.4218181818181818,
+          "failed_spend_saved": 0.17547686602376616,
+          "savings_share": 0.039146258355320256
+        },
+        {
+          "threshold": 0.36034423739187565,
+          "successes_lost": 0.4290909090909091,
+          "failed_spend_saved": 0.17565023562206653,
+          "savings_share": 0.03918493451383511
+        },
+        {
+          "threshold": 0.35983578380626124,
+          "successes_lost": 0.43272727272727274,
+          "failed_spend_saved": 0.17565023562206653,
+          "savings_share": 0.03918493451383511
+        },
+        {
+          "threshold": 0.3591425234131628,
+          "successes_lost": 0.44,
+          "failed_spend_saved": 0.17741121529650056,
+          "savings_share": 0.039577782681550426
+        },
+        {
+          "threshold": 0.357035599513909,
+          "successes_lost": 0.44727272727272727,
+          "failed_spend_saved": 0.17906719572537164,
+          "savings_share": 0.03994720709155306
+        },
+        {
+          "threshold": 0.3567189746578648,
+          "successes_lost": 0.44727272727272727,
+          "failed_spend_saved": 0.17951640988899753,
+          "savings_share": 0.04004742003759341
+        },
+        {
+          "threshold": 0.3551762422046986,
+          "successes_lost": 0.45454545454545453,
+          "failed_spend_saved": 0.18167700970999717,
+          "savings_share": 0.040529417469573156
+        },
+        {
+          "threshold": 0.35481589969949084,
+          "successes_lost": 0.4581818181818182,
+          "failed_spend_saved": 0.18247303826149947,
+          "savings_share": 0.040706999506689656
+        },
+        {
+          "threshold": 0.35311173956064995,
+          "successes_lost": 0.46545454545454545,
+          "failed_spend_saved": 0.18247303826149947,
+          "savings_share": 0.040706999506689656
+        },
+        {
+          "threshold": 0.3526919757242699,
+          "successes_lost": 0.4690909090909091,
+          "failed_spend_saved": 0.18247303826149947,
+          "savings_share": 0.040706999506689656
+        },
+        {
+          "threshold": 0.35062720421984755,
+          "successes_lost": 0.4727272727272727,
+          "failed_spend_saved": 0.1950596603564966,
+          "savings_share": 0.0435148862185757
+        },
+        {
+          "threshold": 0.3505984984080248,
+          "successes_lost": 0.4763636363636364,
+          "failed_spend_saved": 0.1950596603564966,
+          "savings_share": 0.0435148862185757
+        },
+        {
+          "threshold": 0.3475934304516763,
+          "successes_lost": 0.48363636363636364,
+          "failed_spend_saved": 0.1952429981696187,
+          "savings_share": 0.043555786136390544
+        },
+        {
+          "threshold": 0.3471582167787852,
+          "successes_lost": 0.48727272727272725,
+          "failed_spend_saved": 0.1952429981696187,
+          "savings_share": 0.043555786136390544
+        },
+        {
+          "threshold": 0.3464653982291824,
+          "successes_lost": 0.49454545454545457,
+          "failed_spend_saved": 0.1961117796510645,
+          "savings_share": 0.043749598261587655
+        },
+        {
+          "threshold": 0.34552082471988754,
+          "successes_lost": 0.49454545454545457,
+          "failed_spend_saved": 0.19978036198734272,
+          "savings_share": 0.044568003987583815
+        },
+        {
+          "threshold": 0.3433891069516579,
+          "successes_lost": 0.5018181818181818,
+          "failed_spend_saved": 0.20338146552457986,
+          "savings_share": 0.04537135620504278
+        },
+        {
+          "threshold": 0.34336025484423094,
+          "successes_lost": 0.5054545454545455,
+          "failed_spend_saved": 0.20338146552457986,
+          "savings_share": 0.04537135620504278
+        },
+        {
+          "threshold": 0.34250582260210866,
+          "successes_lost": 0.509090909090909,
+          "failed_spend_saved": 0.20411232472336288,
+          "savings_share": 0.04553439993647714
+        },
+        {
+          "threshold": 0.34228791813307397,
+          "successes_lost": 0.5127272727272727,
+          "failed_spend_saved": 0.20411232472336288,
+          "savings_share": 0.04553439993647714
+        },
+        {
+          "threshold": 0.3413884202352831,
+          "successes_lost": 0.52,
+          "failed_spend_saved": 0.20411232472336288,
+          "savings_share": 0.04553439993647714
+        },
+        {
+          "threshold": 0.3396704765975954,
+          "successes_lost": 0.5236363636363637,
+          "failed_spend_saved": 0.20411232472336288,
+          "savings_share": 0.04553439993647714
+        },
+        {
+          "threshold": 0.33817100285245194,
+          "successes_lost": 0.5309090909090909,
+          "failed_spend_saved": 0.20430056071100947,
+          "savings_share": 0.045576392563603185
+        },
+        {
+          "threshold": 0.33737803959871987,
+          "successes_lost": 0.5345454545454545,
+          "failed_spend_saved": 0.204994683600859,
+          "savings_share": 0.045731240975203556
+        },
+        {
+          "threshold": 0.33690475669055836,
+          "successes_lost": 0.5418181818181819,
+          "failed_spend_saved": 0.204994683600859,
+          "savings_share": 0.045731240975203556
+        },
+        {
+          "threshold": 0.33495582276710906,
+          "successes_lost": 0.5418181818181819,
+          "failed_spend_saved": 0.211153622468064,
+          "savings_share": 0.04710520791200522
+        },
+        {
+          "threshold": 0.3346477041607481,
+          "successes_lost": 0.5490909090909091,
+          "failed_spend_saved": 0.211153622468064,
+          "savings_share": 0.04710520791200522
+        },
+        {
+          "threshold": 0.33435605347084674,
+          "successes_lost": 0.5527272727272727,
+          "failed_spend_saved": 0.2120163886474622,
+          "savings_share": 0.04729767811348683
+        },
+        {
+          "threshold": 0.3332927901231194,
+          "successes_lost": 0.56,
+          "failed_spend_saved": 0.2131517661673353,
+          "savings_share": 0.04755096381849683
+        },
+        {
+          "threshold": 0.3328625594785324,
+          "successes_lost": 0.56,
+          "failed_spend_saved": 0.21609612762030445,
+          "savings_share": 0.04820780672173038
+        },
+        {
+          "threshold": 0.3321977352592624,
+          "successes_lost": 0.5672727272727273,
+          "failed_spend_saved": 0.21609612762030445,
+          "savings_share": 0.04820780672173038
+        },
+        {
+          "threshold": 0.3319767257072833,
+          "successes_lost": 0.5709090909090909,
+          "failed_spend_saved": 0.21609612762030445,
+          "savings_share": 0.04820780672173038
+        },
+        {
+          "threshold": 0.33002102118266263,
+          "successes_lost": 0.5781818181818181,
+          "failed_spend_saved": 0.22167597550770946,
+          "savings_share": 0.04945258714169846
+        },
+        {
+          "threshold": 0.329989792868847,
+          "successes_lost": 0.5818181818181818,
+          "failed_spend_saved": 0.22167597550770946,
+          "savings_share": 0.04945258714169846
+        },
+        {
+          "threshold": 0.3283288318471065,
+          "successes_lost": 0.5890909090909091,
+          "failed_spend_saved": 0.22194859758979518,
+          "savings_share": 0.04951340504151921
+        },
+        {
+          "threshold": 0.3271229112570689,
+          "successes_lost": 0.5927272727272728,
+          "failed_spend_saved": 0.22546983725073969,
+          "savings_share": 0.050298940825362445
+        },
+        {
+          "threshold": 0.32652218695408913,
+          "successes_lost": 0.6,
+          "failed_spend_saved": 0.2265689403509437,
+          "savings_share": 0.05054413425110947
+        },
+        {
+          "threshold": 0.3262688605873022,
+          "successes_lost": 0.6036363636363636,
+          "failed_spend_saved": 0.2265689403509437,
+          "savings_share": 0.05054413425110947
+        },
+        {
+          "threshold": 0.3259171993565496,
+          "successes_lost": 0.610909090909091,
+          "failed_spend_saved": 0.2265689403509437,
+          "savings_share": 0.05054413425110947
+        },
+        {
+          "threshold": 0.32558813917886453,
+          "successes_lost": 0.6145454545454545,
+          "failed_spend_saved": 0.2265689403509437,
+          "savings_share": 0.05054413425110947
+        },
+        {
+          "threshold": 0.32510668984759894,
+          "successes_lost": 0.6218181818181818,
+          "failed_spend_saved": 0.2265689403509437,
+          "savings_share": 0.05054413425110947
+        },
+        {
+          "threshold": 0.32480706450976354,
+          "successes_lost": 0.6254545454545455,
+          "failed_spend_saved": 0.228011753513503,
+          "savings_share": 0.05086600423944374
+        },
+        {
+          "threshold": 0.32369299640814675,
+          "successes_lost": 0.6327272727272727,
+          "failed_spend_saved": 0.228011753513503,
+          "savings_share": 0.05086600423944374
+        },
+        {
+          "threshold": 0.32350464534722095,
+          "successes_lost": 0.6363636363636364,
+          "failed_spend_saved": 0.228011753513503,
+          "savings_share": 0.05086600423944374
+        },
+        {
+          "threshold": 0.3230823600716825,
+          "successes_lost": 0.64,
+          "failed_spend_saved": 0.2488699207796536,
+          "savings_share": 0.05551914868589532
+        },
+        {
+          "threshold": 0.3226146743628843,
+          "successes_lost": 0.6472727272727272,
+          "failed_spend_saved": 0.2495539465553518,
+          "savings_share": 0.05567174458268751
+        },
+        {
+          "threshold": 0.3225057369260167,
+          "successes_lost": 0.6509090909090909,
+          "failed_spend_saved": 0.2495539465553518,
+          "savings_share": 0.05567174458268751
+        },
+        {
+          "threshold": 0.322396579333032,
+          "successes_lost": 0.6509090909090909,
+          "failed_spend_saved": 0.2536800140955714,
+          "savings_share": 0.056592208399832845
+        },
+        {
+          "threshold": 0.32187398504608444,
+          "successes_lost": 0.6545454545454545,
+          "failed_spend_saved": 0.2536800140955714,
+          "savings_share": 0.056592208399832845
+        },
+        {
+          "threshold": 0.3205957753109218,
+          "successes_lost": 0.6581818181818182,
+          "failed_spend_saved": 0.25635077597987205,
+          "savings_share": 0.05718801534064188
+        },
+        {
+          "threshold": 0.3201205149330936,
+          "successes_lost": 0.6618181818181819,
+          "failed_spend_saved": 0.25998058110116484,
+          "savings_share": 0.0579977704512577
+        },
+        {
+          "threshold": 0.3195566534860358,
+          "successes_lost": 0.6690909090909091,
+          "failed_spend_saved": 0.26038834338871636,
+          "savings_share": 0.05808873610512279
+        },
+        {
+          "threshold": 0.31943780310367853,
+          "successes_lost": 0.6690909090909091,
+          "failed_spend_saved": 0.26119993653426676,
+          "savings_share": 0.058269790369853164
+        },
+        {
+          "threshold": 0.31924543342475514,
+          "successes_lost": 0.6763636363636364,
+          "failed_spend_saved": 0.26119993653426676,
+          "savings_share": 0.058269790369853164
+        },
+        {
+          "threshold": 0.31923873450185486,
+          "successes_lost": 0.6763636363636364,
+          "failed_spend_saved": 0.2666649458606166,
+          "savings_share": 0.05948895202831674
+        },
+        {
+          "threshold": 0.31827575424653054,
+          "successes_lost": 0.68,
+          "failed_spend_saved": 0.27962223946107534,
+          "savings_share": 0.062379529996586344
+        },
+        {
+          "threshold": 0.3176639017894966,
+          "successes_lost": 0.6836363636363636,
+          "failed_spend_saved": 0.28079758651473263,
+          "savings_share": 0.06264173230542744
+        },
+        {
+          "threshold": 0.31664609496702845,
+          "successes_lost": 0.6909090909090909,
+          "failed_spend_saved": 0.2813059225041978,
+          "savings_share": 0.06275513444455737
+        },
+        {
+          "threshold": 0.316555152050062,
+          "successes_lost": 0.6945454545454546,
+          "failed_spend_saved": 0.2813059225041978,
+          "savings_share": 0.06275513444455737
+        },
+        {
+          "threshold": 0.3154997293733081,
+          "successes_lost": 0.7018181818181818,
+          "failed_spend_saved": 0.28233673044293983,
+          "savings_share": 0.06298509224354865
+        },
+        {
+          "threshold": 0.31478484123889167,
+          "successes_lost": 0.7018181818181818,
+          "failed_spend_saved": 0.31079748758449705,
+          "savings_share": 0.06933426052593938
+        },
+        {
+          "threshold": 0.3136134887708671,
+          "successes_lost": 0.7090909090909091,
+          "failed_spend_saved": 0.3182036885896604,
+          "savings_share": 0.07098647294885951
+        },
+        {
+          "threshold": 0.3128931672032715,
+          "successes_lost": 0.7090909090909091,
+          "failed_spend_saved": 0.3198905189247471,
+          "savings_share": 0.07136277951048885
+        },
+        {
+          "threshold": 0.3112104021078397,
+          "successes_lost": 0.7163636363636363,
+          "failed_spend_saved": 0.34199108237916404,
+          "savings_share": 0.07629308392262474
+        },
+        {
+          "threshold": 0.3096604233486202,
+          "successes_lost": 0.72,
+          "failed_spend_saved": 0.34512740715872714,
+          "savings_share": 0.07699275096642949
+        },
+        {
+          "threshold": 0.3096119871843484,
+          "successes_lost": 0.7236363636363636,
+          "failed_spend_saved": 0.35644670178679283,
+          "savings_share": 0.07951791591808889
+        },
+        {
+          "threshold": 0.30911366721715966,
+          "successes_lost": 0.7272727272727273,
+          "failed_spend_saved": 0.35644670178679283,
+          "savings_share": 0.07951791591808889
+        },
+        {
+          "threshold": 0.30882111329355216,
+          "successes_lost": 0.7345454545454545,
+          "failed_spend_saved": 0.35644670178679283,
+          "savings_share": 0.07951791591808889
+        },
+        {
+          "threshold": 0.3083404561414632,
+          "successes_lost": 0.7381818181818182,
+          "failed_spend_saved": 0.35706455923996744,
+          "savings_share": 0.07965575065401048
+        },
+        {
+          "threshold": 0.30734166923909273,
+          "successes_lost": 0.7454545454545455,
+          "failed_spend_saved": 0.35742831314807416,
+          "savings_share": 0.07973689869812119
+        },
+        {
+          "threshold": 0.3072495394798335,
+          "successes_lost": 0.7454545454545455,
+          "failed_spend_saved": 0.3604099050240736,
+          "savings_share": 0.0804020471506368
+        },
+        {
+          "threshold": 0.30680120324942356,
+          "successes_lost": 0.7527272727272727,
+          "failed_spend_saved": 0.3604099050240736,
+          "savings_share": 0.0804020471506368
+        },
+        {
+          "threshold": 0.30664180956558673,
+          "successes_lost": 0.7527272727272727,
+          "failed_spend_saved": 0.36394658037973665,
+          "savings_share": 0.08119102640658572
+        },
+        {
+          "threshold": 0.30546643799479506,
+          "successes_lost": 0.76,
+          "failed_spend_saved": 0.3887426651313468,
+          "savings_share": 0.08672266121339543
+        },
+        {
+          "threshold": 0.30447653878950015,
+          "successes_lost": 0.7636363636363637,
+          "failed_spend_saved": 0.403985580160898,
+          "savings_share": 0.09012312706029622
+        },
+        {
+          "threshold": 0.30390899216881656,
+          "successes_lost": 0.7709090909090909,
+          "failed_spend_saved": 0.40513695193925126,
+          "savings_share": 0.09037998084461409
+        },
+        {
+          "threshold": 0.30227441915449443,
+          "successes_lost": 0.7709090909090909,
+          "failed_spend_saved": 0.41475710634625446,
+          "savings_share": 0.09252609308361211
+        },
+        {
+          "threshold": 0.30013233400153866,
+          "successes_lost": 0.7781818181818182,
+          "failed_spend_saved": 0.4479925309713133,
+          "savings_share": 0.09994041810777293
+        },
+        {
+          "threshold": 0.29914793435803255,
+          "successes_lost": 0.7818181818181819,
+          "failed_spend_saved": 0.45091681635369857,
+          "savings_share": 0.10059278234060597
+        },
+        {
+          "threshold": 0.298884580070951,
+          "successes_lost": 0.7890909090909091,
+          "failed_spend_saved": 0.4511711776974256,
+          "savings_share": 0.10064952654343323
+        },
+        {
+          "threshold": 0.29832646136082164,
+          "successes_lost": 0.7927272727272727,
+          "failed_spend_saved": 0.4514231758867768,
+          "savings_share": 0.10070574356194367
+        },
+        {
+          "threshold": 0.29810514108993025,
+          "successes_lost": 0.8,
+          "failed_spend_saved": 0.4515324825182702,
+          "savings_share": 0.10073012823288835
+        },
+        {
+          "threshold": 0.2978006937707991,
+          "successes_lost": 0.8036363636363636,
+          "failed_spend_saved": 0.4515324825182702,
+          "savings_share": 0.10073012823288835
+        },
+        {
+          "threshold": 0.29725147305549177,
+          "successes_lost": 0.8036363636363636,
+          "failed_spend_saved": 0.4560507692352146,
+          "savings_share": 0.10173809026886957
+        },
+        {
+          "threshold": 0.29596308076212224,
+          "successes_lost": 0.8109090909090909,
+          "failed_spend_saved": 0.4597057312089994,
+          "savings_share": 0.10255345749616705
+        },
+        {
+          "threshold": 0.29583572910822753,
+          "successes_lost": 0.8145454545454546,
+          "failed_spend_saved": 0.4597057312089994,
+          "savings_share": 0.10255345749616705
+        },
+        {
+          "threshold": 0.2936419232623336,
+          "successes_lost": 0.8218181818181818,
+          "failed_spend_saved": 0.4653381163148237,
+          "savings_share": 0.10380995818201469
+        },
+        {
+          "threshold": 0.2923407873901759,
+          "successes_lost": 0.8254545454545454,
+          "failed_spend_saved": 0.46567007505496466,
+          "savings_share": 0.103884013200772
+        },
+        {
+          "threshold": 0.2890945478431077,
+          "successes_lost": 0.8327272727272728,
+          "failed_spend_saved": 0.4722568630219158,
+          "savings_share": 0.1053534268581316
+        },
+        {
+          "threshold": 0.28646518638090224,
+          "successes_lost": 0.8363636363636363,
+          "failed_spend_saved": 0.4793365405420027,
+          "savings_share": 0.10693279678622308
+        },
+        {
+          "threshold": 0.28114008546178104,
+          "successes_lost": 0.84,
+          "failed_spend_saved": 0.5033265748192348,
+          "savings_share": 0.11228461381515455
+        },
+        {
+          "threshold": 0.279311960395719,
+          "successes_lost": 0.8436363636363636,
+          "failed_spend_saved": 0.5091523626275001,
+          "savings_share": 0.11358425974474815
+        },
+        {
+          "threshold": 0.27856881535112227,
+          "successes_lost": 0.8472727272727273,
+          "failed_spend_saved": 0.53098257047971,
+          "savings_share": 0.11845425187474895
+        },
+        {
+          "threshold": 0.2781415400319126,
+          "successes_lost": 0.850909090909091,
+          "failed_spend_saved": 0.53098257047971,
+          "savings_share": 0.11845425187474895
+        },
+        {
+          "threshold": 0.27700068027446634,
+          "successes_lost": 0.8545454545454545,
+          "failed_spend_saved": 0.5398474285233615,
+          "savings_share": 0.1204318688172183
+        },
+        {
+          "threshold": 0.2757645093860834,
+          "successes_lost": 0.8581818181818182,
+          "failed_spend_saved": 0.5399811830610342,
+          "savings_share": 0.1204617074495496
+        },
+        {
+          "threshold": 0.2730718922957363,
+          "successes_lost": 0.8618181818181818,
+          "failed_spend_saved": 0.5554234301621876,
+          "savings_share": 0.1239066412935731
+        },
+        {
+          "threshold": 0.27284521064430656,
+          "successes_lost": 0.8618181818181818,
+          "failed_spend_saved": 0.559553364682295,
+          "savings_share": 0.12482796777596411
+        },
+        {
+          "threshold": 0.2692146267309995,
+          "successes_lost": 0.8690909090909091,
+          "failed_spend_saved": 0.5651824306303822,
+          "savings_share": 0.12608372800747583
+        },
+        {
+          "threshold": 0.26900956683457405,
+          "successes_lost": 0.8727272727272727,
+          "failed_spend_saved": 0.5654552675446839,
+          "savings_share": 0.12614459383314358
+        },
+        {
+          "threshold": 0.2670818977650926,
+          "successes_lost": 0.88,
+          "failed_spend_saved": 0.5666738710650298,
+          "savings_share": 0.12641644601127458
+        },
+        {
+          "threshold": 0.2659366267575054,
+          "successes_lost": 0.8836363636363637,
+          "failed_spend_saved": 0.5674500491197749,
+          "savings_share": 0.1265895997001299
+        },
+        {
+          "threshold": 0.26540097827137465,
+          "successes_lost": 0.8909090909090909,
+          "failed_spend_saved": 0.5686030536229697,
+          "savings_share": 0.12684681772088482
+        },
+        {
+          "threshold": 0.26522276826526076,
+          "successes_lost": 0.8945454545454545,
+          "failed_spend_saved": 0.5686595974622172,
+          "savings_share": 0.1268594318038106
+        },
+        {
+          "threshold": 0.26392198192411465,
+          "successes_lost": 0.8981818181818182,
+          "failed_spend_saved": 0.5746739649896745,
+          "savings_share": 0.1282011470418854
+        },
+        {
+          "threshold": 0.2631381988408601,
+          "successes_lost": 0.9018181818181819,
+          "failed_spend_saved": 0.5747323563859793,
+          "savings_share": 0.1282141732870952
+        },
+        {
+          "threshold": 0.260881315813767,
+          "successes_lost": 0.9090909090909091,
+          "failed_spend_saved": 0.5749993498640064,
+          "savings_share": 0.12827373552972504
+        },
+        {
+          "threshold": 0.26059659955569037,
+          "successes_lost": 0.9127272727272727,
+          "failed_spend_saved": 0.5749993498640064,
+          "savings_share": 0.12827373552972504
+        },
+        {
+          "threshold": 0.25685572092463477,
+          "successes_lost": 0.92,
+          "failed_spend_saved": 0.5824407833525914,
+          "savings_share": 0.1299338077915503
+        },
+        {
+          "threshold": 0.256794537146083,
+          "successes_lost": 0.92,
+          "failed_spend_saved": 0.5863322541129546,
+          "savings_share": 0.13080193658379077
+        },
+        {
+          "threshold": 0.2555618793290329,
+          "successes_lost": 0.9272727272727272,
+          "failed_spend_saved": 0.5899362793683293,
+          "savings_share": 0.13160594059276873
+        },
+        {
+          "threshold": 0.25497230225142653,
+          "successes_lost": 0.9309090909090909,
+          "failed_spend_saved": 0.5989993630976709,
+          "savings_share": 0.13362777871424883
+        },
+        {
+          "threshold": 0.25143306824005857,
+          "successes_lost": 0.9381818181818182,
+          "failed_spend_saved": 0.6080985278976871,
+          "savings_share": 0.1356576659817296
+        },
+        {
+          "threshold": 0.24628100037074213,
+          "successes_lost": 0.9418181818181818,
+          "failed_spend_saved": 0.6545643945442199,
+          "savings_share": 0.14602350429230596
+        },
+        {
+          "threshold": 0.24467406169654143,
+          "successes_lost": 0.9490909090909091,
+          "failed_spend_saved": 0.6696063018108841,
+          "savings_share": 0.1493791283204776
+        },
+        {
+          "threshold": 0.24436181999481296,
+          "successes_lost": 0.9527272727272728,
+          "failed_spend_saved": 0.6720785909524465,
+          "savings_share": 0.14993065896755187
+        },
+        {
+          "threshold": 0.24107146483323091,
+          "successes_lost": 0.96,
+          "failed_spend_saved": 0.6888835402828182,
+          "savings_share": 0.15367959125156988
+        },
+        {
+          "threshold": 0.23705795042910421,
+          "successes_lost": 0.9636363636363636,
+          "failed_spend_saved": 0.7691008907620395,
+          "savings_share": 0.17157487965963597
+        },
+        {
+          "threshold": 0.23600376480786947,
+          "successes_lost": 0.9709090909090909,
+          "failed_spend_saved": 0.7721771269707912,
+          "savings_share": 0.17226114184403968
+        },
+        {
+          "threshold": 0.23434296366450533,
+          "successes_lost": 0.9745454545454545,
+          "failed_spend_saved": 0.7747188928510034,
+          "savings_share": 0.1728281717100281
+        },
+        {
+          "threshold": 0.2317957032305538,
+          "successes_lost": 0.9781818181818182,
+          "failed_spend_saved": 0.8017737879711508,
+          "savings_share": 0.17886371324976555
+        },
+        {
+          "threshold": 0.2260287992073164,
+          "successes_lost": 0.9818181818181818,
+          "failed_spend_saved": 0.8279461523480297,
+          "savings_share": 0.18470237541009907
+        },
+        {
+          "threshold": 0.217646692694436,
+          "successes_lost": 0.9890909090909091,
+          "failed_spend_saved": 0.8478456308503445,
+          "savings_share": 0.18914165076439138
+        },
+        {
+          "threshold": 0.21748932908334273,
+          "successes_lost": 0.9927272727272727,
+          "failed_spend_saved": 0.8478456308503445,
+          "savings_share": 0.18914165076439138
+        }
+      ],
+      "test_runs_with_task_in_train": 1.0
+    },
+    "absolute": {
+      "targets": {
+        "0.90": {
+          "status": "rejected",
+          "reason": "test_false_abort_rate_above_alpha,auroc_below_minimum",
+          "counts": {
+            "train_success": 812,
+            "train_failure": 282,
+            "calibration_success": 277,
+            "calibration_failure": 88,
+            "test_success": 235,
+            "test_failure": 130
+          },
+          "calibration": {
+            "threshold": 0.47324653973473724,
+            "successes": 277,
+            "false_aborts": 19,
+            "ucb": 0.0990250907023609
+          },
+          "training": {
+            "runs": 1090,
+            "rows": 18794,
+            "l2_c": 1.0
+          },
+          "test": {
+            "successes": 235,
+            "failures": 130,
+            "successes_lost": 31,
+            "successes_lost_share": 0.13191489361702127,
+            "successes_lost_ci95": [
+              0.09142008957310166,
+              0.18198950355944532
+            ],
+            "successes_kept_share": 0.8680851063829788,
+            "failures_caught": 25,
+            "saved": "0.265971600",
+            "total_spend": "5.086868400",
+            "failed_spend": "1.947680000",
+            "savings_share": 0.052285921137649245,
+            "failed_spend_saved_share": 0.13655816150497002,
+            "auroc": 0.5621931260229133
+          }
+        },
+        "0.95": {
+          "status": "rejected",
+          "reason": "test_false_abort_rate_above_alpha,auroc_below_minimum",
+          "counts": {
+            "train_success": 812,
+            "train_failure": 282,
+            "calibration_success": 277,
+            "calibration_failure": 88,
+            "test_success": 235,
+            "test_failure": 130
+          },
+          "calibration": {
+            "threshold": 0.5204030024372367,
+            "successes": 277,
+            "false_aborts": 7,
+            "ucb": 0.0469402632188999
+          },
+          "training": {
+            "runs": 1090,
+            "rows": 18794,
+            "l2_c": 1.0
+          },
+          "test": {
+            "successes": 235,
+            "failures": 130,
+            "successes_lost": 14,
+            "successes_lost_share": 0.059574468085106386,
+            "successes_lost_ci95": [
+              0.03294923592347755,
+              0.09793648078743505
+            ],
+            "successes_kept_share": 0.9404255319148936,
+            "failures_caught": 11,
+            "saved": "0.153235200",
+            "total_spend": "5.086868400",
+            "failed_spend": "1.947680000",
+            "savings_share": 0.03012368080919884,
+            "failed_spend_saved_share": 0.07867575782469399,
+            "auroc": 0.5621931260229133
+          }
+        }
+      },
+      "curve": [
+        {
+          "threshold": 1.0,
+          "successes_lost": 0.0,
+          "failed_spend_saved": 0.0,
+          "savings_share": 0.0
+        },
+        {
+          "threshold": 0.8107600543647265,
+          "successes_lost": 0.00425531914893617,
+          "failed_spend_saved": 0.0,
+          "savings_share": 0.0
+        },
+        {
+          "threshold": 0.712629105656706,
+          "successes_lost": 0.00851063829787234,
+          "failed_spend_saved": 0.0,
+          "savings_share": 0.0
+        },
+        {
+          "threshold": 0.6884757902395212,
+          "successes_lost": 0.01276595744680851,
+          "failed_spend_saved": 0.0016216216216216218,
+          "savings_share": 0.0006208928070559089
+        },
+        {
+          "threshold": 0.6279100266065645,
+          "successes_lost": 0.01702127659574468,
+          "failed_spend_saved": 0.0016216216216216218,
+          "savings_share": 0.0006208928070559089
+        },
+        {
+          "threshold": 0.5936135627912056,
+          "successes_lost": 0.02553191489361702,
+          "failed_spend_saved": 0.0016216216216216218,
+          "savings_share": 0.0006208928070559089
+        },
+        {
+          "threshold": 0.5884824659382184,
+          "successes_lost": 0.02553191489361702,
+          "failed_spend_saved": 0.010355089131684878,
+          "savings_share": 0.003964796887609674
+        },
+        {
+          "threshold": 0.5774180091166466,
+          "successes_lost": 0.029787234042553193,
+          "failed_spend_saved": 0.012363427257044278,
+          "savings_share": 0.004733757216915617
+        },
+        {
+          "threshold": 0.5708036490218421,
+          "successes_lost": 0.029787234042553193,
+          "failed_spend_saved": 0.021437607820586544,
+          "savings_share": 0.008208114839377405
+        },
+        {
+          "threshold": 0.5596884074480067,
+          "successes_lost": 0.029787234042553193,
+          "failed_spend_saved": 0.03790088720939785,
+          "savings_share": 0.014511639420433995
+        },
+        {
+          "threshold": 0.5532243577036859,
+          "successes_lost": 0.029787234042553193,
+          "failed_spend_saved": 0.043390906103672064,
+          "savings_share": 0.01661367925303513
+        },
+        {
+          "threshold": 0.5524596036087503,
+          "successes_lost": 0.03829787234042553,
+          "failed_spend_saved": 0.043390906103672064,
+          "savings_share": 0.01661367925303513
+        },
+        {
+          "threshold": 0.551862500569746,
+          "successes_lost": 0.0425531914893617,
+          "failed_spend_saved": 0.043390906103672064,
+          "savings_share": 0.01661367925303513
+        },
+        {
+          "threshold": 0.5460024451910067,
+          "successes_lost": 0.05106382978723404,
+          "failed_spend_saved": 0.043390906103672064,
+          "savings_share": 0.01661367925303513
+        },
+        {
+          "threshold": 0.5419765991172218,
+          "successes_lost": 0.05106382978723404,
+          "failed_spend_saved": 0.06389468495851475,
+          "savings_share": 0.02446424601823786
+        },
+        {
+          "threshold": 0.5329133542148222,
+          "successes_lost": 0.05531914893617021,
+          "failed_spend_saved": 0.06632732276349299,
+          "savings_share": 0.02539566386266254
+        },
+        {
+          "threshold": 0.5283478301337564,
+          "successes_lost": 0.059574468085106386,
+          "failed_spend_saved": 0.06632732276349299,
+          "savings_share": 0.02539566386266254
+        },
+        {
+          "threshold": 0.5232140691431701,
+          "successes_lost": 0.059574468085106386,
+          "failed_spend_saved": 0.078675757824694,
+          "savings_share": 0.03012368080919884
+        },
+        {
+          "threshold": 0.519892370526246,
+          "successes_lost": 0.059574468085106386,
+          "failed_spend_saved": 0.08065698677400805,
+          "savings_share": 0.030882261471517528
+        },
+        {
+          "threshold": 0.5170467612425459,
+          "successes_lost": 0.06382978723404255,
+          "failed_spend_saved": 0.08699806949806947,
+          "savings_share": 0.033310159940445866
+        },
+        {
+          "threshold": 0.5154794791552514,
+          "successes_lost": 0.06808510638297872,
+          "failed_spend_saved": 0.08699806949806947,
+          "savings_share": 0.033310159940445866
+        },
+        {
+          "threshold": 0.5111051055987342,
+          "successes_lost": 0.07234042553191489,
+          "failed_spend_saved": 0.09653023083874145,
+          "savings_share": 0.036959871027919644
+        },
+        {
+          "threshold": 0.5106380237799477,
+          "successes_lost": 0.07234042553191489,
+          "failed_spend_saved": 0.10561016183356606,
+          "savings_share": 0.04043643039792418
+        },
+        {
+          "threshold": 0.5037469843523475,
+          "successes_lost": 0.07234042553191489,
+          "failed_spend_saved": 0.11454119773268706,
+          "savings_share": 0.04385598023333962
+        },
+        {
+          "threshold": 0.5001391603503278,
+          "successes_lost": 0.07659574468085106,
+          "failed_spend_saved": 0.11454119773268706,
+          "savings_share": 0.04385598023333962
+        },
+        {
+          "threshold": 0.49784465464069166,
+          "successes_lost": 0.08085106382978724,
+          "failed_spend_saved": 0.11603466688573068,
+          "savings_share": 0.04442780552372849
+        },
+        {
+          "threshold": 0.4964907235818368,
+          "successes_lost": 0.0851063829787234,
+          "failed_spend_saved": 0.11827363838002132,
+          "savings_share": 0.04528507165626693
+        },
+        {
+          "threshold": 0.4962404983392087,
+          "successes_lost": 0.08936170212765958,
+          "failed_spend_saved": 0.11827363838002132,
+          "savings_share": 0.04528507165626693
+        },
+        {
+          "threshold": 0.493866171010423,
+          "successes_lost": 0.09787234042553192,
+          "failed_spend_saved": 0.11827363838002132,
+          "savings_share": 0.04528507165626693
+        },
+        {
+          "threshold": 0.49378376597349743,
+          "successes_lost": 0.09787234042553192,
+          "failed_spend_saved": 0.11973486404337463,
+          "savings_share": 0.04584455143364824
+        },
+        {
+          "threshold": 0.4922955980789737,
+          "successes_lost": 0.10212765957446808,
+          "failed_spend_saved": 0.12193645773433004,
+          "savings_share": 0.046687506207158794
+        },
+        {
+          "threshold": 0.49195567857041544,
+          "successes_lost": 0.10212765957446808,
+          "failed_spend_saved": 0.1233728333196418,
+          "savings_share": 0.04723747128980178
+        },
+        {
+          "threshold": 0.49009691078541695,
+          "successes_lost": 0.11063829787234042,
+          "failed_spend_saved": 0.1233728333196418,
+          "savings_share": 0.04723747128980178
+        },
+        {
+          "threshold": 0.48920090236505814,
+          "successes_lost": 0.11063829787234042,
+          "failed_spend_saved": 0.12944878008707794,
+          "savings_share": 0.049563853470241136
+        },
+        {
+          "threshold": 0.48504972887667835,
+          "successes_lost": 0.11914893617021277,
+          "failed_spend_saved": 0.12944878008707794,
+          "savings_share": 0.049563853470241136
+        },
+        {
+          "threshold": 0.484866753100874,
+          "successes_lost": 0.11914893617021277,
+          "failed_spend_saved": 0.13215004518196008,
+          "savings_share": 0.050598124378448635
+        },
+        {
+          "threshold": 0.482035423292254,
+          "successes_lost": 0.12340425531914893,
+          "failed_spend_saved": 0.13655816150497,
+          "savings_share": 0.05228592113764924
+        },
+        {
+          "threshold": 0.4797009913004085,
+          "successes_lost": 0.1276595744680851,
+          "failed_spend_saved": 0.13655816150497,
+          "savings_share": 0.05228592113764924
+        },
+        {
+          "threshold": 0.47071805543537476,
+          "successes_lost": 0.13617021276595745,
+          "failed_spend_saved": 0.13655816150497,
+          "savings_share": 0.05228592113764924
+        },
+        {
+          "threshold": 0.4697397382106781,
+          "successes_lost": 0.14042553191489363,
+          "failed_spend_saved": 0.14302595908978888,
+          "savings_share": 0.05476233668635894
+        },
+        {
+          "threshold": 0.46894338819088444,
+          "successes_lost": 0.14893617021276595,
+          "failed_spend_saved": 0.14302595908978888,
+          "savings_share": 0.05476233668635894
+        },
+        {
+          "threshold": 0.4689318530465178,
+          "successes_lost": 0.14893617021276595,
+          "failed_spend_saved": 0.14423334428653578,
+          "savings_share": 0.05522462503649593
+        },
+        {
+          "threshold": 0.4662839170045579,
+          "successes_lost": 0.15319148936170213,
+          "failed_spend_saved": 0.14962950792738028,
+          "savings_share": 0.05729072920384574
+        },
+        {
+          "threshold": 0.4651607655819604,
+          "successes_lost": 0.15319148936170213,
+          "failed_spend_saved": 0.15439928530354063,
+          "savings_share": 0.05911700015671725
+        },
+        {
+          "threshold": 0.46254679020320655,
+          "successes_lost": 0.1574468085106383,
+          "failed_spend_saved": 0.15678509816807693,
+          "savings_share": 0.06003048948543667
+        },
+        {
+          "threshold": 0.4595994372980288,
+          "successes_lost": 0.16170212765957448,
+          "failed_spend_saved": 0.15678509816807693,
+          "savings_share": 0.06003048948543667
+        },
+        {
+          "threshold": 0.4578155885731699,
+          "successes_lost": 0.1702127659574468,
+          "failed_spend_saved": 0.15678509816807693,
+          "savings_share": 0.06003048948543667
+        },
+        {
+          "threshold": 0.45758524467570294,
+          "successes_lost": 0.1702127659574468,
+          "failed_spend_saved": 0.15726690216051922,
+          "savings_share": 0.060214964475982916
+        },
+        {
+          "threshold": 0.4489299775338573,
+          "successes_lost": 0.17872340425531916,
+          "failed_spend_saved": 0.16054629097182294,
+          "savings_share": 0.06147058964607775
+        },
+        {
+          "threshold": 0.44886463075858396,
+          "successes_lost": 0.1829787234042553,
+          "failed_spend_saved": 0.16054629097182294,
+          "savings_share": 0.06147058964607775
+        },
+        {
+          "threshold": 0.4477423836740682,
+          "successes_lost": 0.18723404255319148,
+          "failed_spend_saved": 0.16739300090363926,
+          "savings_share": 0.06409208463108661
+        },
+        {
+          "threshold": 0.4447429956175411,
+          "successes_lost": 0.19148936170212766,
+          "failed_spend_saved": 0.17255462909718236,
+          "savings_share": 0.06606838895222847
+        },
+        {
+          "threshold": 0.44395401400155565,
+          "successes_lost": 0.19574468085106383,
+          "failed_spend_saved": 0.17255462909718236,
+          "savings_share": 0.06606838895222847
+        },
+        {
+          "threshold": 0.4409372642286924,
+          "successes_lost": 0.19574468085106383,
+          "failed_spend_saved": 0.17934342397108363,
+          "savings_share": 0.0686677091941282
+        },
+        {
+          "threshold": 0.4400030008244291,
+          "successes_lost": 0.19574468085106383,
+          "failed_spend_saved": 0.18167152715025062,
+          "savings_share": 0.06955910241357928
+        },
+        {
+          "threshold": 0.43777837040780154,
+          "successes_lost": 0.2,
+          "failed_spend_saved": 0.1851244557627537,
+          "savings_share": 0.0708811731791607
+        },
+        {
+          "threshold": 0.43768407091419115,
+          "successes_lost": 0.20425531914893616,
+          "failed_spend_saved": 0.1851244557627537,
+          "savings_share": 0.0708811731791607
+        },
+        {
+          "threshold": 0.43626164960936925,
+          "successes_lost": 0.20851063829787234,
+          "failed_spend_saved": 0.1863429310769737,
+          "savings_share": 0.07134770775670157
+        },
+        {
+          "threshold": 0.4355860832152104,
+          "successes_lost": 0.20851063829787234,
+          "failed_spend_saved": 0.1898886880801775,
+          "savings_share": 0.07270532101833029
+        },
+        {
+          "threshold": 0.4321424024882831,
+          "successes_lost": 0.2127659574468085,
+          "failed_spend_saved": 0.19142569621293035,
+          "savings_share": 0.07329381668297143
+        },
+        {
+          "threshold": 0.4315464113265495,
+          "successes_lost": 0.2170212765957447,
+          "failed_spend_saved": 0.19142569621293035,
+          "savings_share": 0.07329381668297143
+        },
+        {
+          "threshold": 0.428399123350845,
+          "successes_lost": 0.22127659574468084,
+          "failed_spend_saved": 0.19318080998932066,
+          "savings_share": 0.07396582148655548
+        },
+        {
+          "threshold": 0.42812519964630835,
+          "successes_lost": 0.22127659574468084,
+          "failed_spend_saved": 0.19825803006654077,
+          "savings_share": 0.07590980729912339
+        },
+        {
+          "threshold": 0.4256561012037667,
+          "successes_lost": 0.225531914893617,
+          "failed_spend_saved": 0.19991538651113125,
+          "savings_share": 0.07654438239448068
+        },
+        {
+          "threshold": 0.42516169278791294,
+          "successes_lost": 0.2297872340425532,
+          "failed_spend_saved": 0.19991538651113125,
+          "savings_share": 0.07654438239448068
+        },
+        {
+          "threshold": 0.4248806019184819,
+          "successes_lost": 0.23404255319148937,
+          "failed_spend_saved": 0.2055220570114188,
+          "savings_share": 0.07869108624866336
+        },
+        {
+          "threshold": 0.42445053188822596,
+          "successes_lost": 0.23829787234042554,
+          "failed_spend_saved": 0.2055220570114188,
+          "savings_share": 0.07869108624866336
+        },
+        {
+          "threshold": 0.4207832681277932,
+          "successes_lost": 0.2425531914893617,
+          "failed_spend_saved": 0.21317998849913747,
+          "savings_share": 0.08162318490488177
+        },
+        {
+          "threshold": 0.4207166137267249,
+          "successes_lost": 0.2425531914893617,
+          "failed_spend_saved": 0.21643596484022018,
+          "savings_share": 0.08286984581712395
+        },
+        {
+          "threshold": 0.4197735812722074,
+          "successes_lost": 0.24680851063829787,
+          "failed_spend_saved": 0.22485541772775813,
+          "savings_share": 0.08609351875507532
+        },
+        {
+          "threshold": 0.41752741337738586,
+          "successes_lost": 0.24680851063829787,
+          "failed_spend_saved": 0.23001889427421343,
+          "savings_share": 0.0880705307807845
+        },
+        {
+          "threshold": 0.41576370236223864,
+          "successes_lost": 0.251063829787234,
+          "failed_spend_saved": 0.23192865357758974,
+          "savings_share": 0.08880174686650041
+        },
+        {
+          "threshold": 0.4139637470170122,
+          "successes_lost": 0.251063829787234,
+          "failed_spend_saved": 0.23591801527971742,
+          "savings_share": 0.09032920922428424
+        },
+        {
+          "threshold": 0.4116209501145859,
+          "successes_lost": 0.2553191489361702,
+          "failed_spend_saved": 0.2408079355951697,
+          "savings_share": 0.09220148097403112
+        },
+        {
+          "threshold": 0.41066525735964376,
+          "successes_lost": 0.26382978723404255,
+          "failed_spend_saved": 0.2408079355951697,
+          "savings_share": 0.09220148097403112
+        },
+        {
+          "threshold": 0.4082722006064261,
+          "successes_lost": 0.2680851063829787,
+          "failed_spend_saved": 0.2515725375831759,
+          "savings_share": 0.096323073740221
+        },
+        {
+          "threshold": 0.4072287198667842,
+          "successes_lost": 0.2723404255319149,
+          "failed_spend_saved": 0.2539907993099483,
+          "savings_share": 0.0972489872157888
+        },
+        {
+          "threshold": 0.4070391743189297,
+          "successes_lost": 0.2723404255319149,
+          "failed_spend_saved": 0.25516902160519184,
+          "savings_share": 0.09770010956053041
+        },
+        {
+          "threshold": 0.4055430202895839,
+          "successes_lost": 0.2765957446808511,
+          "failed_spend_saved": 0.26533681097510886,
+          "savings_share": 0.10159319238531903
+        },
+        {
+          "threshold": 0.4053018666996045,
+          "successes_lost": 0.28085106382978725,
+          "failed_spend_saved": 0.26533681097510886,
+          "savings_share": 0.10159319238531903
+        },
+        {
+          "threshold": 0.40397469229447713,
+          "successes_lost": 0.28085106382978725,
+          "failed_spend_saved": 0.2776445822722418,
+          "savings_share": 0.10630563983137443
+        },
+        {
+          "threshold": 0.40334408411021355,
+          "successes_lost": 0.2851063829787234,
+          "failed_spend_saved": 0.2776445822722418,
+          "savings_share": 0.10630563983137443
+        },
+        {
+          "threshold": 0.4032416087777418,
+          "successes_lost": 0.2936170212765957,
+          "failed_spend_saved": 0.2776445822722418,
+          "savings_share": 0.10630563983137443
+        },
+        {
+          "threshold": 0.40301396573657217,
+          "successes_lost": 0.2978723404255319,
+          "failed_spend_saved": 0.2776445822722418,
+          "savings_share": 0.10630563983137443
+        },
+        {
+          "threshold": 0.4008164322802036,
+          "successes_lost": 0.30638297872340425,
+          "failed_spend_saved": 0.28639509570360633,
+          "savings_share": 0.10965607052071566
+        },
+        {
+          "threshold": 0.4006206298149166,
+          "successes_lost": 0.30638297872340425,
+          "failed_spend_saved": 0.28673704099236014,
+          "savings_share": 0.10978699586566854
+        },
+        {
+          "threshold": 0.39938182214400125,
+          "successes_lost": 0.3148936170212766,
+          "failed_spend_saved": 0.28673704099236014,
+          "savings_share": 0.10978699586566854
+        },
+        {
+          "threshold": 0.3984930832521772,
+          "successes_lost": 0.3148936170212766,
+          "failed_spend_saved": 0.29620266162819353,
+          "savings_share": 0.11341122958871905
+        },
+        {
+          "threshold": 0.39811309222014996,
+          "successes_lost": 0.3191489361702128,
+          "failed_spend_saved": 0.2993918918918919,
+          "savings_share": 0.11463233450269719
+        },
+        {
+          "threshold": 0.39783907326752177,
+          "successes_lost": 0.32340425531914896,
+          "failed_spend_saved": 0.3002922451326707,
+          "savings_share": 0.11497706526081942
+        },
+        {
+          "threshold": 0.39703396458558343,
+          "successes_lost": 0.3276595744680851,
+          "failed_spend_saved": 0.308119403598127,
+          "savings_share": 0.11797395820186739
+        },
+        {
+          "threshold": 0.39653880150325505,
+          "successes_lost": 0.3276595744680851,
+          "failed_spend_saved": 0.3198642487472274,
+          "savings_share": 0.12247087029025557
+        },
+        {
+          "threshold": 0.3959653537724051,
+          "successes_lost": 0.33617021276595743,
+          "failed_spend_saved": 0.3198642487472274,
+          "savings_share": 0.12247087029025557
+        },
+        {
+          "threshold": 0.3955925836531438,
+          "successes_lost": 0.3404255319148936,
+          "failed_spend_saved": 0.3198642487472274,
+          "savings_share": 0.12247087029025557
+        },
+        {
+          "threshold": 0.3943452009692962,
+          "successes_lost": 0.3446808510638298,
+          "failed_spend_saved": 0.32454201922287024,
+          "savings_share": 0.12426191328244306
+        },
+        {
+          "threshold": 0.3927578397535923,
+          "successes_lost": 0.34893617021276596,
+          "failed_spend_saved": 0.32454201922287024,
+          "savings_share": 0.12426191328244306
+        },
+        {
+          "threshold": 0.39163403531842034,
+          "successes_lost": 0.35319148936170214,
+          "failed_spend_saved": 0.32534646348476126,
+          "savings_share": 0.12456992203690583
+        },
+        {
+          "threshold": 0.3893404992103179,
+          "successes_lost": 0.35319148936170214,
+          "failed_spend_saved": 0.3289725211533721,
+          "savings_share": 0.12595828113029223
+        },
+        {
+          "threshold": 0.3868618708526457,
+          "successes_lost": 0.35319148936170214,
+          "failed_spend_saved": 0.34022057011418705,
+          "savings_share": 0.13026497795775488
+        },
+        {
+          "threshold": 0.3834313903735969,
+          "successes_lost": 0.3574468085106383,
+          "failed_spend_saved": 0.34858416166926787,
+          "savings_share": 0.1334672624910052
+        },
+        {
+          "threshold": 0.3815856194053377,
+          "successes_lost": 0.3574468085106383,
+          "failed_spend_saved": 0.35765444015444,
+          "savings_share": 0.13694012607049155
+        },
+        {
+          "threshold": 0.380853673906544,
+          "successes_lost": 0.3617021276595745,
+          "failed_spend_saved": 0.36574468085106365,
+          "savings_share": 0.1400377489616204
+        },
+        {
+          "threshold": 0.3806672220726935,
+          "successes_lost": 0.3659574468085106,
+          "failed_spend_saved": 0.36574468085106365,
+          "savings_share": 0.1400377489616204
+        },
+        {
+          "threshold": 0.3805102995716526,
+          "successes_lost": 0.37446808510638296,
+          "failed_spend_saved": 0.36574468085106365,
+          "savings_share": 0.1400377489616204
+        },
+        {
+          "threshold": 0.38043420675501893,
+          "successes_lost": 0.37872340425531914,
+          "failed_spend_saved": 0.36574468085106365,
+          "savings_share": 0.1400377489616204
+        },
+        {
+          "threshold": 0.37872437221333527,
+          "successes_lost": 0.3872340425531915,
+          "failed_spend_saved": 0.37099277088638777,
+          "savings_share": 0.14204715812974436
+        },
+        {
+          "threshold": 0.37871778105664344,
+          "successes_lost": 0.39148936170212767,
+          "failed_spend_saved": 0.37099277088638777,
+          "savings_share": 0.14204715812974436
+        },
+        {
+          "threshold": 0.37740107383966387,
+          "successes_lost": 0.4,
+          "failed_spend_saved": 0.3721360798488457,
+          "savings_share": 0.14248491272154787
+        },
+        {
+          "threshold": 0.37718155715265705,
+          "successes_lost": 0.40425531914893614,
+          "failed_spend_saved": 0.3721360798488457,
+          "savings_share": 0.14248491272154787
+        },
+        {
+          "threshold": 0.3764067634245997,
+          "successes_lost": 0.4085106382978723,
+          "failed_spend_saved": 0.3758301158301158,
+          "savings_share": 0.14389929961624323
+        },
+        {
+          "threshold": 0.37613350820248115,
+          "successes_lost": 0.4127659574468085,
+          "failed_spend_saved": 0.3758301158301158,
+          "savings_share": 0.14389929961624323
+        },
+        {
+          "threshold": 0.37565519038870454,
+          "successes_lost": 0.41702127659574467,
+          "failed_spend_saved": 0.37709993428078525,
+          "savings_share": 0.14438549265398723
+        },
+        {
+          "threshold": 0.3749853802905285,
+          "successes_lost": 0.42127659574468085,
+          "failed_spend_saved": 0.37987102604123874,
+          "savings_share": 0.145446499068071
+        },
+        {
+          "threshold": 0.3747515264428469,
+          "successes_lost": 0.4297872340425532,
+          "failed_spend_saved": 0.38067793477367934,
+          "savings_share": 0.1457554514286235
+        },
+        {
+          "threshold": 0.3746927419515904,
+          "successes_lost": 0.4340425531914894,
+          "failed_spend_saved": 0.38067793477367934,
+          "savings_share": 0.1457554514286235
+        },
+        {
+          "threshold": 0.3745546457283977,
+          "successes_lost": 0.43829787234042555,
+          "failed_spend_saved": 0.38224780251375984,
+          "savings_share": 0.14635652850779465
+        },
+        {
+          "threshold": 0.3729303306742862,
+          "successes_lost": 0.4425531914893617,
+          "failed_spend_saved": 0.39239402776636806,
+          "savings_share": 0.15024135477929795
+        },
+        {
+          "threshold": 0.3715039212935363,
+          "successes_lost": 0.451063829787234,
+          "failed_spend_saved": 0.39239402776636806,
+          "savings_share": 0.15024135477929795
+        },
+        {
+          "threshold": 0.3703043723046801,
+          "successes_lost": 0.4553191489361702,
+          "failed_spend_saved": 0.39239402776636806,
+          "savings_share": 0.15024135477929795
+        },
+        {
+          "threshold": 0.37004339937709296,
+          "successes_lost": 0.46382978723404256,
+          "failed_spend_saved": 0.39239402776636806,
+          "savings_share": 0.15024135477929795
+        },
+        {
+          "threshold": 0.3697256361639677,
+          "successes_lost": 0.46808510638297873,
+          "failed_spend_saved": 0.393066417481311,
+          "savings_share": 0.15049880197411825
+        },
+        {
+          "threshold": 0.3685463194438468,
+          "successes_lost": 0.4765957446808511,
+          "failed_spend_saved": 0.393066417481311,
+          "savings_share": 0.15049880197411825
+        },
+        {
+          "threshold": 0.3683597324186944,
+          "successes_lost": 0.4851063829787234,
+          "failed_spend_saved": 0.393066417481311,
+          "savings_share": 0.15049880197411825
+        },
+        {
+          "threshold": 0.36808847053561466,
+          "successes_lost": 0.4851063829787234,
+          "failed_spend_saved": 0.3974016265505626,
+          "savings_share": 0.1521586837198304
+        },
+        {
+          "threshold": 0.3673262587340498,
+          "successes_lost": 0.48936170212765956,
+          "failed_spend_saved": 0.39781421999507094,
+          "savings_share": 0.15231665910602282
+        },
+        {
+          "threshold": 0.3673209315922745,
+          "successes_lost": 0.49361702127659574,
+          "failed_spend_saved": 0.39781421999507094,
+          "savings_share": 0.15231665910602282
+        },
+        {
+          "threshold": 0.366199761474775,
+          "successes_lost": 0.49361702127659574,
+          "failed_spend_saved": 0.40796455269859516,
+          "savings_share": 0.1562030580543424
+        },
+        {
+          "threshold": 0.36586609577984647,
+          "successes_lost": 0.4978723404255319,
+          "failed_spend_saved": 0.40796455269859516,
+          "savings_share": 0.1562030580543424
+        },
+        {
+          "threshold": 0.3645383144155322,
+          "successes_lost": 0.502127659574468,
+          "failed_spend_saved": 0.40925655138421085,
+          "savings_share": 0.15669774354689417
+        },
+        {
+          "threshold": 0.36448530732266304,
+          "successes_lost": 0.5063829787234042,
+          "failed_spend_saved": 0.40925655138421085,
+          "savings_share": 0.15669774354689417
+        },
+        {
+          "threshold": 0.36389673879492884,
+          "successes_lost": 0.5148936170212766,
+          "failed_spend_saved": 0.40925655138421085,
+          "savings_share": 0.15669774354689417
+        },
+        {
+          "threshold": 0.3630337648859595,
+          "successes_lost": 0.5191489361702127,
+          "failed_spend_saved": 0.40925655138421085,
+          "savings_share": 0.15669774354689417
+        },
+        {
+          "threshold": 0.3626439040695709,
+          "successes_lost": 0.5276595744680851,
+          "failed_spend_saved": 0.40925655138421085,
+          "savings_share": 0.15669774354689417
+        },
+        {
+          "threshold": 0.36219714116072954,
+          "successes_lost": 0.5276595744680851,
+          "failed_spend_saved": 0.41461266737862473,
+          "savings_share": 0.1587485141152855
+        },
+        {
+          "threshold": 0.35947163977605284,
+          "successes_lost": 0.5319148936170213,
+          "failed_spend_saved": 0.43078760371313557,
+          "savings_share": 0.1649416367838413
+        },
+        {
+          "threshold": 0.35851543581998346,
+          "successes_lost": 0.5361702127659574,
+          "failed_spend_saved": 0.43518237082066863,
+          "savings_share": 0.1666243223433891
+        },
+        {
+          "threshold": 0.35653863509026795,
+          "successes_lost": 0.5404255319148936,
+          "failed_spend_saved": 0.44526164462334666,
+          "savings_share": 0.1704835139827875
+        },
+        {
+          "threshold": 0.35615207222082634,
+          "successes_lost": 0.5446808510638298,
+          "failed_spend_saved": 0.44876714860757405,
+          "savings_share": 0.17182571501161695
+        },
+        {
+          "threshold": 0.354761492603326,
+          "successes_lost": 0.5531914893617021,
+          "failed_spend_saved": 0.4490741805635422,
+          "savings_share": 0.1719432726036317
+        },
+        {
+          "threshold": 0.35469748195103845,
+          "successes_lost": 0.5574468085106383,
+          "failed_spend_saved": 0.4490741805635422,
+          "savings_share": 0.1719432726036317
+        },
+        {
+          "threshold": 0.3544394480046202,
+          "successes_lost": 0.5659574468085107,
+          "failed_spend_saved": 0.4490741805635422,
+          "savings_share": 0.1719432726036317
+        },
+        {
+          "threshold": 0.35407392446520725,
+          "successes_lost": 0.5702127659574469,
+          "failed_spend_saved": 0.4502575371724307,
+          "savings_share": 0.17239636079439363
+        },
+        {
+          "threshold": 0.35220415686769585,
+          "successes_lost": 0.5702127659574469,
+          "failed_spend_saved": 0.4602326870943892,
+          "savings_share": 0.1762156850765001
+        },
+        {
+          "threshold": 0.3519469961552214,
+          "successes_lost": 0.5702127659574469,
+          "failed_spend_saved": 0.4629707138749692,
+          "savings_share": 0.17726403144221306
+        },
+        {
+          "threshold": 0.35121994986076754,
+          "successes_lost": 0.5787234042553191,
+          "failed_spend_saved": 0.4629707138749692,
+          "savings_share": 0.17726403144221306
+        },
+        {
+          "threshold": 0.3497380649540067,
+          "successes_lost": 0.5787234042553191,
+          "failed_spend_saved": 0.4642413538158219,
+          "savings_share": 0.1777505390153203
+        },
+        {
+          "threshold": 0.3486573601817385,
+          "successes_lost": 0.5829787234042553,
+          "failed_spend_saved": 0.46898956707467343,
+          "savings_share": 0.1795685534149065
+        },
+        {
+          "threshold": 0.34743055019058483,
+          "successes_lost": 0.5914893617021276,
+          "failed_spend_saved": 0.4732420110079684,
+          "savings_share": 0.1811967457227712
+        },
+        {
+          "threshold": 0.3466215982829782,
+          "successes_lost": 0.5957446808510638,
+          "failed_spend_saved": 0.4779466852871108,
+          "savings_share": 0.18299808974810514
+        },
+        {
+          "threshold": 0.345599069687927,
+          "successes_lost": 0.6042553191489362,
+          "failed_spend_saved": 0.4799086092171198,
+          "savings_share": 0.18374927882938744
+        },
+        {
+          "threshold": 0.3454953134147671,
+          "successes_lost": 0.6042553191489362,
+          "failed_spend_saved": 0.48055758646184177,
+          "savings_share": 0.1839977617663551
+        },
+        {
+          "threshold": 0.3450018425044216,
+          "successes_lost": 0.6085106382978723,
+          "failed_spend_saved": 0.4811652838248583,
+          "savings_share": 0.18423043930131944
+        },
+        {
+          "threshold": 0.34466010639177197,
+          "successes_lost": 0.6085106382978723,
+          "failed_spend_saved": 0.48333833073194776,
+          "savings_share": 0.18506246397095705
+        },
+        {
+          "threshold": 0.3441197927600253,
+          "successes_lost": 0.6170212765957447,
+          "failed_spend_saved": 0.48401749774090197,
+          "savings_share": 0.18532250608252415
+        },
+        {
+          "threshold": 0.3436310792476255,
+          "successes_lost": 0.6212765957446809,
+          "failed_spend_saved": 0.4842994742462827,
+          "savings_share": 0.1854304703459598
+        },
+        {
+          "threshold": 0.3423296628324448,
+          "successes_lost": 0.625531914893617,
+          "failed_spend_saved": 0.49658034173991616,
+          "savings_share": 0.19013261675886875
+        },
+        {
+          "threshold": 0.3417479809863889,
+          "successes_lost": 0.6297872340425532,
+          "failed_spend_saved": 0.4982155179495604,
+          "savings_share": 0.19075869939941828
+        },
+        {
+          "threshold": 0.34149112603228066,
+          "successes_lost": 0.6382978723404256,
+          "failed_spend_saved": 0.4982155179495604,
+          "savings_share": 0.19075869939941828
+        },
+        {
+          "threshold": 0.34044961647388167,
+          "successes_lost": 0.6382978723404256,
+          "failed_spend_saved": 0.5061129138256797,
+          "savings_share": 0.19378248511402416
+        },
+        {
+          "threshold": 0.3398505444905271,
+          "successes_lost": 0.6425531914893617,
+          "failed_spend_saved": 0.5119787644787644,
+          "savings_share": 0.19602842487531227
+        },
+        {
+          "threshold": 0.3395381049611198,
+          "successes_lost": 0.6468085106382979,
+          "failed_spend_saved": 0.5119787644787644,
+          "savings_share": 0.19602842487531227
+        },
+        {
+          "threshold": 0.3391872359461826,
+          "successes_lost": 0.6553191489361702,
+          "failed_spend_saved": 0.5119787644787644,
+          "savings_share": 0.19602842487531227
+        },
+        {
+          "threshold": 0.3387377648232483,
+          "successes_lost": 0.6595744680851063,
+          "failed_spend_saved": 0.5122950381992935,
+          "savings_share": 0.1961495209901636
+        },
+        {
+          "threshold": 0.3385361751773986,
+          "successes_lost": 0.6638297872340425,
+          "failed_spend_saved": 0.5163733262137518,
+          "savings_share": 0.19771103180101926
+        },
+        {
+          "threshold": 0.3385226017696762,
+          "successes_lost": 0.6680851063829787,
+          "failed_spend_saved": 0.5163733262137518,
+          "savings_share": 0.19771103180101926
+        },
+        {
+          "threshold": 0.3375160802962297,
+          "successes_lost": 0.6723404255319149,
+          "failed_spend_saved": 0.51886901339029,
+          "savings_share": 0.19866659023457342
+        },
+        {
+          "threshold": 0.3370125425918197,
+          "successes_lost": 0.676595744680851,
+          "failed_spend_saved": 0.5199733015690463,
+          "savings_share": 0.19908940439662254
+        },
+        {
+          "threshold": 0.33567113516790936,
+          "successes_lost": 0.676595744680851,
+          "failed_spend_saved": 0.5319625400476465,
+          "savings_share": 0.20367989075557769
+        },
+        {
+          "threshold": 0.3356267523806088,
+          "successes_lost": 0.6808510638297872,
+          "failed_spend_saved": 0.5319625400476465,
+          "savings_share": 0.20367989075557769
+        },
+        {
+          "threshold": 0.334273638247016,
+          "successes_lost": 0.6808510638297872,
+          "failed_spend_saved": 0.53606793723815,
+          "savings_share": 0.20525178123342055
+        },
+        {
+          "threshold": 0.3333513951971905,
+          "successes_lost": 0.6893617021276596,
+          "failed_spend_saved": 0.5379787234042553,
+          "savings_share": 0.20598339048834055
+        },
+        {
+          "threshold": 0.33286400363263646,
+          "successes_lost": 0.6936170212765957,
+          "failed_spend_saved": 0.5409942084942087,
+          "savings_share": 0.20713797117299126
+        },
+        {
+          "threshold": 0.3326608657972394,
+          "successes_lost": 0.6978723404255319,
+          "failed_spend_saved": 0.544111147621786,
+          "savings_share": 0.20833139697500339
+        },
+        {
+          "threshold": 0.3312319108100645,
+          "successes_lost": 0.6978723404255319,
+          "failed_spend_saved": 0.5530247268545142,
+          "savings_share": 0.2117442629339497
+        },
+        {
+          "threshold": 0.3311704249812742,
+          "successes_lost": 0.7021276595744681,
+          "failed_spend_saved": 0.5613168487636574,
+          "savings_share": 0.21491918289059733
+        },
+        {
+          "threshold": 0.33030976199483153,
+          "successes_lost": 0.7063829787234043,
+          "failed_spend_saved": 0.561791259344451,
+          "savings_share": 0.2151008270628743
+        },
+        {
+          "threshold": 0.3289455663570261,
+          "successes_lost": 0.7106382978723405,
+          "failed_spend_saved": 0.5635909389632795,
+          "savings_share": 0.2157898954099147
+        },
+        {
+          "threshold": 0.328550793593334,
+          "successes_lost": 0.7106382978723405,
+          "failed_spend_saved": 0.5649965086667215,
+          "savings_share": 0.2163280654164358
+        },
+        {
+          "threshold": 0.32779308010181146,
+          "successes_lost": 0.7191489361702128,
+          "failed_spend_saved": 0.5655271913250637,
+          "savings_share": 0.21653125526109543
+        },
+        {
+          "threshold": 0.3267305346451211,
+          "successes_lost": 0.7191489361702128,
+          "failed_spend_saved": 0.5852589747802514,
+          "savings_share": 0.22408623741868378
+        },
+        {
+          "threshold": 0.32546555607044003,
+          "successes_lost": 0.723404255319149,
+          "failed_spend_saved": 0.5960369259837345,
+          "savings_share": 0.22821294138452647
+        },
+        {
+          "threshold": 0.32523377177331175,
+          "successes_lost": 0.723404255319149,
+          "failed_spend_saved": 0.5977070155261646,
+          "savings_share": 0.2288523917780142
+        },
+        {
+          "threshold": 0.3236708012655765,
+          "successes_lost": 0.7319148936170212,
+          "failed_spend_saved": 0.6019717818122075,
+          "savings_share": 0.23048530211632762
+        },
+        {
+          "threshold": 0.3231965965821801,
+          "successes_lost": 0.7319148936170212,
+          "failed_spend_saved": 0.6047572496508666,
+          "savings_share": 0.23155181289926824
+        },
+        {
+          "threshold": 0.32225414730964974,
+          "successes_lost": 0.7319148936170212,
+          "failed_spend_saved": 0.6112104657849339,
+          "savings_share": 0.23402264544528023
+        },
+        {
+          "threshold": 0.32203907623488753,
+          "successes_lost": 0.7361702127659574,
+          "failed_spend_saved": 0.6158432596730469,
+          "savings_share": 0.23579646762632975
+        },
+        {
+          "threshold": 0.3196686639741807,
+          "successes_lost": 0.7446808510638298,
+          "failed_spend_saved": 0.6264033106054384,
+          "savings_share": 0.23983974108707043
+        },
+        {
+          "threshold": 0.3191754027113627,
+          "successes_lost": 0.7489361702127659,
+          "failed_spend_saved": 0.6264033106054384,
+          "savings_share": 0.23983974108707043
+        },
+        {
+          "threshold": 0.31805424163656454,
+          "successes_lost": 0.7574468085106383,
+          "failed_spend_saved": 0.6274712478435883,
+          "savings_share": 0.24024863705929567
+        },
+        {
+          "threshold": 0.3179621399427066,
+          "successes_lost": 0.7574468085106383,
+          "failed_spend_saved": 0.6362728990388565,
+          "savings_share": 0.2436186475749992
+        },
+        {
+          "threshold": 0.3166372557267982,
+          "successes_lost": 0.7659574468085106,
+          "failed_spend_saved": 0.6370590651441717,
+          "savings_share": 0.24391965791762968
+        },
+        {
+          "threshold": 0.3151633863122391,
+          "successes_lost": 0.7659574468085106,
+          "failed_spend_saved": 0.6449589254908404,
+          "savings_share": 0.24694438723832526
+        },
+        {
+          "threshold": 0.3146226056428276,
+          "successes_lost": 0.7702127659574468,
+          "failed_spend_saved": 0.6529062268955884,
+          "savings_share": 0.24998728097624853
+        },
+        {
+          "threshold": 0.31386538239241923,
+          "successes_lost": 0.774468085106383,
+          "failed_spend_saved": 0.6541084777786904,
+          "savings_share": 0.2504476034803652
+        },
+        {
+          "threshold": 0.3131702329174133,
+          "successes_lost": 0.7787234042553192,
+          "failed_spend_saved": 0.6602181056436373,
+          "savings_share": 0.25278688161069773
+        },
+        {
+          "threshold": 0.3123977506882804,
+          "successes_lost": 0.7872340425531915,
+          "failed_spend_saved": 0.6609718228867162,
+          "savings_share": 0.25307546780647977
+        },
+        {
+          "threshold": 0.31163116159277365,
+          "successes_lost": 0.7914893617021277,
+          "failed_spend_saved": 0.6646428571428569,
+          "savings_share": 0.25448104771100416
+        },
+        {
+          "threshold": 0.3099681492250492,
+          "successes_lost": 0.8,
+          "failed_spend_saved": 0.6713772282921215,
+          "savings_share": 0.2570595299850885
+        },
+        {
+          "threshold": 0.3099090903746749,
+          "successes_lost": 0.8042553191489362,
+          "failed_spend_saved": 0.6727951203483116,
+          "savings_share": 0.2576024180220584
+        },
+        {
+          "threshold": 0.30977707707804075,
+          "successes_lost": 0.8085106382978723,
+          "failed_spend_saved": 0.6749759714121414,
+          "savings_share": 0.2584374307776469
+        },
+        {
+          "threshold": 0.308727325339376,
+          "successes_lost": 0.8127659574468085,
+          "failed_spend_saved": 0.6812264848435058,
+          "savings_share": 0.2608306517227769
+        },
+        {
+          "threshold": 0.3076876073848915,
+          "successes_lost": 0.8170212765957446,
+          "failed_spend_saved": 0.6856695144993014,
+          "savings_share": 0.2625318162349156
+        },
+        {
+          "threshold": 0.3072643396960098,
+          "successes_lost": 0.8212765957446808,
+          "failed_spend_saved": 0.6861537829622932,
+          "savings_share": 0.2627172348315516
+        },
+        {
+          "threshold": 0.3063082739679163,
+          "successes_lost": 0.8297872340425532,
+          "failed_spend_saved": 0.691834387579068,
+          "savings_share": 0.26489224686842683
+        },
+        {
+          "threshold": 0.3062428457516204,
+          "successes_lost": 0.8340425531914893,
+          "failed_spend_saved": 0.691834387579068,
+          "savings_share": 0.26489224686842683
+        },
+        {
+          "threshold": 0.305753970108035,
+          "successes_lost": 0.8382978723404255,
+          "failed_spend_saved": 0.6921175963197236,
+          "savings_share": 0.2650006829349073
+        },
+        {
+          "threshold": 0.30518158895669295,
+          "successes_lost": 0.8382978723404255,
+          "failed_spend_saved": 0.6967738026780577,
+          "savings_share": 0.2667834693738095
+        },
+        {
+          "threshold": 0.3043725244770353,
+          "successes_lost": 0.8468085106382979,
+          "failed_spend_saved": 0.6991803581697195,
+          "savings_share": 0.26770490072045094
+        },
+        {
+          "threshold": 0.30317059426795323,
+          "successes_lost": 0.851063829787234,
+          "failed_spend_saved": 0.7025096525096521,
+          "savings_share": 0.26897963391386326
+        },
+        {
+          "threshold": 0.30147907806227525,
+          "successes_lost": 0.8595744680851064,
+          "failed_spend_saved": 0.7128694652098904,
+          "savings_share": 0.2729462393798116
+        },
+        {
+          "threshold": 0.3012518657258934,
+          "successes_lost": 0.8638297872340426,
+          "failed_spend_saved": 0.715871190339275,
+          "savings_share": 0.27409555159712784
+        },
+        {
+          "threshold": 0.2985521357861139,
+          "successes_lost": 0.8723404255319149,
+          "failed_spend_saved": 0.7339476710753301,
+          "savings_share": 0.28101674499776697
+        },
+        {
+          "threshold": 0.29786090614946487,
+          "successes_lost": 0.8765957446808511,
+          "failed_spend_saved": 0.7349542019222864,
+          "savings_share": 0.28140212945158927
+        },
+        {
+          "threshold": 0.29659919701533993,
+          "successes_lost": 0.8851063829787233,
+          "failed_spend_saved": 0.7374798734905113,
+          "savings_share": 0.28236916842590204
+        },
+        {
+          "threshold": 0.29623543176276673,
+          "successes_lost": 0.8851063829787233,
+          "failed_spend_saved": 0.7394787644787638,
+          "savings_share": 0.2831345115985306
+        },
+        {
+          "threshold": 0.2927224841979598,
+          "successes_lost": 0.8936170212765957,
+          "failed_spend_saved": 0.7475098578821976,
+          "savings_share": 0.2862094879435054
+        },
+        {
+          "threshold": 0.29163862076728414,
+          "successes_lost": 0.8978723404255319,
+          "failed_spend_saved": 0.7475098578821976,
+          "savings_share": 0.2862094879435054
+        },
+        {
+          "threshold": 0.2911313864572118,
+          "successes_lost": 0.902127659574468,
+          "failed_spend_saved": 0.7484426599852124,
+          "savings_share": 0.286566642848476
+        },
+        {
+          "threshold": 0.289342668884932,
+          "successes_lost": 0.9063829787234042,
+          "failed_spend_saved": 0.7567489526000157,
+          "savings_share": 0.2897469885401397
+        },
+        {
+          "threshold": 0.28894180532508446,
+          "successes_lost": 0.9063829787234042,
+          "failed_spend_saved": 0.7598069498069491,
+          "savings_share": 0.29091784642983853
+        },
+        {
+          "threshold": 0.2873528287431034,
+          "successes_lost": 0.9148936170212766,
+          "failed_spend_saved": 0.7646642158876197,
+          "savings_share": 0.2927776153988963
+        },
+        {
+          "threshold": 0.28700322076452917,
+          "successes_lost": 0.9191489361702128,
+          "failed_spend_saved": 0.7649753552945037,
+          "savings_share": 0.29289674566772733
+        },
+        {
+          "threshold": 0.2851626044651362,
+          "successes_lost": 0.9234042553191489,
+          "failed_spend_saved": 0.778292943399326,
+          "savings_share": 0.2979958357090581
+        },
+        {
+          "threshold": 0.28497651261963935,
+          "successes_lost": 0.9276595744680851,
+          "failed_spend_saved": 0.778292943399326,
+          "savings_share": 0.2979958357090581
+        },
+        {
+          "threshold": 0.2833512399208145,
+          "successes_lost": 0.9361702127659575,
+          "failed_spend_saved": 0.7810293271995394,
+          "savings_share": 0.2990435530040445
+        },
+        {
+          "threshold": 0.2827505095352932,
+          "successes_lost": 0.9361702127659575,
+          "failed_spend_saved": 0.7852830033681092,
+          "savings_share": 0.30067221711495407
+        },
+        {
+          "threshold": 0.2815341302487687,
+          "successes_lost": 0.9361702127659575,
+          "failed_spend_saved": 0.7966296311509073,
+          "savings_share": 0.30501665818600676
+        },
+        {
+          "threshold": 0.2803710832925263,
+          "successes_lost": 0.9404255319148936,
+          "failed_spend_saved": 0.7986295490018891,
+          "savings_share": 0.30578239452783945
+        },
+        {
+          "threshold": 0.2795162661947824,
+          "successes_lost": 0.948936170212766,
+          "failed_spend_saved": 0.7996658588679861,
+          "savings_share": 0.30617918088857954
+        },
+        {
+          "threshold": 0.27847873385313965,
+          "successes_lost": 0.9531914893617022,
+          "failed_spend_saved": 0.8054462745420188,
+          "savings_share": 0.30839240897208964
+        },
+        {
+          "threshold": 0.2702799118399199,
+          "successes_lost": 0.9531914893617022,
+          "failed_spend_saved": 0.8329088967386836,
+          "savings_share": 0.3189074047993849
+        },
+        {
+          "threshold": 0.26952910928404733,
+          "successes_lost": 0.9574468085106383,
+          "failed_spend_saved": 0.8329088967386836,
+          "savings_share": 0.3189074047993849
+        },
+        {
+          "threshold": 0.2673455845581066,
+          "successes_lost": 0.9617021276595744,
+          "failed_spend_saved": 0.8457559763410822,
+          "savings_share": 0.323826344711414
+        },
+        {
+          "threshold": 0.26058302739653993,
+          "successes_lost": 0.9659574468085106,
+          "failed_spend_saved": 0.8635864207672715,
+          "savings_share": 0.3306533347707598
+        },
+        {
+          "threshold": 0.2557627164533476,
+          "successes_lost": 0.9702127659574468,
+          "failed_spend_saved": 0.8741470878173003,
+          "savings_share": 0.33469684413302286
+        },
+        {
+          "threshold": 0.25451592955385904,
+          "successes_lost": 0.9702127659574468,
+          "failed_spend_saved": 0.8762932309208903,
+          "savings_share": 0.33551856776951405
+        },
+        {
+          "threshold": 0.24338216971685897,
+          "successes_lost": 0.9787234042553191,
+          "failed_spend_saved": 0.9000622278813766,
+          "savings_share": 0.34461933396979555
+        },
+        {
+          "threshold": 0.2359247679528746,
+          "successes_lost": 0.9829787234042553,
+          "failed_spend_saved": 0.9071102029080751,
+          "savings_share": 0.3473178901188007
+        },
+        {
+          "threshold": 0.2297021810982756,
+          "successes_lost": 0.9872340425531915,
+          "failed_spend_saved": 0.916777704756428,
+          "savings_share": 0.35101942090736993
+        },
+        {
+          "threshold": 0.2283208323931615,
+          "successes_lost": 0.9914893617021276,
+          "failed_spend_saved": 0.9170186067526491,
+          "savings_share": 0.3511116584026431
+        },
+        {
+          "threshold": 0.22077886502390284,
+          "successes_lost": 0.9957446808510638,
+          "failed_spend_saved": 0.921699252443933,
+          "savings_share": 0.35290380226860196
+        },
+        {
+          "threshold": 0.18935255475915488,
+          "successes_lost": 1.0,
+          "failed_spend_saved": 0.9324387989813518,
+          "savings_share": 0.35701580170621267
+        }
+      ],
+      "test_runs_with_task_in_train": 1.0
+    }
+  },
+  "s1": {
+    "met": false,
+    "why": "kept 89.4% of test successes (>= 90% required), saved 3.4% of failed-run spend (> 0% required)"
+  }
+}
