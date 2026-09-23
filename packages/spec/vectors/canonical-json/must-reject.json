@@ -1,0 +1,30 @@
+{
+  "description": "JSON texts whose parsed value canonical_json must reject. (A float with a zero fraction such as 1.0 is not listed: JavaScript cannot distinguish it from 1 after parsing.)",
+  "cases": [
+    {
+      "name": "non-integral-number",
+      "json_text": "{\"threshold\":0.842106}",
+      "reason": "floats are not allowed in signed content"
+    },
+    {
+      "name": "unsafe-integer",
+      "json_text": "{\"n\":9007199254740992}",
+      "reason": "integer outside +/-(2^53 - 1)"
+    },
+    {
+      "name": "unsafe-negative-integer",
+      "json_text": "{\"n\":-9007199254740992}",
+      "reason": "integer outside +/-(2^53 - 1)"
+    },
+    {
+      "name": "lone-high-surrogate",
+      "json_text": "{\"s\":\"\\ud800\"}",
+      "reason": "unpaired surrogate in a string"
+    },
+    {
+      "name": "lone-low-surrogate-key",
+      "json_text": "{\"\\udc00\":1}",
+      "reason": "unpaired surrogate in a key"
+    }
+  ]
+}

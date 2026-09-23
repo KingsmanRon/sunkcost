@@ -1,0 +1,741 @@
+{
+  "description": "bucket = uint32(first 8 hex digits of sha256(run_id as lower-case ASCII)) mod 10000; holdout = bucket < holdout_rate * 10000 (exact: rates have at most 4 decimals). holdout[i] corresponds to rates[i].",
+  "rates": [
+    "0",
+    "0.0001",
+    "0.05",
+    "0.5",
+    "0.9999",
+    "1"
+  ],
+  "cases": [
+    {
+      "run_id": "01a0cdb5-376a-7854-a96c-b08c4886058b",
+      "sha256_hex_prefix": "2caf83a0",
+      "bucket": 0,
+      "holdout": [
+        false,
+        true,
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "run_id": "01a0cdb5-5014-7d0b-9267-a83ff97c1cb2",
+      "sha256_hex_prefix": "42042d51",
+      "bucket": 1,
+      "holdout": [
+        false,
+        false,
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "run_id": "01a0cdb5-53a7-7290-a6d5-9bee361acbaf",
+      "sha256_hex_prefix": "2bda5b43",
+      "bucket": 499,
+      "holdout": [
+        false,
+        false,
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "run_id": "01a0cdb5-421d-7496-af2a-15751c40a83b",
+      "sha256_hex_prefix": "feb0f744",
+      "bucket": 500,
+      "holdout": [
+        false,
+        false,
+        false,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "run_id": "01a0cdb5-5514-7e60-80c0-f4f42cfda02b",
+      "sha256_hex_prefix": "e3085897",
+      "bucket": 4999,
+      "holdout": [
+        false,
+        false,
+        false,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "run_id": "01a0cdb5-6173-7f07-adac-bd829b727207",
+      "sha256_hex_prefix": "d5844358",
+      "bucket": 5000,
+      "holdout": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        true
+      ]
+    },
+    {
+      "run_id": "01a0cdb5-9358-7b1f-9a86-d98dd135e730",
+      "sha256_hex_prefix": "e294749e",
+      "bucket": 9998,
+      "holdout": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        true
+      ]
+    },
+    {
+      "run_id": "01a0cdb5-386b-7a87-b65e-e8fc2a23534a",
+      "sha256_hex_prefix": "78ba111f",
+      "bucket": 9999,
+      "holdout": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        true
+      ]
+    },
+    {
+      "run_id": "01a0cdb5-3500-726b-b2a7-4de452e6b438",
+      "sha256_hex_prefix": "a96c256c",
+      "bucket": 6972,
+      "holdout": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        true
+      ]
+    },
+    {
+      "run_id": "01a0cdb5-3501-70c6-a6a3-a4506513270e",
+      "sha256_hex_prefix": "4c1a4da0",
+      "bucket": 2224,
+      "holdout": [
+        false,
+        false,
+        false,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "run_id": "01a0cdb5-3502-7893-923f-0824128b2f33",
+      "sha256_hex_prefix": "ae6a636c",
+      "bucket": 7852,
+      "holdout": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        true
+      ]
+    },
+    {
+      "run_id": "01a0cdb5-3503-7951-9d9d-c9f81818e811",
+      "sha256_hex_prefix": "e1355149",
+      "bucket": 7817,
+      "holdout": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        true
+      ]
+    },
+    {
+      "run_id": "01a0cdb5-3504-781f-a8e2-5d940ed90475",
+      "sha256_hex_prefix": "030cf4d6",
+      "bucket": 758,
+      "holdout": [
+        false,
+        false,
+        false,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "run_id": "01a0cdb5-3505-7160-8999-50d836f675cc",
+      "sha256_hex_prefix": "fee1a216",
+      "bucket": 9958,
+      "holdout": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        true
+      ]
+    },
+    {
+      "run_id": "01a0cdb5-3506-711d-ab0d-549b6f03675a",
+      "sha256_hex_prefix": "713f16f1",
+      "bucket": 49,
+      "holdout": [
+        false,
+        false,
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "run_id": "01a0cdb5-3507-78d0-9738-f7d93d9c1724",
+      "sha256_hex_prefix": "ded7852c",
+      "bucket": 6284,
+      "holdout": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        true
+      ]
+    },
+    {
+      "run_id": "01a0cdb5-3508-7d38-8f21-ddb66cad4a26",
+      "sha256_hex_prefix": "841dcc3e",
+      "bucket": 5342,
+      "holdout": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        true
+      ]
+    },
+    {
+      "run_id": "01a0cdb5-3509-7f28-9fb1-7c2390c192cf",
+      "sha256_hex_prefix": "148625a3",
+      "bucket": 5779,
+      "holdout": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        true
+      ]
+    },
+    {
+      "run_id": "01a0cdb5-350a-7a0a-a170-b33839263059",
+      "sha256_hex_prefix": "db55dd42",
+      "bucket": 7506,
+      "holdout": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        true
+      ]
+    },
+    {
+      "run_id": "01a0cdb5-350b-70ff-b29d-0da9953f48f1",
+      "sha256_hex_prefix": "b18d92f1",
+      "bucket": 5425,
+      "holdout": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        true
+      ]
+    },
+    {
+      "run_id": "01a0cdb5-350c-765a-95e6-0af593bd04cf",
+      "sha256_hex_prefix": "d9a436f1",
+      "bucket": 7841,
+      "holdout": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        true
+      ]
+    },
+    {
+      "run_id": "01a0cdb5-350d-738b-b9eb-dacc0cb1e29c",
+      "sha256_hex_prefix": "526de7f6",
+      "bucket": 4518,
+      "holdout": [
+        false,
+        false,
+        false,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "run_id": "01a0cdb5-350e-7dbe-8e81-973e0becd7b0",
+      "sha256_hex_prefix": "6761a6a7",
+      "bucket": 2903,
+      "holdout": [
+        false,
+        false,
+        false,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "run_id": "01a0cdb5-350f-76b5-8a23-d5962217bead",
+      "sha256_hex_prefix": "a88f6f57",
+      "bucket": 2439,
+      "holdout": [
+        false,
+        false,
+        false,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "run_id": "01a0cdb5-3510-71e2-8a6a-63ec24ede6a4",
+      "sha256_hex_prefix": "98cffb28",
+      "bucket": 7080,
+      "holdout": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        true
+      ]
+    },
+    {
+      "run_id": "01a0cdb5-3511-78f5-8ef8-aa3892276658",
+      "sha256_hex_prefix": "be9c361b",
+      "bucket": 8507,
+      "holdout": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        true
+      ]
+    },
+    {
+      "run_id": "01a0cdb5-3512-72e6-ae97-ba94d0eda82f",
+      "sha256_hex_prefix": "9fb900dd",
+      "bucket": 1725,
+      "holdout": [
+        false,
+        false,
+        false,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "run_id": "01a0cdb5-3513-7922-94e3-bf911a61dbe2",
+      "sha256_hex_prefix": "2f0b12bf",
+      "bucket": 4847,
+      "holdout": [
+        false,
+        false,
+        false,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "run_id": "01a0cdb5-3514-75f4-b018-50c5a38fd547",
+      "sha256_hex_prefix": "e13725d2",
+      "bucket": 7762,
+      "holdout": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        true
+      ]
+    },
+    {
+      "run_id": "01a0cdb5-3515-7b66-8c38-fb2918f135d2",
+      "sha256_hex_prefix": "f3e8197e",
+      "bucket": 4366,
+      "holdout": [
+        false,
+        false,
+        false,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "run_id": "01a0cdb5-3516-70f6-907a-70c31012f037",
+      "sha256_hex_prefix": "dd31ad3e",
+      "bucket": 350,
+      "holdout": [
+        false,
+        false,
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "run_id": "01a0cdb5-3517-77f0-b4b9-b5df9e7769b1",
+      "sha256_hex_prefix": "dc895d2d",
+      "bucket": 9805,
+      "holdout": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        true
+      ]
+    },
+    {
+      "run_id": "01a0cdb5-3518-76d6-881e-d162ae2eb154",
+      "sha256_hex_prefix": "f690051f",
+      "bucket": 3631,
+      "holdout": [
+        false,
+        false,
+        false,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "run_id": "01a0cdb5-3519-7771-906b-f2efc6f87718",
+      "sha256_hex_prefix": "d855a8e5",
+      "bucket": 2453,
+      "holdout": [
+        false,
+        false,
+        false,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "run_id": "01a0cdb5-351a-7743-ac66-a78795e761d1",
+      "sha256_hex_prefix": "9ee325f3",
+      "bucket": 6515,
+      "holdout": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        true
+      ]
+    },
+    {
+      "run_id": "01a0cdb5-351b-73f9-8cbd-87ad5c90a958",
+      "sha256_hex_prefix": "ceba9307",
+      "bucket": 3831,
+      "holdout": [
+        false,
+        false,
+        false,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "run_id": "01a0cdb5-351c-7b2c-ae05-319acb5c7427",
+      "sha256_hex_prefix": "6c208727",
+      "bucket": 1079,
+      "holdout": [
+        false,
+        false,
+        false,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "run_id": "01a0cdb5-351d-714c-be7d-1bfbc7a2ea20",
+      "sha256_hex_prefix": "96bda67c",
+      "bucket": 1324,
+      "holdout": [
+        false,
+        false,
+        false,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "run_id": "01a0cdb5-351e-7865-8cdd-2055930d6eaf",
+      "sha256_hex_prefix": "8dcd0355",
+      "bucket": 3189,
+      "holdout": [
+        false,
+        false,
+        false,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "run_id": "01a0cdb5-351f-757f-a009-02c77ebff206",
+      "sha256_hex_prefix": "04742575",
+      "bucket": 629,
+      "holdout": [
+        false,
+        false,
+        false,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "run_id": "01a0cdb5-3520-7499-b2e6-cc3ababced20",
+      "sha256_hex_prefix": "0b02acba",
+      "bucket": 4666,
+      "holdout": [
+        false,
+        false,
+        false,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "run_id": "01a0cdb5-3521-712b-baec-bd389be4bcfc",
+      "sha256_hex_prefix": "c8c91efa",
+      "bucket": 3866,
+      "holdout": [
+        false,
+        false,
+        false,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "run_id": "01a0cdb5-3522-76b2-830e-07bc1e398f10",
+      "sha256_hex_prefix": "9afbf40c",
+      "bucket": 3276,
+      "holdout": [
+        false,
+        false,
+        false,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "run_id": "01a0cdb5-3523-757b-81d3-fcff2a3af4d4",
+      "sha256_hex_prefix": "7c28451f",
+      "bucket": 3919,
+      "holdout": [
+        false,
+        false,
+        false,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "run_id": "01a0cdb5-3524-77d3-aeea-cbe226e87555",
+      "sha256_hex_prefix": "a91bde0f",
+      "bucket": 5823,
+      "holdout": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        true
+      ]
+    },
+    {
+      "run_id": "01a0cdb5-3525-7f64-8a09-7c976bf46c69",
+      "sha256_hex_prefix": "8b4c06de",
+      "bucket": 5518,
+      "holdout": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        true
+      ]
+    },
+    {
+      "run_id": "01a0cdb5-3526-7c38-93de-ef86ab1031d0",
+      "sha256_hex_prefix": "1b9146c2",
+      "bucket": 5666,
+      "holdout": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        true
+      ]
+    },
+    {
+      "run_id": "01a0cdb5-3527-7ca2-92b1-d3f28ede0d7a",
+      "sha256_hex_prefix": "6c0d1b26",
+      "bucket": 8246,
+      "holdout": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        true
+      ]
+    },
+    {
+      "run_id": "01a0cdb5-3528-7507-917f-9acae01f5057",
+      "sha256_hex_prefix": "04dfc743",
+      "bucket": 4403,
+      "holdout": [
+        false,
+        false,
+        false,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "run_id": "01a0cdb5-3529-759a-b1fe-e08f57124242",
+      "sha256_hex_prefix": "d92d2161",
+      "bucket": 3537,
+      "holdout": [
+        false,
+        false,
+        false,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "run_id": "01a0cdb5-352a-7945-bf26-144b98289fcd",
+      "sha256_hex_prefix": "51bd6449",
+      "bucket": 6473,
+      "holdout": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        true
+      ]
+    },
+    {
+      "run_id": "01a0cdb5-352b-7119-b4c9-df6acc011cdd",
+      "sha256_hex_prefix": "e6e9015c",
+      "bucket": 9916,
+      "holdout": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        true
+      ]
+    },
+    {
+      "run_id": "01a0cdb5-352c-7f1c-97f5-e837d70820fe",
+      "sha256_hex_prefix": "b53533ad",
+      "bucket": 2733,
+      "holdout": [
+        false,
+        false,
+        false,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "run_id": "01a0cdb5-352d-7b25-b95e-8229451abd81",
+      "sha256_hex_prefix": "6fe50a8b",
+      "bucket": 1419,
+      "holdout": [
+        false,
+        false,
+        false,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "run_id": "01a0cdb5-352e-70f8-90a3-d6b2aa05e11a",
+      "sha256_hex_prefix": "e4f57dc5",
+      "bucket": 3765,
+      "holdout": [
+        false,
+        false,
+        false,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "run_id": "01a0cdb5-352f-74f6-b394-fb36bb2d420f",
+      "sha256_hex_prefix": "e7daa9cd",
+      "bucket": 7213,
+      "holdout": [
+        false,
+        false,
+        false,
+        false,
+        true,
+        true
+      ]
+    }
+  ]
+}

@@ -1,0 +1,113 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/KingsmanRon/sunkcost/main/packages/spec/schemas/decision.v1.json",
+  "title": "Decision v1",
+  "description": "What check() returns, in JSON form. Scores and thresholds are float64 decimal strings. The step event in ingest-batch.v1 carries the subset defined in $defs/step_decision.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "action",
+    "mode",
+    "score",
+    "threshold",
+    "bundle_id",
+    "bundle_version",
+    "would_abort",
+    "reason"
+  ],
+  "properties": {
+    "schema_version": { "const": "1" },
+    "action": { "$ref": "#/$defs/action" },
+    "mode": {
+      "description": "Effective mode for this decision: shadow when there is no usable bundle or an override is set.",
+      "$ref": "common.v1.json#/$defs/mode"
+    },
+    "score": { "anyOf": [{ "type": "null" }, { "$ref": "common.v1.json#/$defs/f64" }] },
+    "threshold": { "anyOf": [{ "type": "null" }, { "$ref": "common.v1.json#/$defs/f64" }] },
+    "bundle_id": { "anyOf": [{ "type": "null" }, { "$ref": "common.v1.json#/$defs/uuid" }] },
+    "bundle_version": {
+      "anyOf": [{ "type": "null" }, { "type": "integer", "minimum": 1, "maximum": 2147483647 }]
+    },
+    "would_abort": { "type": "boolean" },
+    "reason": { "$ref": "#/$defs/reason" }
+  },
+  "allOf": [
+    { "$ref": "#/$defs/invariants" },
+    {
+      "if": { "properties": { "bundle_id": { "type": "null" } } },
+      "then": { "properties": { "bundle_version": { "type": "null" } } },
+      "else": { "properties": { "bundle_version": { "type": "integer" } } }
+    }
+  ],
+  "$defs": {
+    "action": { "type": "string", "enum": ["CONTINUE", "ABORT"] },
+    "reason": {
+      "type": "string",
+      "enum": [
+        "no_bundle",
+        "bundle_expired",
+        "below_min_steps",
+        "below_threshold",
+        "above_threshold",
+        "holdout",
+        "shadow_mode",
+        "override_shadow",
+        "sdk_error"
+      ]
+    },
+    "invariants": {
+      "description": "ABORT only with would_abort and above_threshold; would_abort exactly when the reason is one of the four above-threshold reasons; no_bundle carries no score or threshold.",
+      "allOf": [
+        {
+          "if": { "properties": { "action": { "const": "ABORT" } } },
+          "then": {
+            "properties": {
+              "would_abort": { "const": true },
+              "reason": { "const": "above_threshold" }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "would_abort": { "const": true } } },
+          "then": {
+            "properties": {
+              "reason": { "enum": ["above_threshold", "holdout", "shadow_mode", "override_shadow"] }
+            }
+          },
+          "else": {
+            "properties": {
+              "reason": {
+                "enum": ["no_bundle", "bundle_expired", "below_min_steps", "below_threshold", "sdk_error"]
+              }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "reason": { "const": "above_threshold" } } },
+          "then": { "properties": { "action": { "const": "ABORT" } } }
+        },
+        {
+          "if": { "properties": { "reason": { "const": "no_bundle" } } },
+          "then": {
+            "properties": { "score": { "type": "null" }, "threshold": { "type": "null" } }
+          }
+        }
+      ]
+    },
+    "step_decision": {
+      "description": "The decision made by check() immediately before this step, as carried on a step event.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["action", "score", "threshold", "would_abort", "reason"],
+      "properties": {
+        "action": { "$ref": "#/$defs/action" },
+        "score": { "anyOf": [{ "type": "null" }, { "$ref": "common.v1.json#/$defs/f64" }] },
+        "threshold": { "anyOf": [{ "type": "null" }, { "$ref": "common.v1.json#/$defs/f64" }] },
+        "would_abort": { "type": "boolean" },
+        "reason": { "$ref": "#/$defs/reason" }
+      },
+      "allOf": [{ "$ref": "#/$defs/invariants" }]
+    }
+  }
+}

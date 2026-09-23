@@ -1,0 +1,45 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.hypothesis/
+.coverage
+coverage.xml
+htmlcov/
+*.egg-info/
+build/
+dist/
+
+# Node
+node_modules/
+.next/
+out/
+coverage/
+playwright-report/
+test-results/
+*.tsbuildinfo
+
+# Environment and secrets: never committed (CLAUDE.md)
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*signing-key*.json
+*.seed
+
+# Supabase CLI local state
+supabase/.temp/
+supabase/.branches/
+
+# Bench downloads (provenance in bench/DATASETS.md; data is fetched, not committed)
+bench/.cache/
+
+# Editors / OS
+.idea/
+.vscode/*
+!.vscode/extensions.json
+.DS_Store

@@ -1,0 +1,61 @@
+{
+  "schema_version": "1",
+  "bundle_id": "01a03336-78b8-7c55-b624-8e5a0fac9d43",
+  "org_id": "01a03336-8088-7f77-9846-a07c2bc1bf65",
+  "project_id": "01a03336-8470-7088-a957-b18d3cd2c076",
+  "workload_id": "01a03336-7ca0-7e66-8735-9f6b1ab0ae54",
+  "workload": "support.billing_dispute",
+  "version": 7,
+  "feature_spec": "features.v1",
+  "mode": "enforce",
+  "holdout_rate": "0.05",
+  "model": {
+    "type": "logistic_v1",
+    "intercept": "-1e400",
+    "features": [
+      "step_index",
+      "log_cost",
+      "repeat_action_rate",
+      "error_streak",
+      "cycle_rate"
+    ],
+    "weights": [
+      "0.1204",
+      "0.8315",
+      "1.9921",
+      "0.4471",
+      "-0.0613"
+    ],
+    "means": [
+      "6.25",
+      "0.0412",
+      "0.1833",
+      "0.3104",
+      "0.2217"
+    ],
+    "stds": [
+      "4.1",
+      "0.0371",
+      "0.2402",
+      "0.7788",
+      "1.0"
+    ]
+  },
+  "decision": {
+    "threshold": "0.842106",
+    "min_steps": 3,
+    "target_recall": "0.95",
+    "delta": "0.05"
+  },
+  "metrics": {
+    "n_train": 1840,
+    "n_calib_success": 402,
+    "test_false_abort_rate": "0.031",
+    "test_savings_share": "0.274",
+    "auroc": "0.81",
+    "n_calib_failure": 119,
+    "test_mean_saved_cost_usd": "0.0891"
+  },
+  "issued_at": "2026-09-23T09:00:00Z",
+  "expires_at": "2026-09-30T09:00:00Z"
+}

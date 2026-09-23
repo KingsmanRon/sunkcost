@@ -1,0 +1,16 @@
+[project]
+name = "sunkcost-spec"
+version = "0.1.0"
+description = "Sunkcost v1 wire contracts: JSON Schemas, Pydantic v2 models, golden vectors and the price table."
+readme = "README.md"
+license = "Apache-2.0"
+requires-python = ">=3.10"
+dependencies = ["pydantic>=2.11,<3"]
+classifiers = ["Private :: Do Not Upload"]
+
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["sunkcost_spec"]

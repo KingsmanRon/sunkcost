@@ -1,0 +1,204 @@
+{
+  "feature_spec": "features.v1",
+  "name": "large-values",
+  "description": "Schema-maximum tokens and money, a day-long step.",
+  "feature_names": [
+    "step_index",
+    "log_cost",
+    "log_tokens",
+    "recent_cost_share",
+    "repeat_action_rate",
+    "max_identical_streak",
+    "error_rate",
+    "error_streak",
+    "distinct_action_ratio",
+    "cycle_rate",
+    "context_growth",
+    "log_elapsed_s"
+  ],
+  "started_at": "2026-09-23T10:00:00.000000Z",
+  "steps": [
+    {
+      "type": "step",
+      "run_id": "01a0cdb5-3500-7a3c-9e41-5b2f8c7d6e10",
+      "seq": 1,
+      "ts": "2026-09-23T10:00:00.500000Z",
+      "kind": "model",
+      "model": "big",
+      "tool_name": null,
+      "args_hash": null,
+      "input_tokens": 1000000000,
+      "output_tokens": 1000000000,
+      "cost_usd": "99999999999.999999999",
+      "error": false,
+      "latency_ms": 500,
+      "decision": null
+    },
+    {
+      "type": "step",
+      "run_id": "01a0cdb5-3500-7a3c-9e41-5b2f8c7d6e10",
+      "seq": 2,
+      "ts": "2026-09-23T10:00:01.000000Z",
+      "kind": "model",
+      "model": "big",
+      "tool_name": null,
+      "args_hash": null,
+      "input_tokens": 1,
+      "output_tokens": 0,
+      "cost_usd": "0.000000001",
+      "error": false,
+      "latency_ms": 500,
+      "decision": null
+    },
+    {
+      "type": "step",
+      "run_id": "01a0cdb5-3500-7a3c-9e41-5b2f8c7d6e10",
+      "seq": 3,
+      "ts": "2026-09-24T10:00:01.000000Z",
+      "kind": "tool",
+      "model": null,
+      "tool_name": "t",
+      "args_hash": "hmac-sha256:e3b98a4da31a127d4bde6e43033f66ba274cab0eb7eb1c70ec41402bf6273dd8",
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "cost_usd": "12345.678901234",
+      "error": false,
+      "latency_ms": 86400000,
+      "decision": null
+    }
+  ],
+  "model": {
+    "type": "logistic_v1",
+    "intercept": "-1.5",
+    "features": [
+      "step_index",
+      "log_cost",
+      "log_tokens",
+      "recent_cost_share",
+      "repeat_action_rate",
+      "max_identical_streak",
+      "error_rate",
+      "error_streak",
+      "distinct_action_ratio",
+      "cycle_rate",
+      "context_growth",
+      "log_elapsed_s"
+    ],
+    "weights": [
+      "0.02",
+      "0.8",
+      "0.1",
+      "-0.5",
+      "1.2",
+      "0.3",
+      "1.5",
+      "0.6",
+      "-1.0",
+      "0.9",
+      "0.4",
+      "0.2"
+    ],
+    "means": [
+      "5.0",
+      "0.05",
+      "6.0",
+      "0.4",
+      "0.2",
+      "1.5",
+      "0.1",
+      "0.3",
+      "0.7",
+      "0.2",
+      "0.5",
+      "2.0"
+    ],
+    "stds": [
+      "4.0",
+      "0.05",
+      "2.0",
+      "0.3",
+      "0.25",
+      "1.2",
+      "0.15",
+      "0.8",
+      "0.25",
+      "0.25",
+      "0.8",
+      "1.5"
+    ]
+  },
+  "expected": [
+    {
+      "k": 0,
+      "features": [
+        "0.0",
+        "0.0",
+        "0.0",
+        "0.0",
+        "0.0",
+        "0.0",
+        "0.0",
+        "0.0",
+        "0.0",
+        "0.0",
+        "0.0",
+        "0.0"
+      ],
+      "score": "0.04950072891646235"
+    },
+    {
+      "k": 1,
+      "features": [
+        "1.0",
+        "25.3284360229445",
+        "21.416413018006356",
+        "1.0",
+        "0.0",
+        "1.0",
+        "0.0",
+        "0.0",
+        "1.0",
+        "0.0",
+        "0.0",
+        "0.4054651081081644"
+      ],
+      "score": "1.0"
+    },
+    {
+      "k": 2,
+      "features": [
+        "2.0",
+        "25.3284360229445",
+        "21.416413018506358",
+        "1.0",
+        "0.5",
+        "2.0",
+        "0.0",
+        "0.0",
+        "0.5",
+        "0.0",
+        "-20.030118657386467",
+        "0.6931471805599453"
+      ],
+      "score": "1.0"
+    },
+    {
+      "k": 3,
+      "features": [
+        "3.0",
+        "25.328436146401284",
+        "21.416413018506358",
+        "1.0",
+        "0.3333333333333333",
+        "2.0",
+        "0.0",
+        "0.0",
+        "0.6666666666666666",
+        "0.0",
+        "-20.030118657386467",
+        "11.366766102672381"
+      ],
+      "score": "1.0"
+    }
+  ]
+}

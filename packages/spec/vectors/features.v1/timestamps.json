@@ -1,0 +1,272 @@
+{
+  "feature_spec": "features.v1",
+  "name": "timestamps",
+  "description": "A step before started_at (clamped to 0), sub-microsecond digits (truncated), 1 and 3 fractional digits, day- and year-long gaps.",
+  "feature_names": [
+    "step_index",
+    "log_cost",
+    "log_tokens",
+    "recent_cost_share",
+    "repeat_action_rate",
+    "max_identical_streak",
+    "error_rate",
+    "error_streak",
+    "distinct_action_ratio",
+    "cycle_rate",
+    "context_growth",
+    "log_elapsed_s"
+  ],
+  "started_at": "2026-09-23T10:00:00.5Z",
+  "steps": [
+    {
+      "type": "step",
+      "run_id": "01a0cdb5-3500-7a3c-9e41-5b2f8c7d6e10",
+      "seq": 1,
+      "ts": "2026-09-23T09:59:58.000000Z",
+      "kind": "model",
+      "model": "m",
+      "tool_name": null,
+      "args_hash": null,
+      "input_tokens": 5,
+      "output_tokens": 5,
+      "cost_usd": "0.000000001",
+      "error": false,
+      "latency_ms": 500,
+      "decision": null
+    },
+    {
+      "type": "step",
+      "run_id": "01a0cdb5-3500-7a3c-9e41-5b2f8c7d6e10",
+      "seq": 2,
+      "ts": "2026-09-23T10:00:00.5000009Z",
+      "kind": "model",
+      "model": "m",
+      "tool_name": null,
+      "args_hash": null,
+      "input_tokens": 5,
+      "output_tokens": 5,
+      "cost_usd": "0.000000001",
+      "error": false,
+      "latency_ms": 500,
+      "decision": null
+    },
+    {
+      "type": "step",
+      "run_id": "01a0cdb5-3500-7a3c-9e41-5b2f8c7d6e10",
+      "seq": 3,
+      "ts": "2026-09-23T10:00:00.500001999Z",
+      "kind": "model",
+      "model": "m",
+      "tool_name": null,
+      "args_hash": null,
+      "input_tokens": 5,
+      "output_tokens": 5,
+      "cost_usd": "0.000000001",
+      "error": false,
+      "latency_ms": 500,
+      "decision": null
+    },
+    {
+      "type": "step",
+      "run_id": "01a0cdb5-3500-7a3c-9e41-5b2f8c7d6e10",
+      "seq": 4,
+      "ts": "2026-09-24T10:00:00.123Z",
+      "kind": "model",
+      "model": "m",
+      "tool_name": null,
+      "args_hash": null,
+      "input_tokens": 5,
+      "output_tokens": 5,
+      "cost_usd": "0.000000001",
+      "error": false,
+      "latency_ms": 500,
+      "decision": null
+    },
+    {
+      "type": "step",
+      "run_id": "01a0cdb5-3500-7a3c-9e41-5b2f8c7d6e10",
+      "seq": 5,
+      "ts": "2027-09-23T10:00:00Z",
+      "kind": "model",
+      "model": "m",
+      "tool_name": null,
+      "args_hash": null,
+      "input_tokens": 5,
+      "output_tokens": 5,
+      "cost_usd": "0.000000001",
+      "error": false,
+      "latency_ms": 500,
+      "decision": null
+    }
+  ],
+  "model": {
+    "type": "logistic_v1",
+    "intercept": "-1.5",
+    "features": [
+      "step_index",
+      "log_cost",
+      "log_tokens",
+      "recent_cost_share",
+      "repeat_action_rate",
+      "max_identical_streak",
+      "error_rate",
+      "error_streak",
+      "distinct_action_ratio",
+      "cycle_rate",
+      "context_growth",
+      "log_elapsed_s"
+    ],
+    "weights": [
+      "0.02",
+      "0.8",
+      "0.1",
+      "-0.5",
+      "1.2",
+      "0.3",
+      "1.5",
+      "0.6",
+      "-1.0",
+      "0.9",
+      "0.4",
+      "0.2"
+    ],
+    "means": [
+      "5.0",
+      "0.05",
+      "6.0",
+      "0.4",
+      "0.2",
+      "1.5",
+      "0.1",
+      "0.3",
+      "0.7",
+      "0.2",
+      "0.5",
+      "2.0"
+    ],
+    "stds": [
+      "4.0",
+      "0.05",
+      "2.0",
+      "0.3",
+      "0.25",
+      "1.2",
+      "0.15",
+      "0.8",
+      "0.25",
+      "0.25",
+      "0.8",
+      "1.5"
+    ]
+  },
+  "expected": [
+    {
+      "k": 0,
+      "features": [
+        "0.0",
+        "0.0",
+        "0.0",
+        "0.0",
+        "0.0",
+        "0.0",
+        "0.0",
+        "0.0",
+        "0.0",
+        "0.0",
+        "0.0",
+        "0.0"
+      ],
+      "score": "0.04950072891646235"
+    },
+    {
+      "k": 1,
+      "features": [
+        "1.0",
+        "9.999999995e-10",
+        "2.3978952727983707",
+        "1.0",
+        "0.0",
+        "1.0",
+        "0.0",
+        "0.0",
+        "1.0",
+        "0.0",
+        "0.0",
+        "0.0"
+      ],
+      "score": "0.00026203461202160616"
+    },
+    {
+      "k": 2,
+      "features": [
+        "2.0",
+        "1.9999999980000002e-09",
+        "3.044522437723423",
+        "1.0",
+        "0.5",
+        "2.0",
+        "0.0",
+        "0.0",
+        "0.5",
+        "0.0",
+        "0.0",
+        "0.0"
+      ],
+      "score": "0.02766746966038822"
+    },
+    {
+      "k": 3,
+      "features": [
+        "3.0",
+        "2.9999999955000005e-09",
+        "3.4339872044851463",
+        "1.0",
+        "0.6666666666666666",
+        "3.0",
+        "0.0",
+        "0.0",
+        "0.3333333333333333",
+        "0.5",
+        "0.0",
+        "9.999995000003334e-07"
+      ],
+      "score": "0.49542501307151293"
+    },
+    {
+      "k": 4,
+      "features": [
+        "4.0",
+        "3.999999992e-09",
+        "3.713572066704308",
+        "0.75",
+        "0.75",
+        "4.0",
+        "0.0",
+        "0.0",
+        "0.25",
+        "0.6666666666666666",
+        "0.0",
+        "11.366750165414299"
+      ],
+      "score": "0.971146481128249"
+    },
+    {
+      "k": 5,
+      "features": [
+        "5.0",
+        "4.9999999875e-09",
+        "3.9318256327243257",
+        "0.6000000000000001",
+        "0.8",
+        "5.0",
+        "0.0",
+        "0.0",
+        "0.2",
+        "0.75",
+        "0.0",
+        "17.266640324229535"
+      ],
+      "score": "0.9961614324861755"
+    }
+  ]
+}

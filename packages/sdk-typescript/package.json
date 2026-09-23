@@ -1,0 +1,27 @@
+{
+  "name": "sunkcost",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Sunkcost TypeScript SDK: stop agent runs that are going to fail (implemented in phase P6).",
+  "license": "Apache-2.0",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "6.0.3"
+  }
+}

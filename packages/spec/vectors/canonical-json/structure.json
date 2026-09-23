@@ -1,0 +1,32 @@
+{
+  "name": "structure",
+  "description": "Nesting, empty containers, literals and the integer range limits.",
+  "input": {
+    "z": [],
+    "a": {},
+    "m": [
+      true,
+      false,
+      null,
+      0,
+      -1,
+      9007199254740991,
+      -9007199254740991
+    ],
+    "nested": {
+      "b": [
+        {
+          "y": 1,
+          "x": 2
+        }
+      ],
+      "a": "last-key-first"
+    }
+  },
+  "canonical_hex": "7b2261223a7b7d2c226d223a5b747275652c66616c73652c6e756c6c2c302c2d312c393030373139393235343734303939312c2d393030373139393235343734303939315d2c226e6573746564223a7b2261223a226c6173742d6b65792d6669727374222c2262223a5b7b2278223a322c2279223a317d5d7d2c227a223a5b5d7d",
+  "signature": {
+    "key_id": "rfc8032-test-1",
+    "public_key_b64": "11qYAYKxCrfVS/7TyWQHOg7hcvPapiMlrwIaaPcHURo=",
+    "signature_b64": "Nm4DMwmfjcUn8wU3AMSfJRW1GeXMT3cIz7L4DY1xg7z5KPU6toDq8pQhqBoqmEF/411I4m3z3bKTvAGT8I4gDA=="
+  }
+}

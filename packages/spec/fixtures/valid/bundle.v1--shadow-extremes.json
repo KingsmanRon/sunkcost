@@ -1,0 +1,43 @@
+{
+  "schema_version": "1",
+  "bundle_id": "01a03336-78b8-7c55-b624-8e5a0fac9d43",
+  "org_id": "01a03336-8088-7f77-9846-a07c2bc1bf65",
+  "project_id": "01a03336-8470-7088-a957-b18d3cd2c076",
+  "workload_id": "01a03336-7ca0-7e66-8735-9f6b1ab0ae54",
+  "workload": "support.billing_dispute",
+  "version": 1,
+  "feature_spec": "features.v1",
+  "mode": "shadow",
+  "holdout_rate": "0",
+  "model": {
+    "type": "logistic_v1",
+    "intercept": "1e-05",
+    "features": [
+      "log_elapsed_s"
+    ],
+    "weights": [
+      "-3.5e-17"
+    ],
+    "means": [
+      "2.302585092994046"
+    ],
+    "stds": [
+      "1.2345678901234567e+16"
+    ]
+  },
+  "decision": {
+    "threshold": "1.0",
+    "min_steps": 0,
+    "target_recall": "0.9",
+    "delta": "0.1"
+  },
+  "metrics": {
+    "n_train": 0,
+    "n_calib_success": 100,
+    "test_false_abort_rate": "0.0",
+    "test_savings_share": "0.0",
+    "auroc": "0.5"
+  },
+  "issued_at": "2026-09-23T09:00:00Z",
+  "expires_at": "2026-09-30T09:00:00Z"
+}

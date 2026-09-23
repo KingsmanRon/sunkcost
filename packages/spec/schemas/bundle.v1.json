@@ -1,0 +1,125 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/KingsmanRon/sunkcost/main/packages/spec/schemas/bundle.v1.json",
+  "title": "Policy bundle v1",
+  "description": "The signed payload. The worker signs canonical_json(bundle) with Ed25519. It contains no JSON floats: every non-integer number is a decimal string (Python repr(float) for model parameters and the threshold).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "bundle_id",
+    "org_id",
+    "project_id",
+    "workload_id",
+    "workload",
+    "version",
+    "feature_spec",
+    "mode",
+    "holdout_rate",
+    "model",
+    "decision",
+    "metrics",
+    "issued_at",
+    "expires_at"
+  ],
+  "properties": {
+    "schema_version": { "const": "1" },
+    "bundle_id": { "$ref": "common.v1.json#/$defs/uuid" },
+    "org_id": { "$ref": "common.v1.json#/$defs/uuid" },
+    "project_id": { "$ref": "common.v1.json#/$defs/uuid" },
+    "workload_id": { "$ref": "common.v1.json#/$defs/uuid" },
+    "workload": { "$ref": "common.v1.json#/$defs/workload_name" },
+    "version": {
+      "description": "Monotonic per workload. The SDK rejects a bundle whose version is lower than its cached one.",
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 2147483647
+    },
+    "feature_spec": { "const": "features.v1" },
+    "mode": { "$ref": "common.v1.json#/$defs/mode" },
+    "holdout_rate": { "$ref": "common.v1.json#/$defs/rate_4dp" },
+    "model": { "$ref": "#/$defs/logistic_v1" },
+    "decision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["threshold", "min_steps", "target_recall", "delta"],
+      "properties": {
+        "threshold": {
+          "description": "Abort when k >= min_steps and score >= threshold. In [0, 1].",
+          "$ref": "common.v1.json#/$defs/f64_nonneg"
+        },
+        "min_steps": { "type": "integer", "minimum": 0, "maximum": 10000 },
+        "target_recall": { "$ref": "common.v1.json#/$defs/open_unit_4dp" },
+        "delta": { "$ref": "common.v1.json#/$defs/open_unit_4dp" }
+      }
+    },
+    "metrics": {
+      "description": "Calibration and test-split metrics. Values are integers or float64 decimal strings.",
+      "type": "object",
+      "required": [
+        "n_train",
+        "n_calib_success",
+        "test_false_abort_rate",
+        "test_savings_share",
+        "auroc"
+      ],
+      "properties": {
+        "n_train": { "$ref": "common.v1.json#/$defs/safe_uint" },
+        "n_calib_success": { "$ref": "common.v1.json#/$defs/safe_uint" },
+        "test_false_abort_rate": { "$ref": "common.v1.json#/$defs/f64_nonneg" },
+        "test_savings_share": { "$ref": "common.v1.json#/$defs/f64_nonneg" },
+        "auroc": { "$ref": "common.v1.json#/$defs/f64_nonneg" }
+      },
+      "propertyNames": { "pattern": "^[a-z][a-z0-9_]{0,63}$" },
+      "additionalProperties": {
+        "anyOf": [
+          { "$ref": "common.v1.json#/$defs/safe_uint" },
+          { "$ref": "common.v1.json#/$defs/f64" }
+        ]
+      },
+      "maxProperties": 64
+    },
+    "issued_at": { "$ref": "common.v1.json#/$defs/timestamp" },
+    "expires_at": {
+      "description": "Defaults to issued_at + 7 days. After it, the SDK stops aborting (reason bundle_expired).",
+      "$ref": "common.v1.json#/$defs/timestamp"
+    }
+  },
+  "$defs": {
+    "logistic_v1": {
+      "description": "score = sigmoid(intercept + sum_j weights[j] * (x[features[j]] - means[j]) / stds[j]). The four arrays have equal length and every std is > 0.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "intercept", "features", "weights", "means", "stds"],
+      "properties": {
+        "type": { "const": "logistic_v1" },
+        "intercept": { "$ref": "common.v1.json#/$defs/f64" },
+        "features": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 12,
+          "uniqueItems": true,
+          "items": { "$ref": "common.v1.json#/$defs/feature_name" }
+        },
+        "weights": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 12,
+          "items": { "$ref": "common.v1.json#/$defs/f64" }
+        },
+        "means": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 12,
+          "items": { "$ref": "common.v1.json#/$defs/f64" }
+        },
+        "stds": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 12,
+          "items": { "$ref": "common.v1.json#/$defs/f64_nonneg" }
+        }
+      }
+    }
+  }
+}

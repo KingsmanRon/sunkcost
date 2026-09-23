@@ -1,0 +1,19 @@
+{
+  "name": "rfc8785-key-order",
+  "description": "RFC 8785 section 3.2.3 example: keys sort by UTF-16 code units, so U+1F600 sorts before U+FB33.",
+  "input": {
+    "€": "Euro Sign",
+    "\r": "Carriage Return",
+    "דּ": "Hebrew Letter Dalet With Dagesh",
+    "1": "One",
+    "😀": "Emoji: Grinning Face",
+    "": "Control",
+    "ö": "Latin Small Letter O With Diaeresis"
+  },
+  "canonical_hex": "7b225c72223a2243617272696167652052657475726e222c2231223a224f6e65222c22c280223a22436f6e74726f6c222c22c3b6223a224c6174696e20536d616c6c204c6574746572204f205769746820446961657265736973222c22e282ac223a224575726f205369676e222c22f09f9880223a22456d6f6a693a204772696e6e696e672046616365222c22efacb3223a22486562726577204c65747465722044616c6574205769746820446167657368227d",
+  "signature": {
+    "key_id": "rfc8032-test-1",
+    "public_key_b64": "11qYAYKxCrfVS/7TyWQHOg7hcvPapiMlrwIaaPcHURo=",
+    "signature_b64": "PWumbMvXwHdxdEdB0UzZbhLyEIv4LZXX39cSBPlqI84vbKoAlsJUUCuDSpWmjFB+IAje6Frx7YQTZfshVXWLBw=="
+  }
+}

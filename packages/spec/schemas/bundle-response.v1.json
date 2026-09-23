@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/KingsmanRon/sunkcost/main/packages/spec/schemas/bundle-response.v1.json",
+  "title": "Bundle response v1",
+  "description": "Body of GET /v1/bundles/active. signature = base64(Ed25519(canonical_json(bundle))) under key_id. override is unsigned and can only reduce enforcement.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "bundle", "key_id", "signature", "override"],
+  "properties": {
+    "schema_version": { "const": "1" },
+    "bundle": { "$ref": "bundle.v1.json" },
+    "key_id": { "$ref": "common.v1.json#/$defs/key_id" },
+    "signature": {
+      "description": "Standard base64 (RFC 4648 section 4, padded) of the 64-byte Ed25519 signature.",
+      "type": "string",
+      "pattern": "^[A-Za-z0-9+/]{86}==$"
+    },
+    "override": {
+      "description": "Emergency downgrade. The SDK obeys \"shadow\" because it can only reduce enforcement.",
+      "anyOf": [{ "type": "null" }, { "const": "shadow" }]
+    }
+  }
+}

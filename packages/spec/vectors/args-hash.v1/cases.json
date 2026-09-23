@@ -1,0 +1,97 @@
+{
+  "description": "args_hash = 'hmac-sha256:' + hex(HMAC-SHA256(key = UTF-8(salt), message = JCS(args))), where JCS is RFC 8785 including its number serialization (tool arguments may contain floats; signed content may not).",
+  "cases": [
+    {
+      "name": "object",
+      "salt": "salt-1",
+      "args": {
+        "query": "refund policy",
+        "limit": 5
+      },
+      "canonical_hex": "7b226c696d6974223a352c227175657279223a22726566756e6420706f6c696379227d",
+      "args_hash": "hmac-sha256:f15868b71f1f41119962d600e39d7e702580dcbc8ccfb2f3dc741a7135d6f781"
+    },
+    {
+      "name": "same-object-other-salt",
+      "salt": "salt-2",
+      "args": {
+        "query": "refund policy",
+        "limit": 5
+      },
+      "canonical_hex": "7b226c696d6974223a352c227175657279223a22726566756e6420706f6c696379227d",
+      "args_hash": "hmac-sha256:cc430a21525b9b222c46f24ce016656f1d844c494f78bf6fd97d1370ef8f120c"
+    },
+    {
+      "name": "key-order-irrelevant",
+      "salt": "salt-1",
+      "args": {
+        "limit": 5,
+        "query": "refund policy"
+      },
+      "canonical_hex": "7b226c696d6974223a352c227175657279223a22726566756e6420706f6c696379227d",
+      "args_hash": "hmac-sha256:f15868b71f1f41119962d600e39d7e702580dcbc8ccfb2f3dc741a7135d6f781"
+    },
+    {
+      "name": "floats",
+      "salt": "salt-1",
+      "args": {
+        "lat": 51.5,
+        "lon": -0.1276,
+        "tiny": 1e-07,
+        "small": 1e-06,
+        "big": 1e+21,
+        "whole": 3.0,
+        "neg_zero": -0.0
+      },
+      "canonical_hex": "7b22626967223a31652b32312c226c6174223a35312e352c226c6f6e223a2d302e313237362c226e65675f7a65726f223a302c22736d616c6c223a302e3030303030312c2274696e79223a31652d372c2277686f6c65223a337d",
+      "args_hash": "hmac-sha256:6583ec3ba63ad9b42657d9c569a7beb783fd25144722e84fbce56c8bbb891230"
+    },
+    {
+      "name": "big-integer",
+      "salt": "salt-1",
+      "args": {
+        "id": 12345678901234567890
+      },
+      "canonical_hex": "7b226964223a31323334353637383930313233343536373030307d",
+      "args_hash": "hmac-sha256:b17bb323e17991b0aa03ae3543e52e4e237ff76bf3761f3a626f307610da9fb7"
+    },
+    {
+      "name": "array",
+      "salt": "salt-1",
+      "args": [
+        "a",
+        1,
+        2.5,
+        null,
+        true,
+        false
+      ],
+      "canonical_hex": "5b2261222c312c322e352c6e756c6c2c747275652c66616c73655d",
+      "args_hash": "hmac-sha256:697b61d155b9beb470ce3e8bbb46bd5c0e87df4023d306f02bd9b202ef3a742d"
+    },
+    {
+      "name": "string",
+      "salt": "salt-1",
+      "args": "raw string argument",
+      "canonical_hex": "2272617720737472696e6720617267756d656e7422",
+      "args_hash": "hmac-sha256:0efad55644b310fd86890a4fad51a5d4fc5d05d002cab2c409b0b56b86ae7cd9"
+    },
+    {
+      "name": "empty-object",
+      "salt": "salt-1",
+      "args": {},
+      "canonical_hex": "7b7d",
+      "args_hash": "hmac-sha256:b48ba1b0f43e493c5e572c99aa140cf7731f9515ae01d80c36a07b7c96d82a03"
+    },
+    {
+      "name": "unicode",
+      "salt": "sälT ✓",
+      "args": {
+        "ключ": "значение",
+        "emoji": "😀"
+      },
+      "canonical_hex": "7b22656d6f6a69223a22f09f9880222c22d0bad0bbd18ed187223a22d0b7d0bdd0b0d187d0b5d0bdd0b8d0b5227d",
+      "args_hash": "hmac-sha256:eeb1de620b985e3eda39db2920b18b54993085b92f776452783971236a295460"
+    }
+  ]
+}

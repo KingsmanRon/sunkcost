@@ -1,0 +1,240 @@
+{
+  "feature_spec": "features.v1",
+  "name": "zero-cost-tools-only",
+  "description": "No model steps (context_growth 0) and zero total cost (recent_cost_share divides by 1e-12).",
+  "feature_names": [
+    "step_index",
+    "log_cost",
+    "log_tokens",
+    "recent_cost_share",
+    "repeat_action_rate",
+    "max_identical_streak",
+    "error_rate",
+    "error_streak",
+    "distinct_action_ratio",
+    "cycle_rate",
+    "context_growth",
+    "log_elapsed_s"
+  ],
+  "started_at": "2026-09-23T10:00:00.000000Z",
+  "steps": [
+    {
+      "type": "step",
+      "run_id": "01a0cdb5-3500-7a3c-9e41-5b2f8c7d6e10",
+      "seq": 1,
+      "ts": "2026-09-23T10:00:00.500000Z",
+      "kind": "tool",
+      "model": null,
+      "tool_name": "ls",
+      "args_hash": "hmac-sha256:b281e4be6d923137c3ab4816de11fbe1186391a21e358b8c170dbf8cea12df5b",
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "cost_usd": "0",
+      "error": false,
+      "latency_ms": 500,
+      "decision": null
+    },
+    {
+      "type": "step",
+      "run_id": "01a0cdb5-3500-7a3c-9e41-5b2f8c7d6e10",
+      "seq": 2,
+      "ts": "2026-09-23T10:00:01.000000Z",
+      "kind": "tool",
+      "model": null,
+      "tool_name": "cat",
+      "args_hash": "hmac-sha256:41e5cc448212475bd6950e2798f18997d3a0c7ac36b6decdd08c83e4341d3c72",
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "cost_usd": "0",
+      "error": false,
+      "latency_ms": 500,
+      "decision": null
+    },
+    {
+      "type": "step",
+      "run_id": "01a0cdb5-3500-7a3c-9e41-5b2f8c7d6e10",
+      "seq": 3,
+      "ts": "2026-09-23T10:00:01.500000Z",
+      "kind": "tool",
+      "model": null,
+      "tool_name": "grep",
+      "args_hash": "hmac-sha256:b3771288dc2d5429d036f2d64e03d98e14f619a819b7dae5ac41b90fe63656a5",
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "cost_usd": "0",
+      "error": false,
+      "latency_ms": 500,
+      "decision": null
+    },
+    {
+      "type": "step",
+      "run_id": "01a0cdb5-3500-7a3c-9e41-5b2f8c7d6e10",
+      "seq": 4,
+      "ts": "2026-09-23T10:00:02.000000Z",
+      "kind": "tool",
+      "model": null,
+      "tool_name": "ls",
+      "args_hash": "hmac-sha256:b281e4be6d923137c3ab4816de11fbe1186391a21e358b8c170dbf8cea12df5b",
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "cost_usd": "0",
+      "error": false,
+      "latency_ms": 500,
+      "decision": null
+    },
+    {
+      "type": "step",
+      "run_id": "01a0cdb5-3500-7a3c-9e41-5b2f8c7d6e10",
+      "seq": 5,
+      "ts": "2026-09-23T10:00:02.500000Z",
+      "kind": "tool",
+      "model": null,
+      "tool_name": "cat",
+      "args_hash": "hmac-sha256:41e5cc448212475bd6950e2798f18997d3a0c7ac36b6decdd08c83e4341d3c72",
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "cost_usd": "0",
+      "error": false,
+      "latency_ms": 500,
+      "decision": null
+    }
+  ],
+  "model": {
+    "type": "logistic_v1",
+    "intercept": "0.3183098861837907",
+    "features": [
+      "cycle_rate",
+      "log_cost",
+      "error_streak",
+      "step_index"
+    ],
+    "weights": [
+      "2.718281828459045",
+      "-1.4142135623730951",
+      "0.5772156649015329",
+      "1e-05"
+    ],
+    "means": [
+      "0.1",
+      "0.0",
+      "0.25",
+      "10.0"
+    ],
+    "stds": [
+      "0.3",
+      "1.0",
+      "0.5",
+      "7.5"
+    ]
+  },
+  "expected": [
+    {
+      "k": 0,
+      "features": [
+        "0.0",
+        "0.0",
+        "0.0",
+        "0.0",
+        "0.0",
+        "0.0",
+        "0.0",
+        "0.0",
+        "0.0",
+        "0.0",
+        "0.0",
+        "0.0"
+      ],
+      "score": "0.29392325858696666"
+    },
+    {
+      "k": 1,
+      "features": [
+        "1.0",
+        "0.0",
+        "0.0",
+        "0.0",
+        "0.0",
+        "1.0",
+        "0.0",
+        "0.0",
+        "1.0",
+        "0.0",
+        "0.0",
+        "0.4054651081081644"
+      ],
+      "score": "0.2939235352968782"
+    },
+    {
+      "k": 2,
+      "features": [
+        "2.0",
+        "0.0",
+        "0.0",
+        "0.0",
+        "0.0",
+        "1.0",
+        "0.0",
+        "0.0",
+        "1.0",
+        "0.0",
+        "0.0",
+        "0.6931471805599453"
+      ],
+      "score": "0.2939238120069419"
+    },
+    {
+      "k": 3,
+      "features": [
+        "3.0",
+        "0.0",
+        "0.0",
+        "0.0",
+        "0.0",
+        "1.0",
+        "0.0",
+        "0.0",
+        "1.0",
+        "0.0",
+        "0.0",
+        "0.9162907318741551"
+      ],
+      "score": "0.29392408871715753"
+    },
+    {
+      "k": 4,
+      "features": [
+        "4.0",
+        "0.0",
+        "0.0",
+        "0.0",
+        "0.25",
+        "1.0",
+        "0.0",
+        "0.0",
+        "0.75",
+        "0.0",
+        "0.0",
+        "1.0986122886681096"
+      ],
+      "score": "0.29392436542752526"
+    },
+    {
+      "k": 5,
+      "features": [
+        "5.0",
+        "0.0",
+        "0.0",
+        "0.0",
+        "0.4",
+        "1.0",
+        "0.0",
+        "0.0",
+        "0.6",
+        "0.25",
+        "0.0",
+        "1.252762968495368"
+      ],
+      "score": "0.8004064002957584"
+    }
+  ]
+}
