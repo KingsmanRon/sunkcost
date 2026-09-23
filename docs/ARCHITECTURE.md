@@ -480,10 +480,10 @@ Computed on the prefix of completed steps `1..k` at the moment `check()` is call
 
 ### 7.2 Model
 
-- L2-regularised logistic regression (scikit-learn, `C` chosen by 5-fold CV on the train split).
-- Features are standardised with train-split means and standard deviations. A standard deviation of 0 is replaced by 1.
-- Training rows are every prefix `k ≥ min_steps` of every training run, labelled with the run's final outcome (1 = failure).
-- Each run is weighted `1/len(run)` so long runs don't dominate.
+- L2-regularised logistic regression (scikit-learn, lbfgs). `C` is chosen from 10⁻⁴ … 10⁴ (9 values) by weighted log-loss under 5-fold CV on the train split, grouped by run (or task, when the data names one) so no run's prefixes straddle folds; ties go to the smaller `C` (ADR-0003).
+- Features are standardised with the train rows' unweighted means and population standard deviations. A standard deviation of 0 is replaced by 1.
+- **Decision points.** `check()` runs before each step, so a run of `n` steps has decision points `k = min_steps … n − 1` and none after its final step. Training rows are the decision points of every training run, labelled with the run's final outcome (1 = failure).
+- Each row is weighted `1 / (number of rows of its run)`, so every run carries a total weight of 1 and long runs don't dominate.
 - Score: `σ(intercept + Σ w_j (x_j − μ_j)/σ_j)`.
 
 ### 7.3 Threshold selection with a recall guarantee
@@ -492,13 +492,13 @@ Computed on the prefix of completed steps `1..k` at the moment `check()` is call
 
 - Only **uncensored** runs are used: shadow-mode runs and enforce-mode holdout runs with a final outcome of `success` or `failure`. Aborted runs are never used, since their counterfactual outcome is unknown.
 - `abandoned` outcomes are excluded.
-- Split **by time**: oldest 60% train, next 20% calibration, newest 20% test.
+- Split **by time**: runs ordered by `(started_at, run_id)`; of `n` runs, the first ⌊3n/5⌋ train, up to ⌊4n/5⌋ calibration, the rest test (oldest 60%, next 20%, newest 20%).
 
 **Minimums:** 100 successes and 30 failures in each of calibration and test. Otherwise the job ends `insufficient_data` with the counts.
 
 **Procedure:**
 
-1. For each calibration-split success `i`, compute `m_i = max_{k ≥ min_steps} score_k`, the highest score it ever reached.
+1. For each calibration-split success `i`, compute `m_i`, the highest score it reached at any of its decision points (§7.2). A success with no decision points counts in `n` but can never be aborted.
 2. For a candidate threshold `τ`, the false-abort count is `c(τ) = #{i : m_i ≥ τ}`, out of `n` successes.
 3. `UCB(τ)` is the one-sided Clopper–Pearson upper bound at confidence `1 − δ`.
 4. Choose the **smallest** `τ` among candidate values (the `m_i` plus 1.0) with `UCB(τ) ≤ α`. A smaller `τ` means earlier aborts and more savings. Scanning many candidates doesn't weaken the bound: `c(τ)` is monotone in `τ`, so this is fixed-sequence testing (scan from `τ = 1.0` downward and stop at the first candidate that fails).
@@ -510,9 +510,9 @@ This is a statistical guarantee under that assumption, not an absolute one. Drif
 
 **Evaluation on the test split:**
 
-- Realised false-abort rate, with a Clopper–Pearson interval.
+- Realised false-abort rate, with a two-sided 95% Clopper–Pearson interval.
 - `savings_share` = Σ over failures aborted at step `k` of (total cost − cost through step `k`) ÷ Σ total cost of all test runs.
-- AUROC of the max-score per run.
+- AUROC of the max-score per run (runs without decision points rank lowest).
 
 **Validation gate:** a bundle becomes `validated` when all three hold:
 

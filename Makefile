@@ -9,7 +9,7 @@ UV ?= uv
 PNPM ?= pnpm
 
 # Python packages type-checked with mypy (strict settings come from pyproject.toml).
-PY_TYPECHECK := packages/spec
+PY_TYPECHECK := packages/spec packages/sdk-python services/worker bench
 
 define not_run
 	@echo "NOT RUN: $(1) ($(2))" >&2; exit 2
@@ -48,21 +48,23 @@ fmt: ## Apply ruff formatting and safe fixes
 vectors: ## Regenerate packages/spec/vectors (and the signed fixtures)
 	$(UV) run --frozen python packages/spec/tools/gen_vectors.py
 
-# --- G2 Unit ---------------------------------------------------------------------------------
+# --- G1 Proof --------------------------------------------------------------------------------
+
+.PHONY: bench
+bench: ## G1: calibrate on public trajectory datasets; regenerates docs/BENCHMARKS.md
+	$(UV) run --frozen python bench/run.py
+
+# --- G2 Unit, G2b Statistical ----------------------------------------------------------------
 
 .PHONY: test-unit
 test-unit: ## G2: unit tests
-	$(UV) run --frozen pytest packages/spec
-
-# --- Gates implemented in later phases ------------------------------------------------------
+	$(UV) run --frozen pytest -m "not stats" packages/spec packages/sdk-python services/worker bench
 
 .PHONY: test-stats
-test-stats: ## G2b: statistical guarantee simulation (P1)
-	$(call not_run,G2b test-stats,implemented in phase P1)
+test-stats: ## G2b: 500 simulated workloads, fixed seeds
+	$(UV) run --frozen pytest -m stats -s services/worker/tests/stats
 
-.PHONY: bench
-bench: ## G1: benchmark on public trajectory datasets (P1)
-	$(call not_run,G1 bench,implemented in phase P1)
+# --- Gates implemented in later phases ------------------------------------------------------
 
 .PHONY: bench-sdk
 bench-sdk: ## G3: SDK check() latency (P2 Python, P6 Node)
