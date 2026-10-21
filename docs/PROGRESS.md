@@ -170,3 +170,69 @@ Node halves of G3 and G4 are **NOT RUN** until the TypeScript SDK is built in P6
    decision 12 (the Cycles `guard` decorator).
 3. **Ingest and bundle endpoints are defined but not yet served.** The API arrives in P3;
    ADR-0004 decisions 1 and 4 are the contract it must meet.
+
+## 2026-10-21 · P3: Supabase schema, row-level security, API
+
+### Built
+
+- **Schema** (`supabase/migrations/`, Postgres 17): every §8 table, plus `signing_keys`.
+  - UUIDv7 defaults.
+  - Money stored as `numeric(20,9)`.
+  - `step_events` is range-partitioned by the month the server first received the run, with
+    monthly partitions and a default partition.
+  - At most one active bundle per workload.
+  - `audit_log` is append-only, enforced by revoked grants and a trigger that refuses even the
+    table owner.
+- **Access control** (§8.1):
+  - RLS on every org table.
+  - The console role reads its own orgs, `SELECT` only, and the secret hashes are excluded by
+    column grants.
+  - `sunkcost_api` and `sunkcost_worker` are login roles without `BYPASSRLS`; they act for
+    `app.org_id`.
+  - Four `SECURITY DEFINER` functions, each with a pinned `search_path`.
+  - `anon` has nothing, and the `service_role` key is used nowhere.
+- **API** (`services/api`, FastAPI + psycopg 3, prepared statements off): every §4 C6 endpoint.
+  - Idempotent ingest per §8.2, with per-event savepoints and placeholder runs.
+  - Outcomes with first-wins conflict auditing.
+  - Bundle serving with ETag/304.
+  - API keys (SHA-256 stored, constant-time compare, scopes, revocation, `last_used_at`).
+  - Supabase JWT auth via JWKS, with role checks and an audit entry for every mutation.
+  - RFC 9457 errors with `x-request-id`, a per-key token-bucket rate limit, 1 MB body limit
+    after decompression, and browser origins refused on API-key routes.
+  - JSON logs and Prometheus `/metrics`.
+- **Local stack**: `services/api/Dockerfile` (digest-pinned base, non-root) and
+  `docker-compose.yml`.
+- **ADR-0005**: 13 decisions, including the partitioning fix for a §8/§10 contradiction.
+  `ARCHITECTURE.md` §4 C6, §8, §8.1 and §8.2 are updated to match.
+- **CI**: a job runs G5 and G6 against a fresh local Supabase, using a checksum-verified CLI.
+  Another job builds the API image.
+
+### Gates
+
+| Gate | Command | Result |
+|---|---|---|
+| G0 Static | `make lint typecheck` | **PASS**: ruff 0 errors and format clean, ESLint 0 warnings, mypy strict 0 errors in 90 files, tsc 0 errors. |
+| G2 Unit | `make test-unit` | **PASS**: 489 passed, 1 skipped. |
+| G5 Isolation | `make test-db` | **PASS**: `supabase db reset`, then 57 pgTAP tests (tenant A cannot read or write B as console user, API role or worker role; definer functions are callable only by their role; `audit_log` is immutable even for its owner; the console role cannot write), then 4 PostgREST HTTP tests with real Supabase Auth tokens. |
+| G6 Integration (API parts) | `make test-integration` | **PASS**: 17 tests against local Supabase, covering duplicate batches, placeholder runs, late and conflicting outcomes, per-event rejection, key scopes and revocation, roles, tenant isolation through the API, bundle activation, ETag/304 and override, and an SDK → API → Postgres end-to-end run that aborts. |
+
+The worker parts of G6 (calibration → validated bundle → SDK) are **NOT RUN** until P4 builds
+the worker.
+
+### Environment
+
+- Supabase CLI 2.117.0 and Docker were available. `supabase start` ran with Realtime, Studio,
+  Storage, Edge Runtime and Analytics disabled (`supabase/config.toml`), since Sunkcost doesn't
+  use them.
+- The sandbox's HTTPS proxy is not trusted inside `docker build`. The API image was built locally
+  with the proxy CA passed as a BuildKit secret, which is never stored in a layer. CI builds need
+  no secret.
+
+### Open issues
+
+1. **Role passwords for staging and production** are owner actions (`alter role … password`), as
+   are the Supabase, Railway and Vercel projects (P7).
+2. **ADR-0005 needs owner review**, in particular decisions 1 (partitioning), 7 (workloads
+   created on first use) and 12 (who may clear an override).
+3. **The ingest path makes several round trips per event.** Throughput is measured in P7
+   (`make load-test`); batching the SQL is the first optimisation if it misses 1,000 events/s.

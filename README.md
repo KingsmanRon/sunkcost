@@ -8,7 +8,8 @@ shadow mode first and get a savings report computed only from observed spend.
 **Status:** pre-release, under construction. Done so far: P0 (contracts and tooling), P1 (core,
 calibration library and the public benchmark, [`docs/BENCHMARKS.md`](docs/BENCHMARKS.md)) and P2
 (the Python SDK and its LangGraph, OpenAI Agents and Cycles adapters, with offline
-[`examples/`](examples/)). See [`docs/PROGRESS.md`](docs/PROGRESS.md). Nothing is published yet.
+[`examples/`](examples/)) and P3 (the Supabase schema with row-level security, and the API). See
+[`docs/PROGRESS.md`](docs/PROGRESS.md). Nothing is published yet.
 
 ## Documents
 
@@ -33,6 +34,15 @@ make bench              # gate G1: downloads public datasets, regenerates docs/B
 make bench-sdk          # gate G3: check() latency, written to docs/PERF.md
 make test-failure       # gate G4: failure injection against a local HTTP server
 uv run python examples/basic_loop.py   # an agent stopped by Sunkcost, offline, no keys
+```
+
+The database gates and the local stack need Docker and the Supabase CLI:
+
+```sh
+supabase start          # local Postgres, Auth and PostgREST
+make test-db            # gate G5: reset, pgTAP isolation tests, PostgREST over HTTP
+make test-integration   # gate G6: the API against the local database
+docker compose up       # the API on http://localhost:8000
 make help               # every gate; ones not built yet exit 2 with "NOT RUN"
 ```
 
