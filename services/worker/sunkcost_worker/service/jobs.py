@@ -89,7 +89,7 @@ ACTIVE_SQL = (
 )
 REPORT_RUNS_SQL = (
     "select mode, holdout, outcome, total_cost_usd, would_abort_step, cost_through_would_abort, "
-    "aborted_step, bundle_id from public.runs where org_id = %s and workload_id = %s "
+    "aborted_step, bundle_id, started_at from public.runs where org_id = %s and workload_id = %s "
     "and started_at >= %s and started_at < %s"
 )
 MEAN_SAVING_SQL = (
@@ -99,13 +99,15 @@ MEAN_SAVING_SQL = (
 UPSERT_REPORT_SQL = (
     "insert into public.reports (org_id, workload_id, period_start, period_end, runs, "
     "verified_saving_usd, estimated_saving_usd, failures_caught, successes_lost, false_abort_rate, "
-    "fa_ci_low, fa_ci_high) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) "
+    "fa_ci_low, fa_ci_high, enforced_runs, first_run_at) "
+    "values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) "
     "on conflict (workload_id, period_start, period_end) do update set runs = excluded.runs, "
     "verified_saving_usd = excluded.verified_saving_usd, "
     "estimated_saving_usd = excluded.estimated_saving_usd, "
     "failures_caught = excluded.failures_caught, successes_lost = excluded.successes_lost, "
     "false_abort_rate = excluded.false_abort_rate, fa_ci_low = excluded.fa_ci_low, "
-    "fa_ci_high = excluded.fa_ci_high returning id"
+    "fa_ci_high = excluded.fa_ci_high, enforced_runs = excluded.enforced_runs, "
+    "first_run_at = excluded.first_run_at returning id"
 )
 DRIFT_RUNS_SQL = (
     "select count(*) as n, count(would_abort_step) as k from public.runs "
@@ -484,6 +486,8 @@ class Worker:
                 for r in found
             ]
             rep = account(runs, means)
+            enforced = sum(1 for r in found if r["mode"] == "enforce")
+            first_run_at = min((r["started_at"] for r in found if r["started_at"]), default=None)
             row = required(
                 conn,
                 UPSERT_REPORT_SQL,
@@ -500,6 +504,8 @@ class Worker:
                     rep.false_abort_rate,
                     rep.fa_ci_low,
                     rep.fa_ci_high,
+                    enforced,
+                    first_run_at,
                 ),
             )
         return {
@@ -632,6 +638,15 @@ class Worker:
                         "period_end": day_start.isoformat(),
                     },
                     f"report:{wid}:{yesterday:%Y%m%d}",
+                ),
+                (  # the trailing week, for the console's 7-day figures and enforce gate (ADR-0007)
+                    "build_report",
+                    {
+                        "workload_id": wid,
+                        "period_start": (day_start - timedelta(days=7)).isoformat(),
+                        "period_end": day_start.isoformat(),
+                    },
+                    f"report7:{wid}:{yesterday:%Y%m%d}",
                 ),
             ]
             if detail.get("active_bundle_id"):

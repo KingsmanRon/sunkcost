@@ -297,3 +297,62 @@ the worker.
    decision 9 (retention counted from when the server received a run).
 3. **Calibration runs in the worker process.** With 50,000 runs it takes minutes and blocks
    that worker's other jobs. Scale out with more workers if this becomes a problem.
+
+## 2026-10-21 · P5: console
+
+### Built
+
+- **Console** (`apps/console`): Next.js 16 (App Router), React 19, `@supabase/ssr`.
+  - Pages: sign-in, organisations and projects (with the webhook setting), API keys,
+    workloads, workload detail, runs and the run explorer, and the audit log.
+  - Workload detail:
+    - 7-day verified and estimated savings, successes lost, and the false-abort rate with its
+      interval.
+    - An "outcome pending" count.
+    - A per-day savings chart, with verified and estimated as separate bars, never stacked.
+    - Bundle history with metrics, and activation.
+    - Calibrate, mode switch and emergency override.
+  - The enforce toggle stays disabled until §4 C9's conditions hold, and the page says which
+    are missing.
+  - Run explorer: an SVG timeline of each step's score against the bundle's threshold, the
+    would-abort point, and the step table.
+  - Reads go through PostgREST as the signed-in user, so RLS scopes them. Writes are Server
+    Actions that call the API with the user's token; the console never writes to Postgres.
+  - Money is never a float: `numeric` columns are read as text and summed as `BigInt` nano-units.
+- **Worker and schema**:
+  - The worker now also builds a daily trailing-week report.
+  - Reports record `enforced_runs` and `first_run_at`, added by the expand-only migration
+    `20261021000400_console.sql`.
+- **ADR-0007**: 8 decisions, the main one being the precise enforce-gate rule.
+  `ARCHITECTURE.md` §4 C7, §4 C9 and §8 are updated to match.
+- **CI**: a new job runs G6b against a fresh local Supabase. `make test-unit` now also runs the
+  console's Vitest suite.
+
+### Gates
+
+| Gate | Command | Result |
+|---|---|---|
+| G0 Static | `make lint typecheck` | **PASS**: ruff, ESLint (console included) and gitleaks clean; mypy strict 0 errors in 101 files; tsc 0 errors. |
+| G2 Unit | `make test-unit` | **PASS**: 508 Python tests passed, 1 skipped. 13 console Vitest tests passed: decimal money, the enforce gate, reports and problem documents. |
+| G5 Isolation | `make test-db` | **PASS**: 65 pgTAP tests and 4 PostgREST HTTP tests. |
+| G6 Integration | `make test-integration` | **PASS**: 24 tests. These now also check the new report columns against hand-computed values, and that the scheduler enqueues the trailing-week report. |
+| G6b Console e2e | `make test-e2e` | **PASS**, on two consecutive runs (1.9 min each). A single Chromium journey against the real API, worker and local Supabase: <br>• magic-link sign-in through Mailpit <br>• create an organisation, project, API key (shown once) and workload <br>• enforce disabled with both reasons <br>• calibrate → validated bundle; enforce still disabled until a shadow week <br>• activate <br>• shadow reports → enforce enabled <br>• run explorer shows score against threshold <br>• switch to enforce → the worker signs v2 <br>• emergency override → audit log <br>• revoke the key |
+
+### Fixed during the phase
+
+- **P4's G4 failed once on CI**: one SDK call took 52 ms against a 50 ms bound, on a shared
+  runner; locally the slowest call is about 1 ms.
+  - G4 now asserts the property directly: no socket connect or send happens on the agent
+    thread. A mutation that adds a fetch to `check()` makes it fail.
+  - The wall-clock bound is now 0.5 s, which still catches any wait on network I/O.
+  - The fix was pushed to the P4 PR, where CI is green.
+- **Auth redirects lost the session**: Next.js reported `localhost` while the browser used
+  `127.0.0.1`. Redirects now use the browser's own host.
+
+### Open issues
+
+1. **Production URLs**: the console's Supabase Auth site URL and redirect URLs must be set in
+   the staging and production projects (P7, owner action).
+2. **ADR-0007 needs owner review**, in particular decision 3: the enforce gate is a console
+   safeguard that the API doesn't apply.
+3. **PRs are stacked**: the P4 PR is green but unmerged, and the P5 PR is based on it.

@@ -1,0 +1,96 @@
+:root {
+  --bg: #f7f7f5;
+  --panel: #ffffff;
+  --text: #1c1c1a;
+  --muted: #6b6b66;
+  --line: #e2e1dc;
+  --accent: #2f5d50;
+  --accent-text: #ffffff;
+  --danger: #a33a2b;
+  --ok: #2f6b3a;
+  --verified: #2f5d50;
+  --estimated: #c48a2c;
+  --threshold: #a33a2b;
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #161614;
+    --panel: #1f1f1c;
+    --text: #ecebe6;
+    --muted: #a3a29b;
+    --line: #34332f;
+    --accent: #6fb39d;
+    --accent-text: #10201b;
+    --danger: #e0806f;
+    --ok: #7cc48a;
+    --verified: #6fb39d;
+    --estimated: #e0b25c;
+    --threshold: #e0806f;
+  }
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+a { color: var(--accent); }
+main { max-width: 1100px; margin: 0 auto; padding: 24px 16px 64px; }
+h1 { font-size: 1.6rem; margin: 0 0 4px; }
+h2 { font-size: 1.15rem; margin: 28px 0 10px; }
+.muted { color: var(--muted); }
+.topbar {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 10px 16px; border-bottom: 1px solid var(--line); background: var(--panel);
+}
+.brand { font-weight: 700; text-decoration: none; color: var(--text); }
+.account { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.tabs { display: flex; gap: 4px; flex-wrap: wrap; border-bottom: 1px solid var(--line); margin: 12px 0 20px; }
+.tabs a { padding: 8px 12px; text-decoration: none; color: var(--muted); border-bottom: 2px solid transparent; }
+.tabs a[aria-current="page"] { color: var(--text); border-bottom-color: var(--accent); }
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 16px; }
+.grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+.stat .value { font-size: 1.4rem; font-weight: 650; font-variant-numeric: tabular-nums; }
+.stat .label { color: var(--muted); font-size: 0.85rem; }
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; background: var(--panel); font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-weight: 600; color: var(--muted); font-size: 0.85rem; }
+.form { display: flex; flex-direction: column; gap: 10px; align-items: flex-start; }
+.form.inline { flex-direction: row; flex-wrap: wrap; align-items: center; }
+label { display: flex; flex-direction: column; gap: 4px; font-size: 0.9rem; }
+label.check { flex-direction: row; align-items: center; gap: 6px; }
+input[type="text"], input[type="email"], input[type="url"], select {
+  font: inherit; padding: 7px 9px; border: 1px solid var(--line); border-radius: 6px;
+  background: var(--bg); color: var(--text); min-width: 220px; max-width: 100%;
+}
+button {
+  font: inherit; border-radius: 6px; padding: 7px 14px; cursor: pointer; border: 1px solid transparent;
+}
+button.primary { background: var(--accent); color: var(--accent-text); }
+button.secondary { background: transparent; border-color: var(--line); color: var(--text); }
+button.danger { background: transparent; border-color: var(--danger); color: var(--danger); }
+button.link { background: none; border: none; padding: 0; color: var(--accent); }
+button:disabled { opacity: 0.5; cursor: not-allowed; }
+.note { margin: 0; font-size: 0.9rem; }
+.note.ok { color: var(--ok); }
+.note.error, .error { color: var(--danger); }
+.secret {
+  display: block; font-family: ui-monospace, monospace; padding: 8px 10px; border-radius: 6px;
+  border: 1px dashed var(--accent); word-break: break-all; user-select: all;
+}
+.badge {
+  display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: 0.8rem;
+  border: 1px solid var(--line);
+}
+.badge.enforce, .badge.active { border-color: var(--accent); color: var(--accent); }
+.badge.override, .badge.rejected { border-color: var(--danger); color: var(--danger); }
+.row { display: flex; gap: 16px; flex-wrap: wrap; align-items: flex-start; }
+.legend { display: flex; gap: 16px; font-size: 0.85rem; color: var(--muted); }
+.swatch { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; }
+svg text { fill: var(--muted); font-size: 11px; }
+code { font-family: ui-monospace, monospace; font-size: 0.9em; }

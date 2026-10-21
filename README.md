@@ -13,6 +13,8 @@ shadow mode first and get a savings report computed only from observed spend.
   [`examples/`](examples/).
 - P3: the Supabase schema with row-level security, and the API.
 - P4: the worker, which handles calibration, re-signing, reports, drift and webhooks.
+- P5: the console (Next.js): sign-in, keys, workloads, savings reports, bundles, mode switches,
+  the run explorer and the audit log.
 
 See [`docs/PROGRESS.md`](docs/PROGRESS.md). Nothing is published yet.
 
@@ -46,9 +48,20 @@ The database gates and the local stack need Docker and the Supabase CLI:
 ```sh
 supabase start          # local Postgres, Auth and PostgREST
 make test-db            # gate G5: reset, pgTAP isolation tests, PostgREST over HTTP
-make test-integration   # gate G6: the API against the local database
-docker compose up       # the API on http://localhost:8000
+make test-integration   # gate G6: the API and the worker against the local database
+make test-e2e           # gate G6b: the console in Chromium against the local stack (Playwright)
+docker compose up       # the API on http://localhost:8000 and the worker
 make help               # every gate; ones not built yet exit 2 with "NOT RUN"
+```
+
+To run the console against that stack, take the anon key from `supabase status` and sign in at
+http://127.0.0.1:3000 with any address; the magic link arrives in Mailpit at
+http://127.0.0.1:54324.
+
+```sh
+cd apps/console
+NEXT_PUBLIC_SUPABASE_URL=http://127.0.0.1:54321 NEXT_PUBLIC_SUPABASE_ANON_KEY=<anon key> \
+  NEXT_PUBLIC_API_URL=http://127.0.0.1:8000 pnpm dev
 ```
 
 ## Licence

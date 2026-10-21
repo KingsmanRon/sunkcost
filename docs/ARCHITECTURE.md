@@ -268,7 +268,7 @@ A single process with two loops:
 2. **Scheduler**
    - Holds a Postgres advisory lock so only one worker schedules, even if scaled out.
    - Enqueues on a schedule:
-     - Daily reports per workload.
+     - Daily reports per workload, plus a trailing-week report (ADR-0007).
      - Drift check every hour.
      - Retention purge daily.
      - Nightly recalibration for workloads with ≥ 200 new labelled runs.
@@ -299,7 +299,7 @@ Pages:
 6. Run explorer: per-run step timeline showing score against threshold, and the would-abort point
 7. Audit log
 
-The **enforce toggle is disabled** until the workload has at least one `validated` bundle *and* one shadow report covering ≥ 7 days.
+The **enforce toggle is disabled** until the workload has at least one `validated` bundle *and* one shadow report covering ≥ 7 days. ADR-0007 defines both terms precisely and records the console's other decisions (sign-in, decimal money, scope).
 
 ### C10 · Bench
 
@@ -564,7 +564,7 @@ All tables have `org_id uuid not null`. Timestamps are `timestamptz`.
 | `runs` | PK `(org_id, id)` (`id` = run_id), `project_id, workload_id (null only while status = 'partial'), external_ref, started_at, ended_at, status, steps, total_cost_usd numeric(20,9), mode, holdout, bundle_id, would_abort_step, cost_through_would_abort numeric(20,9), aborted_step, outcome, outcome_source, outcome_at, outcome_conflict, received_at, run_month` | Index `(workload_id, outcome_at)`, `(workload_id, external_ref)`. `status` is derived: `partial`, `running`, or the `run_end` status (ADR-0005) |
 | `step_events` | PK `(org_id, run_id, seq, run_month)`, `ts, kind, model, tool_name, args_hash, input_tokens, output_tokens, cost_usd numeric(20,9), error, latency_ms, score, threshold, would_abort` | Range-partitioned by `run_month`, the month the server first received the run, so re-sent steps deduplicate and retention follows the server clock (ADR-0005); 90-day retention |
 | `policy_bundles` | `id, org_id, workload_id, version, status (validated/rejected/active/retired), payload jsonb, signature, key_id, metrics jsonb, reason, created_at` | Unique `(workload_id, version)`; at most one `active` per workload (partial unique index) |
-| `reports` | `id, org_id, workload_id, period_start, period_end, runs, verified_saving_usd, estimated_saving_usd, failures_caught, successes_lost, false_abort_rate, fa_ci_low, fa_ci_high` | |
+| `reports` | `id, org_id, workload_id, period_start, period_end, runs, verified_saving_usd, estimated_saving_usd, failures_caught, successes_lost, false_abort_rate, fa_ci_low, fa_ci_high, enforced_runs, first_run_at` | Daily and trailing-week periods; the last two columns decide the console's enforce gate (ADR-0007) |
 | `jobs` | `id, org_id, type, payload jsonb, status (queued/running/done/failed/dead), attempts, run_after, locked_at, error` | Claimed with `SKIP LOCKED` |
 | `audit_log` | `id, org_id, actor (user id or 'system'), action, target, before jsonb, after jsonb, at` | Append-only; UPDATE and DELETE revoked from every role |
 
