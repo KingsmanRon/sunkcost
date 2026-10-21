@@ -440,8 +440,9 @@ the worker.
 See `RELEASE_REPORT.md`, which re-ran every gate on the P7 tree:
 
 - **PASS**: G0, G1, G2, G2b, G3, G4, G5, G6, G6b, and G8 docs-check.
-- **G8 security: NOT RUN**, only because Semgrep can't reach its registry from this
-  environment. The other six scanners pass.
+- **G8 security: PASS in CI** (all seven scanners, plus CodeQL), with the proposed waivers in
+  `security/waivers.md`. Locally it is NOT RUN, because Semgrep can't reach its registry from
+  this environment.
 - **G7 and Load: NOT RUN**, because staging isn't provisioned yet (owner action). Both scripts
   passed dry runs against the local stack.
 
