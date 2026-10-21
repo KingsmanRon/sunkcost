@@ -9,9 +9,10 @@ UV ?= uv
 PNPM ?= pnpm
 
 # Python packages type-checked with mypy (strict settings come from pyproject.toml).
-PY_TYPECHECK := packages/spec packages/sdk-python services/worker bench \
+PY_TYPECHECK := packages/spec packages/sdk-python services/worker services/api bench \
 	adapters/langgraph adapters/openai-agents adapters/cycles examples
-PY_UNIT := packages/spec packages/sdk-python services/worker bench adapters
+PY_UNIT := packages/spec packages/sdk-python services/worker services/api bench adapters
+NOT_UNIT := not stats and not failure and not integration and not db
 
 define not_run
 	@echo "NOT RUN: $(1) ($(2))" >&2; exit 2
@@ -60,7 +61,7 @@ bench: ## G1: calibrate on public trajectory datasets; regenerates docs/BENCHMAR
 
 .PHONY: test-unit
 test-unit: ## G2: unit tests
-	$(UV) run --frozen pytest -m "not stats and not failure" $(PY_UNIT)
+	$(UV) run --frozen pytest -m "$(NOT_UNIT)" $(PY_UNIT)
 
 .PHONY: test-stats
 test-stats: ## G2b: 500 simulated workloads, fixed seeds
@@ -84,15 +85,20 @@ test-sdk-py310: ## SDK unit + G4 tests on Python 3.10, the oldest supported (fre
 	.venv-py310/bin/python -m pytest -o addopts="-ra --strict-markers --import-mode=importlib" \
 		packages/sdk-python/tests
 
-# --- Gates implemented in later phases ------------------------------------------------------
+# --- G5 Isolation, G6 Integration (need `supabase start`) ---------------------------------------
 
 .PHONY: test-db
-test-db: ## G5: pgTAP isolation tests against local Supabase (P3)
-	$(call not_run,G5 test-db,implemented in phase P3)
+test-db: ## G5: supabase db reset, pgTAP, and PostgREST isolation over HTTP (local Supabase)
+	supabase db reset
+	supabase test db
+	$(UV) run --frozen pytest -m db services/api/tests
 
 .PHONY: test-integration
-test-integration: ## G6: API + worker + local Supabase (P3/P4)
-	$(call not_run,G6 test-integration,implemented in phases P3 and P4)
+test-integration: ## G6: API (and from P4 the worker) against local Supabase
+	$(UV) run --frozen pytest -m integration services/api/tests
+
+# --- Gates implemented in later phases ------------------------------------------------------
+
 
 .PHONY: test-e2e
 test-e2e: ## G6b: console Playwright tests (P5)

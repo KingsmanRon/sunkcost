@@ -1,0 +1,11 @@
+**/.venv
+**/.venv-py310
+**/__pycache__
+**/.mypy_cache
+**/.ruff_cache
+**/.pytest_cache
+**/node_modules
+bench/.cache
+bench/results
+.git
+supabase/.temp

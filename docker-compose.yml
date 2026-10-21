@@ -1,0 +1,17 @@
+# Local stack: `supabase start && docker compose up` (ARCHITECTURE.md §11.1).
+# The API connects to the local Supabase on the host as role sunkcost_api; the password is the
+# local-only one from supabase/seed.sql. The worker joins in phase P4.
+services:
+  api:
+    build:
+      context: .
+      dockerfile: services/api/Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql://sunkcost_api:sunkcost_api_local@host.docker.internal:54322/postgres
+      SUPABASE_URL: http://host.docker.internal:54321
+      CONSOLE_ORIGIN: http://localhost:3000
+      LOG_LEVEL: INFO
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

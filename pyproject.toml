@@ -6,6 +6,7 @@ members = [
     "packages/spec",
     "packages/sdk-python",
     "services/worker",
+    "services/api",
     "bench",
     "adapters/langgraph",
     "adapters/openai-agents",
@@ -19,6 +20,7 @@ default-groups = ["dev"]
 sunkcost = { workspace = true }
 sunkcost-spec = { workspace = true }
 sunkcost-worker = { workspace = true }
+sunkcost-api = { workspace = true }
 
 [dependency-groups]
 dev = [
@@ -69,6 +71,7 @@ known-first-party = [
     "sunkcost",
     "sunkcost_spec",
     "sunkcost_worker",
+    "sunkcost_api",
     "sunkcost_bench",
     "sunkcost_langgraph",
     "sunkcost_openai_agents",
@@ -96,5 +99,7 @@ addopts = "-ra --strict-markers --import-mode=importlib"
 markers = [
     "stats: G2b statistical simulation, run by make test-stats",
     "failure: G4 failure injection, run by make test-failure",
+    "integration: G6 API and worker against a real local Supabase, run by make test-integration",
+    "db: G5 isolation through PostgREST over HTTP, run by make test-db",
 ]
 xfail_strict = true

@@ -240,7 +240,7 @@ A pure-Python module in the SDK package, imported by both the SDK and the worker
 |---|---|---|
 | `POST /v1/ingest` | API key, scope `ingest` | Batch of ≤ 1,000 events, ≤ 1 MB. Validated against `ingest-batch.v1`. Idempotent (§8). Returns `{accepted, duplicates, rejected[]}` |
 | `POST /v1/outcomes` | API key, scope `outcome:write` | One outcome by `run_id` or `(workload, external_ref)`. First final outcome wins; conflicts recorded |
-| `GET /v1/bundles/active?workload=…` | API key, scope `bundle:read` | Returns `bundle-response.v1`. `ETag` = bundle id + override state. `304` when unchanged |
+| `GET /v1/bundles/active?workload=…` | API key, scope `bundle:read` | Returns `bundle-response.v1`. `ETag` = bundle id + signature + override state, so a re-signed bundle is new (ADR-0005). `304` when unchanged |
 | `GET /v1/signing-keys` | public | Current and previous public keys |
 | `GET /healthz`, `GET /readyz` | public | Liveness; readiness also pings the DB |
 | `POST /v1/orgs`, `POST /v1/projects` | user JWT | Create organisation or project; the caller becomes owner |
@@ -251,6 +251,7 @@ A pure-Python module in the SDK package, imported by both the SDK and the worker
 | `POST /v1/workloads/{id}/override` | user JWT, role ≥ member | Emergency `shadow` override: immediate, unsigned, can only reduce enforcement |
 
 - **Errors:** RFC 9457 problem+json. Every response carries `x-request-id`.
+- **Console requests** name their organisation in an `x-sunkcost-org` header; workloads are also created on first use by `run_start` (ADR-0005).
 - **Rate limits:** a token bucket per API key, held in memory per instance (documented limitation).
 - **Operations:** structured JSON logs and Prometheus `/metrics`.
 
@@ -554,13 +555,13 @@ All tables have `org_id uuid not null`. Timestamps are `timestamptz`.
 
 | Table | Key columns | Notes |
 |---|---|---|
-| `orgs` | `id, name, webhook_url, webhook_secret_hash` | |
+| `orgs` | `id, name, webhook_url, webhook_secret_hash` | `org_id` is a generated copy of `id` |
 | `org_members` | `org_id, user_id → auth.users, role (owner/admin/member/viewer)` | PK `(org_id, user_id)` |
 | `projects` | `id, org_id, name` | |
 | `api_keys` | `id, org_id, project_id, prefix, secret_sha256, scopes text[], created_by, revoked_at, last_used_at` | Key format `sc_live_<prefix8>_<secret32>`; lookup by prefix, constant-time compare of the hash |
 | `workloads` | `id, org_id, project_id, name, mode, override, target_recall, delta, min_steps, holdout_rate, min_savings_share` | Unique `(project_id, name)` |
-| `runs` | `id (run_id), org_id, workload_id (null only while status = 'partial'), external_ref, started_at, ended_at, status, steps, total_cost_usd numeric(20,9), mode, holdout, bundle_id, would_abort_step, cost_through_would_abort numeric(20,9), aborted_step, outcome, outcome_source, outcome_at, outcome_conflict` | Index `(workload_id, outcome_at)`, `(workload_id, external_ref)` |
-| `step_events` | PK `(run_id, seq)`, `org_id, ts, kind, model, tool_name, args_hash, input_tokens, output_tokens, cost_usd numeric(20,9), error, latency_ms, score, threshold, would_abort` | Range-partitioned by month on `ts`; 90-day retention |
+| `runs` | PK `(org_id, id)` (`id` = run_id), `project_id, workload_id (null only while status = 'partial'), external_ref, started_at, ended_at, status, steps, total_cost_usd numeric(20,9), mode, holdout, bundle_id, would_abort_step, cost_through_would_abort numeric(20,9), aborted_step, outcome, outcome_source, outcome_at, outcome_conflict, received_at, run_month` | Index `(workload_id, outcome_at)`, `(workload_id, external_ref)`. `status` is derived: `partial`, `running`, or the `run_end` status (ADR-0005) |
+| `step_events` | PK `(org_id, run_id, seq, run_month)`, `ts, kind, model, tool_name, args_hash, input_tokens, output_tokens, cost_usd numeric(20,9), error, latency_ms, score, threshold, would_abort` | Range-partitioned by `run_month`, the month the server first received the run, so re-sent steps deduplicate and retention follows the server clock (ADR-0005); 90-day retention |
 | `policy_bundles` | `id, org_id, workload_id, version, status (validated/rejected/active/retired), payload jsonb, signature, key_id, metrics jsonb, reason, created_at` | Unique `(workload_id, version)`; at most one `active` per workload (partial unique index) |
 | `reports` | `id, org_id, workload_id, period_start, period_end, runs, verified_saving_usd, estimated_saving_usd, failures_caught, successes_lost, false_abort_rate, fa_ci_low, fa_ci_high` | |
 | `jobs` | `id, org_id, type, payload jsonb, status (queued/running/done/failed/dead), attempts, run_after, locked_at, error` | Claimed with `SKIP LOCKED` |
@@ -580,6 +581,7 @@ All tables have `org_id uuid not null`. Timestamps are `timestamptz`.
 - API-key lookup and the scheduler's cross-org scan go through two narrow `SECURITY DEFINER` functions:
   - `resolve_api_key(prefix)`
   - `list_due_work()`
+  - Plus `my_org_ids()` (the console's own memberships, for RLS) and `ensure_step_partitions()` (partition maintenance) (ADR-0005).
 - These functions have a pinned `search_path` and are executable only by those roles.
 
 **Other rules:**
@@ -595,7 +597,7 @@ All tables have `org_id uuid not null`. Timestamps are `timestamptz`.
 | `step` | `INSERT … ON CONFLICT (run_id, seq) DO NOTHING`; counted as a duplicate |
 | `run_end` | Upsert; `ended_at` set once |
 | `outcome` | The first final outcome wins. A different later value sets `outcome_conflict = true` and writes an `audit_log` entry, but doesn't change the stored outcome |
-| Events for an unknown `run_id` | `step` and `run_end` create a placeholder run (`status = 'partial'`); a later `run_start` fills it |
+| Events for an unknown `run_id` | `step`, `run_end` and `outcome` create a placeholder run (`status = 'partial'`); a later `run_start` fills it (ADR-0005) |
 
 ---
 
