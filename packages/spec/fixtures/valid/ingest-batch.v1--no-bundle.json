@@ -1,0 +1,71 @@
+{
+  "schema_version": "1",
+  "sent_at": "2026-09-23T10:00:12.500000Z",
+  "sdk": {
+    "name": "sunkcost-python",
+    "version": "0.1.0"
+  },
+  "dropped_events": 17,
+  "events": [
+    {
+      "type": "run_start",
+      "run_id": "01a0cdb5-38e8-7b21-8f02-6c3e9d8a7b21",
+      "workload": "support.billing_dispute",
+      "external_ref": null,
+      "started_at": "2026-09-23T10:00:00.000000Z",
+      "bundle_id": null,
+      "bundle_version": null,
+      "mode": "shadow",
+      "holdout": false
+    },
+    {
+      "type": "step",
+      "run_id": "01a0cdb5-38e8-7b21-8f02-6c3e9d8a7b21",
+      "seq": 1,
+      "ts": "2026-09-23T10:00:03.000000Z",
+      "kind": "model",
+      "model": "gpt-5",
+      "tool_name": null,
+      "args_hash": null,
+      "input_tokens": 100,
+      "output_tokens": 20,
+      "cost_usd": null,
+      "error": false,
+      "latency_ms": null,
+      "decision": {
+        "action": "CONTINUE",
+        "score": null,
+        "threshold": null,
+        "would_abort": false,
+        "reason": "no_bundle"
+      }
+    },
+    {
+      "type": "step",
+      "run_id": "01a0cdb5-38e8-7b21-8f02-6c3e9d8a7b21",
+      "seq": 2,
+      "ts": "2026-09-23T10:00:03.500000Z",
+      "kind": "tool",
+      "model": null,
+      "tool_name": "lookup_order",
+      "args_hash": null,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "cost_usd": "0",
+      "error": false,
+      "latency_ms": 310,
+      "decision": null
+    },
+    {
+      "type": "run_end",
+      "run_id": "01a0cdb5-38e8-7b21-8f02-6c3e9d8a7b21",
+      "ended_at": "2026-09-23T10:00:11.800000Z",
+      "status": "errored",
+      "total_cost_usd": "0",
+      "steps": 2,
+      "would_abort_step": null,
+      "cost_through_would_abort_usd": null,
+      "aborted_step": null
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/KingsmanRon/sunkcost/main/packages/spec/schemas/outcome.v1.json",
+  "title": "Outcome v1",
+  "description": "Body of POST /v1/outcomes. Identifies the run either by run_id or by (workload, external_ref) within the API key's project, never both. The first outcome recorded for a run wins; a different later value is stored as a conflict.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "outcome", "source"],
+  "properties": {
+    "schema_version": { "const": "1" },
+    "run_id": { "$ref": "common.v1.json#/$defs/uuid_v7" },
+    "workload": { "$ref": "common.v1.json#/$defs/workload_name" },
+    "external_ref": { "$ref": "common.v1.json#/$defs/external_ref" },
+    "outcome": { "$ref": "common.v1.json#/$defs/outcome" },
+    "source": { "$ref": "common.v1.json#/$defs/outcome_source" },
+    "reported_at": {
+      "description": "Client-side time of the report; informational. The server records its own receive time as outcome_at.",
+      "$ref": "common.v1.json#/$defs/timestamp"
+    }
+  },
+  "oneOf": [
+    {
+      "required": ["run_id"],
+      "not": { "anyOf": [{ "required": ["workload"] }, { "required": ["external_ref"] }] }
+    },
+    {
+      "required": ["workload", "external_ref"],
+      "not": { "required": ["run_id"] }
+    }
+  ]
+}

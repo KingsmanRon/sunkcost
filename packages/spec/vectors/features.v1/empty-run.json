@@ -1,0 +1,101 @@
+{
+  "feature_spec": "features.v1",
+  "name": "empty-run",
+  "description": "No steps: only the k = 0 check.",
+  "feature_names": [
+    "step_index",
+    "log_cost",
+    "log_tokens",
+    "recent_cost_share",
+    "repeat_action_rate",
+    "max_identical_streak",
+    "error_rate",
+    "error_streak",
+    "distinct_action_ratio",
+    "cycle_rate",
+    "context_growth",
+    "log_elapsed_s"
+  ],
+  "started_at": "2026-09-23T10:00:00.000000Z",
+  "steps": [],
+  "model": {
+    "type": "logistic_v1",
+    "intercept": "-1.5",
+    "features": [
+      "step_index",
+      "log_cost",
+      "log_tokens",
+      "recent_cost_share",
+      "repeat_action_rate",
+      "max_identical_streak",
+      "error_rate",
+      "error_streak",
+      "distinct_action_ratio",
+      "cycle_rate",
+      "context_growth",
+      "log_elapsed_s"
+    ],
+    "weights": [
+      "0.02",
+      "0.8",
+      "0.1",
+      "-0.5",
+      "1.2",
+      "0.3",
+      "1.5",
+      "0.6",
+      "-1.0",
+      "0.9",
+      "0.4",
+      "0.2"
+    ],
+    "means": [
+      "5.0",
+      "0.05",
+      "6.0",
+      "0.4",
+      "0.2",
+      "1.5",
+      "0.1",
+      "0.3",
+      "0.7",
+      "0.2",
+      "0.5",
+      "2.0"
+    ],
+    "stds": [
+      "4.0",
+      "0.05",
+      "2.0",
+      "0.3",
+      "0.25",
+      "1.2",
+      "0.15",
+      "0.8",
+      "0.25",
+      "0.25",
+      "0.8",
+      "1.5"
+    ]
+  },
+  "expected": [
+    {
+      "k": 0,
+      "features": [
+        "0.0",
+        "0.0",
+        "0.0",
+        "0.0",
+        "0.0",
+        "0.0",
+        "0.0",
+        "0.0",
+        "0.0",
+        "0.0",
+        "0.0",
+        "0.0"
+      ],
+      "score": "0.04950072891646235"
+    }
+  ]
+}

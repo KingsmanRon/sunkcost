@@ -1,0 +1,7 @@
+{
+  "schema_version": "1",
+  "workload": "support.billing_dispute",
+  "external_ref": "ZD-8812",
+  "outcome": "abandoned",
+  "source": "zendesk"
+}

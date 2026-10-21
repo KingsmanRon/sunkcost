@@ -1,0 +1,11 @@
+{
+  "schema_version": "1",
+  "action": "CONTINUE",
+  "mode": "shadow",
+  "score": null,
+  "threshold": null,
+  "bundle_id": null,
+  "bundle_version": null,
+  "would_abort": false,
+  "reason": "sdk_error"
+}

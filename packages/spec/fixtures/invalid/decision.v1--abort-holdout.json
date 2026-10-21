@@ -1,0 +1,11 @@
+{
+  "schema_version": "1",
+  "action": "ABORT",
+  "mode": "enforce",
+  "score": "0.9",
+  "threshold": "0.8",
+  "bundle_id": "01a03336-78b8-7c55-b624-8e5a0fac9d43",
+  "bundle_version": 7,
+  "would_abort": true,
+  "reason": "holdout"
+}

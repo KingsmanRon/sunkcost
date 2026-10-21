@@ -1,0 +1,16 @@
+{
+  "name": "string-escapes",
+  "description": "Only \" \\ and U+0000-U+001F are escaped (short forms where they exist, else lower-case \\u00xx); everything else is literal UTF-8.",
+  "input": {
+    "controls": "\u0000\u0001\b\t\n\u000b\f\r\u001f",
+    "quote_backslash_slash": "\"\\/",
+    "del_and_separators": "  ",
+    "non_ascii": "é中𝄞😀"
+  },
+  "canonical_hex": "7b22636f6e74726f6c73223a225c75303030305c75303030315c625c745c6e5c75303030625c665c725c7530303166222c2264656c5f616e645f736570617261746f7273223a227fe280a8e280a9222c226e6f6e5f6173636969223a22c3a9e4b8adf09d849ef09f9880222c2271756f74655f6261636b736c6173685f736c617368223a225c225c5c2f227d",
+  "signature": {
+    "key_id": "rfc8032-test-1",
+    "public_key_b64": "11qYAYKxCrfVS/7TyWQHOg7hcvPapiMlrwIaaPcHURo=",
+    "signature_b64": "VY37CQr0TiseJZ8towzKV7OmR2sxUv6aWjuqem774hEFiiXheT4A/Ul2QGuDrXA+4b0EeWyOY7GB92Qg18zeAA=="
+  }
+}

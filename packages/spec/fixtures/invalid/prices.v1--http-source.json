@@ -1,0 +1,22 @@
+{
+  "schema_version": "1",
+  "currency": "USD",
+  "unit": "per_1m_tokens",
+  "models": [
+    {
+      "provider": "example",
+      "model": "example-model",
+      "aliases": [],
+      "prices": [
+        {
+          "effective_from": "2026-01-01",
+          "input": "3",
+          "output": "15",
+          "tiers": [],
+          "source_url": "http://example.com/pricing",
+          "retrieved_at": "2026-09-23"
+        }
+      ]
+    }
+  ]
+}

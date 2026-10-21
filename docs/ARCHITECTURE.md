@@ -202,7 +202,7 @@ Internals:
   - Any exception inside the SDK returns `CONTINUE` with reason `sdk_error` and is counted.
   - The SDK never raises into agent code unless the adapter is configured with `raise_on_abort=True`.
 - **Holdout assignment**
-  - `holdout = (sha256(run_id)[:8] as uint32) mod 10_000 < holdout_rate × 10_000`.
+  - `holdout = (sha256(run_id)[:8] as uint32) mod 10_000 < holdout_rate × 10_000`, where `[:8]` is the first 8 hex digits of the SHA-256 of the lower-case `run_id` string (ADR-0002).
   - Deterministic and identical in both SDKs.
 - **Dependencies**
   - Python: `httpx`, `cryptography`.
@@ -226,7 +226,7 @@ A pure-Python module in the SDK package, imported by both the SDK and the worker
 
 - `features_v1(prefix) -> list[float]`, incremental form `FeatureState.update(step)`
 - `score_logistic_v1(bundle.model, x) -> float`
-- `canonical_json(obj) -> bytes` (RFC 8785 subset: objects, arrays, strings, integers, booleans, null — **no floats**)
+- `canonical_json(obj) -> bytes` (RFC 8785 subset: objects, arrays, strings, integers, booleans, null — **no floats**). Argument hashing uses full RFC 8785, floats included (ADR-0002).
 - `holdout_bucket(run_id) -> int`
 
 ### C6 · API service
@@ -395,6 +395,7 @@ sequenceDiagram
   "schema_version": "1",
   "sent_at": "2026-09-23T10:00:00Z",
   "sdk": {"name": "sunkcost-python", "version": "0.1.0"},
+  "dropped_events": 0,
   "events": [
     {"type": "run_start", "run_id": "0192…", "workload": "support.billing_dispute",
      "external_ref": "ZD-8812", "started_at": "…", "bundle_id": "…", "bundle_version": 7,
@@ -406,7 +407,8 @@ sequenceDiagram
      "decision": {"action": "CONTINUE", "score": "0.4123", "threshold": "0.8421",
                   "would_abort": false, "reason": "below_threshold"}},
     {"type": "run_end", "run_id": "0192…", "ended_at": "…", "status": "completed",
-     "total_cost_usd": "0.184000", "steps": 11},
+     "total_cost_usd": "0.184000", "steps": 11, "would_abort_step": 5,
+     "cost_through_would_abort_usd": "0.041000", "aborted_step": null},
     {"type": "outcome", "run_id": "0192…", "outcome": "success", "source": "sdk",
      "reported_at": "…"}
   ]
@@ -417,14 +419,18 @@ Rules:
 
 - Money is a decimal string with ≤ 9 fractional digits, stored as `numeric(20,9)`.
 - Scores and thresholds are decimal strings in the wire format.
+- Every event field is required; absent values are `null` (for example `cost_usd` when the price is unknown).
+- `run_end` carries the run's decision summary (`would_abort_step`, `cost_through_would_abort_usd`, `aborted_step`), because an enforced `ABORT` means no later step event exists to carry it (ADR-0002).
 
 ### 6.2 Bundle and response
 
 ```json
 {
+  "schema_version": "1",
   "bundle": {
     "schema_version": "1",
-    "bundle_id": "uuid", "workload_id": "uuid", "workload": "support.billing_dispute",
+    "bundle_id": "uuid", "org_id": "uuid", "project_id": "uuid",
+    "workload_id": "uuid", "workload": "support.billing_dispute",
     "version": 7, "feature_spec": "features.v1",
     "mode": "enforce", "holdout_rate": "0.05",
     "model": {"type": "logistic_v1", "intercept": "-2.1302",
@@ -466,10 +472,10 @@ Computed on the prefix of completed steps `1..k` at the moment `check()` is call
 | `error_streak` | consecutive errors ending at step `k` |
 | `distinct_action_ratio` | distinct `a_i` ÷ max(k,1) |
 | `cycle_rate` | for `i ≥ 2`, share of transitions `(s_{i-1}, s_i)` already seen earlier in the run; `0` if `k < 2` |
-| `context_growth` | `log1p(input_tokens_k) − log1p(input_tokens_first_model_step)`; `0` if there is no model step |
-| `log_elapsed_s` | `log1p(seconds since run_start)` |
+| `context_growth` | `log1p(input_tokens_last_model_step) − log1p(input_tokens_first_model_step)`, both within `1..k`; `0` if there is no model step |
+| `log_elapsed_s` | `log1p(max(0, seconds from run_start to ts_k))`; `0` if `k = 0` |
 
-- Arithmetic is float64 in the listed order.
+- Arithmetic is float64 in the listed order. The complete definition, including edge cases and the exact order of operations, is `packages/spec/features/features.v1.md` (ADR-0002).
 - Golden vectors in `packages/spec/vectors/features.v1/` are normative: the Python and TypeScript SDKs must match each vector within a relative tolerance of 1e-12.
 
 ### 7.2 Model
@@ -594,7 +600,7 @@ All tables have `org_id uuid not null`. Timestamps are `timestamptz`.
 
 ## 9. Security and privacy
 
-- **No prompt or completion content.** Tool arguments leave the process only as `HMAC-SHA256(args_hash_salt, canonical_json(args))`. The salt never leaves the customer.
+- **No prompt or completion content.** Tool arguments leave the process only as `HMAC-SHA256(args_hash_salt, JCS(args))`, where JCS is RFC 8785 including its number serialization (ADR-0002). The salt never leaves the customer.
 - **Transport:** TLS everywhere. The API sets HSTS and restricts CORS to the console origin, and only for JWT routes. Ingest routes reject browser `Origin` headers.
 - **Secrets:** only in Railway, Vercel and Supabase environment settings. Never committed; gitleaks runs in CI.
 - **Signing key:**
