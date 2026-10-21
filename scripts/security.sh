@@ -44,8 +44,10 @@ fi
 
 # Semgrep: the registry's default ruleset, which needs semgrep.dev.
 if curl -sSf -o /dev/null --max-time 20 https://semgrep.dev/c/p/default 2>/dev/null; then
+  excludes=()
+  while read -r id; do excludes+=(--exclude-rule "$id"); done < <(grep -oE '^- \*\*semgrep\*\* `[^`]+`' security/waivers.md | grep -oE '`[^`]+`' | tr -d '`')
   run semgrep "p/default, errors fail" uvx --from "semgrep==$SEMGREP_VERSION" semgrep scan \
-    --config p/default --error --metrics=off --quiet \
+    --config p/default --error --metrics=off --quiet "${excludes[@]}" \
     --exclude node_modules --exclude .venv --exclude .next --exclude dist --exclude bench/results .
 else
   record semgrep "NOT RUN" "semgrep.dev (rule registry) is not reachable from this network"

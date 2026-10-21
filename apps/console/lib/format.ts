@@ -1,7 +1,12 @@
+/** A rate (0..1) as a percentage number with one decimal, e.g. 0.0123 → "1.2". */
+function pct(rate: number): string {
+  return (rate * 100).toFixed(1);
+}
+
 /** A rate (0..1) as a percentage with one decimal, e.g. 0.0123 → "1.2%". Rates are not money. */
 export function percent(rate: number | null | undefined): string {
   if (rate === null || rate === undefined || Number.isNaN(rate)) return "—";
-  return `${(rate * 100).toFixed(1)}%`;
+  return `${pct(rate)}%`;
 }
 
 /** "1.2% (0.4–3.1%)": a false-abort rate with its Clopper–Pearson interval. */
@@ -14,7 +19,7 @@ export function rateWithInterval(
   if (low === null || low === undefined || high === null || high === undefined) {
     return percent(rate);
   }
-  return `${percent(rate)} (${percent(low).replace("%", "")}–${percent(high)})`;
+  return `${percent(rate)} (${pct(low)}–${percent(high)})`;
 }
 
 /** UTC ISO-8601 down to the minute, e.g. "2026-10-21 14:05 UTC". */

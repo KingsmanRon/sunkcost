@@ -451,6 +451,16 @@ See `RELEASE_REPORT.md`, which re-ran every gate on the P7 tree:
   multi-stage builds), and pillow had 8 advisories (upgraded).
 - **A G6 test left an active bundle without a payload.** Later local workers tried to
   drift-check it; the test now retires it.
+- **Semgrep's first CI run found 14 findings.** One was real: a fork pull request from a branch
+  named `main` could have triggered `staging.yml` with staging secrets. The staging jobs now
+  run only for a push to `main` of this repository. Also fixed:
+  - Dependabot now has a 7-day cooldown, and pnpm `minimumReleaseAge` is 7 days.
+  - pnpm `blockExoticSubdeps` and `trustPolicy: no-downgrade` are set.
+  - The console's rate formatting no longer uses string `replace`.
+  - The benchmark downloader accepts https URLs only.
+
+  Four false positives are suppressed inline, each with its reason. The uv cooldown is a
+  proposed waiver until 2026-10-28 (`security/waivers.md`).
 
 ### Open issues
 

@@ -33,12 +33,21 @@ env:
 jobs:
   migrate:
     name: Migrations → staging
-    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    # Only a successful CI run for a push to main in this repository: a pull request (from a fork
+    # or a branch that happens to be named main) never reaches the staging environment's secrets.
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.event == 'push' &&
+       github.event.workflow_run.head_branch == 'main' &&
+       github.event.workflow_run.head_repository.full_name == github.repository)
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     environment: staging
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      # The commit is a push to main of this repository (the migrate job's condition), never PR
+      # code, so the workflow_run checkout finding does not apply (security/waivers.md).
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1 nosemgrep
         with:
           ref: ${{ github.event.workflow_run.head_sha || github.sha }}
           persist-credentials: false
@@ -67,7 +76,9 @@ jobs:
     timeout-minutes: 30
     environment: staging
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      # The commit is a push to main of this repository (the migrate job's condition), never PR
+      # code, so the workflow_run checkout finding does not apply (security/waivers.md).
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1 nosemgrep
         with:
           ref: ${{ github.event.workflow_run.head_sha || github.sha }}
           persist-credentials: false
@@ -86,7 +97,9 @@ jobs:
     timeout-minutes: 30
     environment: staging
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      # The commit is a push to main of this repository (the migrate job's condition), never PR
+      # code, so the workflow_run checkout finding does not apply (security/waivers.md).
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1 nosemgrep
         with:
           ref: ${{ github.event.workflow_run.head_sha || github.sha }}
           persist-credentials: false

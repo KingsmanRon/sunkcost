@@ -111,7 +111,10 @@ def hash_args(arguments: Any) -> str:
 
 def git_blob_sha1(data: bytes) -> str:
     """The object id git gives a file's contents, to check downloads from a pinned commit."""
-    return hashlib.sha1(b"blob %d\0" % len(data) + data, usedforsecurity=False).hexdigest()
+    # Git object ids are SHA-1 by definition: this matches upstream blobs and signs nothing, so the
+    # weak-hash finding does not apply (security/waivers.md).
+    blob = b"blob %d\0" % len(data) + data
+    return hashlib.sha1(blob, usedforsecurity=False).hexdigest()  # nosemgrep
 
 
 def fetch(url: str, dest: Path, *, blob_sha1: str | None = None, attempts: int = 4) -> Path:
@@ -120,13 +123,16 @@ def fetch(url: str, dest: Path, *, blob_sha1: str | None = None, attempts: int =
     With ``blob_sha1`` the file must match that git blob id; a truncated or altered download is
     deleted and retried.
     """
+    if not url.startswith("https://"):
+        raise ValueError(f"only https downloads are allowed: {url}")
     if dest.exists() and (blob_sha1 is None or git_blob_sha1(dest.read_bytes()) == blob_sha1):
         return dest
     dest.parent.mkdir(parents=True, exist_ok=True)
     tmp = dest.with_suffix(dest.suffix + ".part")
     for attempt in range(attempts):
         try:
-            with urllib.request.urlopen(url, timeout=120) as resp:  # noqa: S310 - fixed https URLs
+            # https only (checked above), from the fixed URLs in bench/DATASETS.md.
+            with urllib.request.urlopen(url, timeout=120) as resp:  # noqa: S310  # nosemgrep
                 data = resp.read()
             if blob_sha1 is not None and git_blob_sha1(data) != blob_sha1:
                 raise OSError(f"{url}: content does not match git blob {blob_sha1}")

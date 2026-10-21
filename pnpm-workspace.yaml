@@ -2,6 +2,10 @@ packages:
   - packages/sdk-typescript
   - apps/console
 
-# Supply chain: skip versions published less than a day ago; install scripts stay blocked
-# (pnpm's default) unless a package is listed in onlyBuiltDependencies.
-minimumReleaseAge: 1440
+# Supply chain: skip versions published less than seven days ago; install scripts stay blocked
+# (pnpm's default) unless a package is listed in onlyBuiltDependencies. Transitive dependencies
+# may only come from the registry (no git or tarball URLs), and a package whose new version drops
+# the provenance or trusted-publisher evidence its earlier versions had is refused.
+minimumReleaseAge: 10080
+blockExoticSubdeps: true
+trustPolicy: no-downgrade

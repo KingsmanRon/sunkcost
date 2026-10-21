@@ -4,6 +4,8 @@ updates:
     directory: /
     schedule:
       interval: weekly
+    cooldown:
+      default-days: 7 # supply chain: never propose a release younger than a week
     groups:
       python:
         patterns: ["*"]
@@ -11,6 +13,8 @@ updates:
     directory: /
     schedule:
       interval: weekly
+    cooldown:
+      default-days: 7 # supply chain: never propose a release younger than a week
     groups:
       javascript:
         patterns: ["*"]
@@ -18,6 +22,8 @@ updates:
     directory: /
     schedule:
       interval: weekly
+    cooldown:
+      default-days: 7 # supply chain: never propose a release younger than a week
     groups:
       actions:
         patterns: ["*"]

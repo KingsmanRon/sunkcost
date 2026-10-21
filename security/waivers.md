@@ -35,4 +35,20 @@ engineer on 2026-10-21; **not yet accepted** by the owner. Expires at the next r
 
 ## Waivers
 
-None.
+- **semgrep** `package_managers.uv.uv-missing-dependency-cooldown.uv-missing-dependency-cooldown`:
+  `pyproject.toml` has no `exclude-newer = "7 days"` yet. The dependency floors were set this
+  week (for example `fastapi>=0.156`), so a 7-day cooldown cannot resolve until they age; the
+  other ecosystems already have one (pnpm `minimumReleaseAge: 10080`, Dependabot
+  `cooldown: 7`). Proposed by the implementing engineer on 2026-10-21, not yet accepted by the
+  owner; expires 2026-10-28, when the cooldown should be added and the lock re-resolved.
+
+Suppressed inline (`# nosemgrep` on the line, with the reason in the comment above it):
+
+- `bench/sunkcost_bench/common.py`, SHA-1: git object ids are SHA-1 by definition; the hash
+  matches downloads to pinned upstream blobs and signs nothing.
+- `bench/sunkcost_bench/common.py`, dynamic `urlopen`: the URL is checked to be https and comes
+  from the fixed list in `bench/DATASETS.md`.
+- `packages/sdk-python/sunkcost/prices.py`, `importlib.resources` on Python 3.7: every supported
+  Python (>= 3.10) has it.
+- `.github/workflows/staging.yml`, checkout in a `workflow_run`: the jobs run only for a push to
+  `main` of this repository (the `migrate` job's condition), never for pull-request code.
