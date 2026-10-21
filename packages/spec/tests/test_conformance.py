@@ -18,6 +18,7 @@ from jsonschema.protocols import Validator
 from pydantic import BaseModel
 from pydantic import ValidationError as ModelError
 from referencing import Registry, Resource
+
 from sunkcost_spec import models, patterns
 from sunkcost_spec.resources import FIXTURES_DIR, PRICES_PATH, SCHEMAS_DIR, load_json, schema_paths
 

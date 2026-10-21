@@ -5,6 +5,7 @@ import sys
 from types import ModuleType
 
 import pytest
+
 from sunkcost_spec.resources import SPEC_ROOT
 
 

@@ -1,0 +1,122 @@
+{
+  "commit": "1217d74",
+  "dataset": "tau2-airline",
+  "title": "τ²-bench airline",
+  "domain": "customer service (airline)",
+  "source": "github.com/sierra-research/tau2-bench @ b7ea907, data/tau2/results/final",
+  "licence": "MIT",
+  "licence_confirmed": true,
+  "cost_source": "recorded USD per model call",
+  "cost_unit": "USD",
+  "runs": 800,
+  "successes": 431,
+  "failures": 369,
+  "steps": 14743,
+  "batches": {
+    "claude-3-7-sonnet-20250219": 200,
+    "gpt-4.1-2025-04-14": 200,
+    "gpt-4.1-mini-2025-04-14": 200,
+    "o4-mini-2025-04-16": 200
+  },
+  "settings": {
+    "delta": "0.05",
+    "min_steps": 3,
+    "min_savings_share": "0.02"
+  },
+  "protocols": {
+    "batch-normalized": {
+      "targets": {
+        "0.90": {
+          "status": "insufficient_data",
+          "reason": "calibration has 85 successes; test has 76 successes (need >= 100 successes and >= 30 failures in each)",
+          "counts": {
+            "train_success": 270,
+            "train_failure": 210,
+            "calibration_success": 85,
+            "calibration_failure": 75,
+            "test_success": 76,
+            "test_failure": 84
+          }
+        },
+        "0.95": {
+          "status": "insufficient_data",
+          "reason": "calibration has 85 successes; test has 76 successes (need >= 100 successes and >= 30 failures in each)",
+          "counts": {
+            "train_success": 270,
+            "train_failure": 210,
+            "calibration_success": 85,
+            "calibration_failure": 75,
+            "test_success": 76,
+            "test_failure": 84
+          }
+        }
+      },
+      "curve": [],
+      "test_runs_with_task_in_train": 1.0
+    },
+    "shuffled": {
+      "targets": {
+        "0.90": {
+          "status": "insufficient_data",
+          "reason": "calibration has 83 successes; test has 90 successes (need >= 100 successes and >= 30 failures in each)",
+          "counts": {
+            "train_success": 258,
+            "train_failure": 222,
+            "calibration_success": 83,
+            "calibration_failure": 77,
+            "test_success": 90,
+            "test_failure": 70
+          }
+        },
+        "0.95": {
+          "status": "insufficient_data",
+          "reason": "calibration has 83 successes; test has 90 successes (need >= 100 successes and >= 30 failures in each)",
+          "counts": {
+            "train_success": 258,
+            "train_failure": 222,
+            "calibration_success": 83,
+            "calibration_failure": 77,
+            "test_success": 90,
+            "test_failure": 70
+          }
+        }
+      },
+      "curve": [],
+      "test_runs_with_task_in_train": 1.0
+    },
+    "absolute": {
+      "targets": {
+        "0.90": {
+          "status": "insufficient_data",
+          "reason": "calibration has 77 successes; test has 81 successes (need >= 100 successes and >= 30 failures in each)",
+          "counts": {
+            "train_success": 273,
+            "train_failure": 207,
+            "calibration_success": 77,
+            "calibration_failure": 83,
+            "test_success": 81,
+            "test_failure": 79
+          }
+        },
+        "0.95": {
+          "status": "insufficient_data",
+          "reason": "calibration has 77 successes; test has 81 successes (need >= 100 successes and >= 30 failures in each)",
+          "counts": {
+            "train_success": 273,
+            "train_failure": 207,
+            "calibration_success": 77,
+            "calibration_failure": 83,
+            "test_success": 81,
+            "test_failure": 79
+          }
+        }
+      },
+      "curve": [],
+      "test_runs_with_task_in_train": 1.0
+    }
+  },
+  "s1": {
+    "met": false,
+    "why": "no calibrated policy (insufficient_data: calibration has 85 successes; test has 76 successes (need >= 100 successes and >= 30 failures in each))"
+  }
+}

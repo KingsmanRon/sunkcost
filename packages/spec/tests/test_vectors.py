@@ -11,6 +11,7 @@ from typing import Any, get_args
 
 import pytest
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PublicKey
+
 from sunkcost_spec import models
 from sunkcost_spec.resources import FIXTURES_DIR, VECTORS_DIR, load_json
 
