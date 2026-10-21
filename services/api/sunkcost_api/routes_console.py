@@ -6,6 +6,7 @@ that org under RLS before any row is read (ADR-0005).
 
 from __future__ import annotations
 
+import secrets
 import uuid
 from decimal import Decimal
 from typing import Any, Literal
@@ -280,3 +281,24 @@ async def override(workload_id: uuid.UUID, request: Request) -> dict[str, Any]:
         target = f"workload:{wid}"
         await audit(conn, org_id, u.id, "workload.override", target, before=before, after=after)
     return jsonable(after)
+
+
+class WebhookIn(Body):
+    url: str = Field(pattern=r"^https://[^\s]{1,2000}$")
+
+
+@router.put("/v1/orgs/webhook")
+async def set_webhook(request: Request) -> dict[str, Any]:
+    """Set the org's webhook URL and a new signing secret, shown once (ADR-0006).
+
+    The secret is stored encrypted in Supabase Vault for the worker; only its hash is readable.
+    """
+    u = await user(request)
+    org_id = org_header(request)
+    body = parse(WebhookIn, await read_json(request))
+    secret = "whsec_" + secrets.token_urlsafe(32)
+    async with services(request).db.tx(org_id) as conn:
+        await require_role(conn, org_id, u, "admin")
+        await conn.execute("select public.set_org_webhook(%s, %s, %s)", (org_id, body.url, secret))
+        await audit(conn, org_id, u.id, "org.webhook", f"org:{org_id}", after={"url": body.url})
+    return {"url": body.url, "secret": secret}

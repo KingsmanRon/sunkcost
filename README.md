@@ -5,11 +5,16 @@ keeping a statistically guaranteed share of the runs that would have succeeded. 
 scores each step against a signed policy locally, with no network call on the hot path. Teams run it in
 shadow mode first and get a savings report computed only from observed spend.
 
-**Status:** pre-release, under construction. Done so far: P0 (contracts and tooling), P1 (core,
-calibration library and the public benchmark, [`docs/BENCHMARKS.md`](docs/BENCHMARKS.md)) and P2
-(the Python SDK and its LangGraph, OpenAI Agents and Cycles adapters, with offline
-[`examples/`](examples/)) and P3 (the Supabase schema with row-level security, and the API). See
-[`docs/PROGRESS.md`](docs/PROGRESS.md). Nothing is published yet.
+**Status:** pre-release, under construction. Done so far:
+- P0: contracts and tooling.
+- P1: the core, the calibration library and the public benchmark
+  ([`docs/BENCHMARKS.md`](docs/BENCHMARKS.md)).
+- P2: the Python SDK and its LangGraph, OpenAI Agents and Cycles adapters, with offline
+  [`examples/`](examples/).
+- P3: the Supabase schema with row-level security, and the API.
+- P4: the worker, which handles calibration, re-signing, reports, drift and webhooks.
+
+See [`docs/PROGRESS.md`](docs/PROGRESS.md). Nothing is published yet.
 
 ## Documents
 

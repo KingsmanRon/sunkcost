@@ -142,7 +142,7 @@ jobs:
         run: supabase stop --no-backup
 
   api-image:
-    name: API container image builds
+    name: API and worker container images build
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
@@ -150,6 +150,7 @@ jobs:
         with:
           persist-credentials: false
       - run: docker build -f services/api/Dockerfile -t sunkcost-api:ci .
+      - run: docker build -f services/worker/Dockerfile -t sunkcost-worker:ci .
 
   secrets:
     name: gitleaks

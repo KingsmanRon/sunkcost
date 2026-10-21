@@ -94,6 +94,9 @@ def sign_up(anon_key: str) -> Account:
 
 def admin_execute(sql: str, params: tuple[Any, ...] = ()) -> list[dict[str, Any]]:
     with psycopg.connect(ADMIN_DB_URL, row_factory=dict_row) as conn:
+        # The database default (extra_float_digits = 0) rounds float8 output to 15 digits; read
+        # exact values so assertions compare what was stored.
+        conn.execute("set extra_float_digits = 3")
         cur = conn.execute(sql, params)
         rows = cur.fetchall() if cur.description else []
         conn.commit()
