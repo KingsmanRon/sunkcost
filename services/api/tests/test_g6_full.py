@@ -615,3 +615,6 @@ def test_drift_checks_follow_the_configured_period(
     ]
     assert len(keys) == 1
     assert keys[0].startswith(f"drift:{wid}:60:")
+    # The placeholder bundle has no payload; retire it so later workers never check it.
+    db_admin("update public.policy_bundles set status = 'retired' where workload_id = %s", (wid,))
+    db_admin("delete from public.jobs where org_id = %s and type = 'drift_check'", (tenant.org_id,))
