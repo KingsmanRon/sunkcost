@@ -2,7 +2,15 @@
 # Shared tool configuration (ruff, mypy, pytest) lives here.
 
 [tool.uv.workspace]
-members = ["packages/spec", "packages/sdk-python", "services/worker", "bench"]
+members = [
+    "packages/spec",
+    "packages/sdk-python",
+    "services/worker",
+    "bench",
+    "adapters/langgraph",
+    "adapters/openai-agents",
+    "adapters/cycles",
+]
 
 [tool.uv]
 default-groups = ["dev"]
@@ -57,7 +65,15 @@ allowed-confusables = ["−", "×", "÷", "σ", "μ", "Σ", "α", "δ", "τ", "�
 "packages/spec/tools/**" = ["S311"]
 
 [tool.ruff.lint.isort]
-known-first-party = ["sunkcost", "sunkcost_spec", "sunkcost_worker", "sunkcost_bench"]
+known-first-party = [
+    "sunkcost",
+    "sunkcost_spec",
+    "sunkcost_worker",
+    "sunkcost_bench",
+    "sunkcost_langgraph",
+    "sunkcost_openai_agents",
+    "sunkcost_cycles",
+]
 
 [tool.mypy]
 python_version = "3.12"
@@ -65,9 +81,9 @@ strict = true
 warn_unreachable = true
 plugins = ["pydantic.mypy"]
 
-# scikit-learn and threadpoolctl ship no type information; everything else is checked strictly.
+# scikit-learn, threadpoolctl and runcycles ship no type information; everything else is strict.
 [[tool.mypy.overrides]]
-module = ["sklearn", "sklearn.*", "threadpoolctl"]
+module = ["sklearn", "sklearn.*", "threadpoolctl", "runcycles", "runcycles.*"]
 ignore_missing_imports = true
 
 [tool.pydantic-mypy]
@@ -77,5 +93,8 @@ warn_required_dynamic_aliases = true
 
 [tool.pytest.ini_options]
 addopts = "-ra --strict-markers --import-mode=importlib"
-markers = ["stats: G2b statistical simulation, run by make test-stats"]
+markers = [
+    "stats: G2b statistical simulation, run by make test-stats",
+    "failure: G4 failure injection, run by make test-failure",
+]
 xfail_strict = true

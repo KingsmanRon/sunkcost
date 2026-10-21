@@ -5,9 +5,10 @@ keeping a statistically guaranteed share of the runs that would have succeeded. 
 scores each step against a signed policy locally, with no network call on the hot path. Teams run it in
 shadow mode first and get a savings report computed only from observed spend.
 
-**Status:** pre-release, under construction. Phases P0 (contracts and tooling) and P1 (core,
-calibration library and the public benchmark, [`docs/BENCHMARKS.md`](docs/BENCHMARKS.md)) are done;
-see [`docs/PROGRESS.md`](docs/PROGRESS.md). There is nothing to install yet.
+**Status:** pre-release, under construction. Done so far: P0 (contracts and tooling), P1 (core,
+calibration library and the public benchmark, [`docs/BENCHMARKS.md`](docs/BENCHMARKS.md)) and P2
+(the Python SDK and its LangGraph, OpenAI Agents and Cycles adapters, with offline
+[`examples/`](examples/)). See [`docs/PROGRESS.md`](docs/PROGRESS.md). Nothing is published yet.
 
 ## Documents
 
@@ -29,6 +30,9 @@ make lint typecheck     # gate G0
 make test-unit          # gate G2
 make test-stats         # gate G2b: 500 simulated workloads (about 6 minutes on 4 cores)
 make bench              # gate G1: downloads public datasets, regenerates docs/BENCHMARKS.md
+make bench-sdk          # gate G3: check() latency, written to docs/PERF.md
+make test-failure       # gate G4: failure injection against a local HTTP server
+uv run python examples/basic_loop.py   # an agent stopped by Sunkcost, offline, no keys
 make help               # every gate; ones not built yet exit 2 with "NOT RUN"
 ```
 

@@ -185,12 +185,13 @@ run.outcome("success", source="zendesk") # optional here; can also arrive via AP
 Internals:
 
 - **Bundle manager**
-  - Fetches the bundle at start-up, then refreshes every 300 s using `If-None-Match`.
+  - Fetches the bundle at start-up, then refreshes every 300 s using `If-None-Match` (`GET /v1/bundles/active?workload=<name>`). A 404 means no active bundle and clears the cached one, which can only reduce enforcement (ADR-0004).
   - Verifies the Ed25519 signature against `trusted_keys` over the canonical bytes.
   - Rejects a bundle if the signature is bad, it has expired, `workload` doesn't match, or `version` is lower than the cached version.
-  - May cache to disk (`SUNKCOST_CACHE_DIR`).
+  - May cache to disk (`SUNKCOST_CACHE_DIR`), together with the version floor used for rollback protection.
+  - With no API key or endpoint, the SDK runs offline: decisions only, events discarded (ADR-0004).
 - **Decision engine**
-  - Pure function: `(bundle, run_prefix) → Decision`, running in O(steps).
+  - Pure function: `(bundle, run_prefix) → Decision`, running in O(steps). The order in which the reasons apply is fixed in ADR-0004.
   - Feature state is maintained incrementally, so each check is O(1) amortised.
 - **Event buffer**
   - Bounded in-memory queue (default 10,000 events).
@@ -212,9 +213,9 @@ Internals:
 
 | Adapter | Hook | On ABORT |
 |---|---|---|
-| `sunkcost-langgraph` | Node/tool callback before each model and tool invocation | Raises `RunAborted`; the graph's error edge handles it |
-| `sunkcost-openai-agents` | Agents SDK run hooks (before LLM call, before tool call; after each with usage) | Raises `RunAborted` from the hook |
-| `sunkcost-cycles` | Wraps the Cycles client lifecycle. `check()` runs before Cycles `reserve`. On ABORT, no reservation is made. | Raises `RunAborted`; no Cycles reservation is created |
+| `sunkcost-langgraph` | LangChain callback handler (`raise_error=True`): `on_chat_model_start`/`on_llm_start` and `on_tool_start` before each model and tool invocation | Raises `RunAborted`; a node `error_handler` (LangGraph ≥ 1.2) handles it |
+| `sunkcost-openai-agents` | Agents SDK run hooks (`on_llm_start`, `on_tool_start`; `on_llm_end` with usage, `on_tool_end`) | Raises `RunAborted` from the hook; `run_agent` unwraps the SDK's `UserError` around tool hooks |
+| `sunkcost-cycles` | Wraps the Cycles (`runcycles`) lifecycle: a `guard` decorator above `@cycles`, or `reserve`/`commit` helpers, runs `check()` before the reservation. On ABORT, no reservation is made (ADR-0004). | Raises `RunAborted`; no Cycles reservation is created |
 
 Each adapter ships an example in `examples/` that runs with a fake LLM, so it works without an API key.
 
@@ -315,7 +316,7 @@ The **enforce toggle is disabled** until the workload has at least one `validate
 | # | From → To | Transport | Auth | Sync? | Payload | Failure behaviour |
 |---|---|---|---|---|---|---|
 | ① | SDK → API `/v1/ingest` | HTTPS POST, JSON, gzip allowed | `Authorization: Bearer sc_live_…` (scope `ingest`) | Async (background flush) | `ingest-batch.v1` | Retry with backoff; bounded buffer drops oldest; agent unaffected |
-| ② | SDK → API `/v1/bundles/active` | HTTPS GET, `If-None-Match` | API key (scope `bundle:read`) | Async (background refresh) | `bundle-response.v1` | Keep cached bundle until `expires_at`; after that, no aborts (`bundle_expired`) |
+| ② | SDK → API `/v1/bundles/active?workload=` | HTTPS GET, `If-None-Match` | API key (scope `bundle:read`) | Async (background refresh) | `bundle-response.v1` | Keep cached bundle until `expires_at`; after that, no aborts (`bundle_expired`) |
 | ③ | Business system → API `/v1/outcomes` | HTTPS POST | API key (scope `outcome:write`) | Sync | `outcome.v1` | Client retries; server idempotent |
 | ④ | API → Postgres | TLS via Supavisor transaction pooler | DB role `sunkcost_api`; `SET LOCAL app.org_id` per transaction | Sync | SQL | 503 with `Retry-After`; the SDK retries |
 | ⑤ | Worker → Postgres | TLS, **session** pooler (port 5432) for advisory locks and long jobs | DB role `sunkcost_worker` | Sync | SQL | Job retried up to 3×, then `dead` and visible in the console |
