@@ -1,0 +1,14 @@
+# Railway service "worker" (ARCHITECTURE.md §11.2, docs/DEPLOYMENT.md). In the service's settings,
+# set the config-as-code path to /services/worker/railway.toml and leave the root directory at the
+# repo root. The worker has no public domain; Railway health-checks /healthz on $PORT at deploy.
+
+[build]
+builder = "DOCKERFILE"
+dockerfilePath = "services/worker/Dockerfile"
+watchPatterns = ["services/worker/**", "packages/sdk-python/**", "packages/spec/**", "uv.lock"]
+
+[deploy]
+healthcheckPath = "/healthz"
+healthcheckTimeout = 120
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 5

@@ -1,0 +1,115 @@
+# Staging (ARCHITECTURE.md §11.4): after CI passes on main, apply migrations to the staging
+# Supabase project, deploy the API and worker to Railway staging, then run the staging smoke (G7).
+# The console's Vercel Preview deploys from main through Vercel's Git integration; migrations are
+# expand-only (CLAUDE.md), so the order between the two does not matter. Configuration lives in
+# the GitHub environment "staging" (docs/DEPLOYMENT.md). No local machine ever runs these steps.
+name: staging
+
+on:
+  workflow_run:
+    workflows: [ci]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      load_test:
+        description: Also run the 10-minute load test after the smoke
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: staging
+  cancel-in-progress: false
+
+env:
+  UV_VERSION: "0.12.18"
+  SUPABASE_CLI_VERSION: "2.117.0"
+  SUPABASE_CLI_SHA256: "69c05f85b9e47ee706d30f1a6ca8a526b4e337bfd12c7ef1ef522d24e7280d24"
+  RAILWAY_CLI_VERSION: "5.63.4"
+
+jobs:
+  migrate:
+    name: Migrations → staging
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    environment: staging
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+          persist-credentials: false
+      - name: Install the Supabase CLI (checksum-verified release binary)
+        run: |
+          archive="supabase_${SUPABASE_CLI_VERSION}_linux_amd64.tar.gz"
+          curl -sSfL -o "$RUNNER_TEMP/$archive" \
+            "https://github.com/supabase/cli/releases/download/v${SUPABASE_CLI_VERSION}/${archive}"
+          echo "${SUPABASE_CLI_SHA256}  $RUNNER_TEMP/$archive" | sha256sum --check --strict
+          tar -xzf "$RUNNER_TEMP/$archive" -C "$RUNNER_TEMP" supabase
+          echo "$RUNNER_TEMP" >> "$GITHUB_PATH"
+      - name: Apply migrations
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+          PROJECT_REF: ${{ vars.SUPABASE_PROJECT_REF }}
+        run: |
+          supabase link --project-ref "$PROJECT_REF" --password "$SUPABASE_DB_PASSWORD"
+          supabase db push --linked --skip-vault --dry-run --password "$SUPABASE_DB_PASSWORD"
+          supabase db push --linked --skip-vault --yes --password "$SUPABASE_DB_PASSWORD"
+
+  deploy:
+    name: Railway staging (api, worker)
+    needs: migrate
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    environment: staging
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+          persist-credentials: false
+      - run: npm install --global "@railway/cli@${RAILWAY_CLI_VERSION}"
+      - name: Deploy
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        run: |
+          railway up --ci --service api --environment staging
+          railway up --ci --service worker --environment staging
+
+  smoke:
+    name: G7 staging smoke
+    needs: deploy
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    environment: staging
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+        with:
+          version: ${{ env.UV_VERSION }}
+      - run: uv sync --locked --all-packages
+      - name: Smoke
+        env:
+          SMOKE_API_URL: ${{ vars.SMOKE_API_URL }}
+          SMOKE_SUPABASE_URL: ${{ vars.SMOKE_SUPABASE_URL }}
+          SMOKE_SUPABASE_ANON_KEY: ${{ vars.SMOKE_SUPABASE_ANON_KEY }}
+          SMOKE_SIGNING_KEY_ID: ${{ vars.SMOKE_SIGNING_KEY_ID }}
+          SMOKE_SIGNING_PUBLIC_KEY: ${{ vars.SMOKE_SIGNING_PUBLIC_KEY }}
+          SMOKE_USER_EMAIL: ${{ secrets.SMOKE_USER_EMAIL }}
+          SMOKE_USER_PASSWORD: ${{ secrets.SMOKE_USER_PASSWORD }}
+        run: make smoke-staging
+      - name: Load test (10 minutes)
+        if: github.event_name == 'workflow_dispatch' && inputs.load_test
+        env:
+          SMOKE_API_URL: ${{ vars.SMOKE_API_URL }}
+          SMOKE_SUPABASE_URL: ${{ vars.SMOKE_SUPABASE_URL }}
+          SMOKE_SUPABASE_ANON_KEY: ${{ vars.SMOKE_SUPABASE_ANON_KEY }}
+          SMOKE_USER_EMAIL: ${{ secrets.SMOKE_USER_EMAIL }}
+          SMOKE_USER_PASSWORD: ${{ secrets.SMOKE_USER_PASSWORD }}
+        run: make load-test

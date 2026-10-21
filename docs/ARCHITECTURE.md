@@ -666,7 +666,7 @@ All tables have `org_id uuid not null`. Timestamps are `timestamptz`.
 ### 11.2 Railway
 
 - Two services from one repo, both built from Dockerfiles: `services/api/Dockerfile` and `services/worker/Dockerfile`.
-- Health checks: `/readyz` for the API; the worker exposes `/healthz` on an internal port.
+- Health checks: `/readyz` for the API; the worker exposes `/healthz` on an internal port. Both listen on Railway's `$PORT`, and deploys run from GitHub Actions after migrations (ADR-0009).
 - **Migrations never run in Railway pre-deploy.**
   - Migrations are applied by a GitHub Actions workflow with `supabase db push`.
   - Staging runs on merge to `main`.
@@ -683,10 +683,14 @@ All tables have `org_id uuid not null`. Timestamps are `timestamptz`.
 | api | `LOG_LEVEL`, `RATE_LIMIT_PER_MIN` | |
 | worker | `DATABASE_URL` | Session pooler, role `sunkcost_worker` |
 | worker | `BUNDLE_SIGNING_KEY`, `BUNDLE_SIGNING_KEY_ID` | Base64 Ed25519 seed |
-| worker | `WEBHOOK_TIMEOUT_S` | |
+| worker | `WEBHOOK_TIMEOUT_S`, `POLL_INTERVAL_S`, `SCHEDULE_INTERVAL_S`, `DRIFT_INTERVAL_S` | Defaults 10, 2, 60, 3600 s; staging shortens the last two for G7 (ADR-0009) |
 | console | `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `NEXT_PUBLIC_API_URL` | |
 
+The full list, with the GitHub environments and registry settings, is in `docs/DEPLOYMENT.md`.
+
 ### 11.4 Release flow
+
+Implemented by `.github/workflows/staging.yml` and `release.yml` (ADR-0009).
 
 ```
 PR ──► CI (all gates except G7) ──► merge to main

@@ -100,7 +100,7 @@ test-db: ## G5: supabase db reset, pgTAP, and PostgREST isolation over HTTP (loc
 test-integration: ## G6: API (and from P4 the worker) against local Supabase
 	$(UV) run --frozen pytest -m integration services/api/tests
 
-# --- Gates implemented in later phases ------------------------------------------------------
+# --- Console, staging, security and docs gates ----------------------------------------------
 
 
 .PHONY: test-e2e
@@ -113,17 +113,17 @@ test-e2e: ## G6b: console Playwright tests against local Supabase, the API and t
 	$(PNPM) --filter @sunkcost/console exec playwright test
 
 .PHONY: smoke-staging
-smoke-staging: ## G7: smoke test against deployed staging (P7)
-	$(call not_run,G7 smoke-staging,implemented in phase P7)
+smoke-staging: ## G7: smoke test against deployed staging (SMOKE_* variables; docs/DEPLOYMENT.md)
+	$(UV) run --frozen python scripts/smoke.py
 
 .PHONY: load-test
-load-test: ## Load: sustained ingest against staging (P7)
-	$(call not_run,load-test,implemented in phase P7)
+load-test: ## Load: 10 minutes of ingest at 1,000 events/s against staging, recorded in docs/PERF.md
+	$(UV) run --frozen python scripts/load_test.py
 
 .PHONY: security
-security: ## G8: gitleaks, Semgrep, pip-audit, pnpm audit, Trivy (P7)
-	$(call not_run,G8 security,implemented in phase P7)
+security: ## G8: gitleaks, Semgrep, pip-audit, pnpm audit, Trivy (fs and both images)
+	scripts/security.sh
 
 .PHONY: docs-check
-docs-check: ## G8: README quickstart in a clean container (P7)
-	$(call not_run,G8 docs-check,implemented in phase P7)
+docs-check: ## G8: Markdown links, then the README quickstart in a clean container
+	scripts/docs-check.sh

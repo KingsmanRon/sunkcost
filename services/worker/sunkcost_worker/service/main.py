@@ -111,6 +111,7 @@ def main() -> None:  # pragma: no cover - process entry point
         Signer(settings.signing_key_b64, settings.signing_key_id),
         webhook_timeout_s=settings.webhook_timeout_s,
         webhook_allow_private=settings.webhook_allow_private,
+        drift_interval_s=settings.drift_interval_s,
     )
     worker.publish_signing_key()
     lock = SchedulerLock(settings.database_url)

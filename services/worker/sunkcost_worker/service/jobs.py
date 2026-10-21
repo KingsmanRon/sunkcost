@@ -165,6 +165,7 @@ class Worker:
         webhook_allow_private: bool = False,
         webhook_transport: httpx.BaseTransport | None = None,
         clock_us: Callable[[], int] = _now_us,
+        drift_interval_s: int = 3600,
     ) -> None:
         self.db = db
         self.signer = signer
@@ -172,6 +173,7 @@ class Worker:
         self.webhook_allow_private = webhook_allow_private
         self.webhook_transport = webhook_transport
         self.clock_us = clock_us
+        self.drift_interval_s = max(60, drift_interval_s)  # one drift check per workload per period
         self.handlers: dict[str, Callable[[str, dict[str, Any]], dict[str, Any]]] = {
             "calibrate": self.calibrate,
             "resign_bundle": self.resign_bundle,
@@ -650,7 +652,9 @@ class Worker:
                 ),
             ]
             if detail.get("active_bundle_id"):
-                plans.append(("drift_check", {"workload_id": wid}, f"drift:{wid}:{now:%Y%m%d%H}"))
+                period = int(now.timestamp()) // self.drift_interval_s
+                key = f"drift:{wid}:{self.drift_interval_s}:{period}"
+                plans.append(("drift_check", {"workload_id": wid}, key))
                 plans.append(
                     ("resign_bundle", {"workload_id": wid}, f"resign:{wid}:{today:%Y%m%d}")
                 )

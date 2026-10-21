@@ -14,6 +14,7 @@ class WorkerSettings:
     webhook_timeout_s: float = 10.0
     poll_interval_s: float = 2.0
     schedule_interval_s: float = 60.0
+    drift_interval_s: int = 3600  # §4 C7: hourly; staging shortens it so G7 sees a downgrade sooner
     health_port: int = 8081
     log_level: str = "INFO"
     webhook_allow_private: bool = False  # local development only: deliver to private addresses
@@ -34,7 +35,9 @@ class WorkerSettings:
             webhook_timeout_s=float(os.environ.get("WEBHOOK_TIMEOUT_S", "10")),
             poll_interval_s=float(os.environ.get("POLL_INTERVAL_S", "2")),
             schedule_interval_s=float(os.environ.get("SCHEDULE_INTERVAL_S", "60")),
-            health_port=int(os.environ.get("HEALTH_PORT", "8081")),
+            drift_interval_s=int(os.environ.get("DRIFT_INTERVAL_S", "3600")),
+            # Railway health-checks the port it injects as PORT.
+            health_port=int(os.environ.get("HEALTH_PORT") or os.environ.get("PORT") or "8081"),
             log_level=os.environ.get("LOG_LEVEL", "INFO"),
             webhook_allow_private=os.environ.get("WEBHOOK_ALLOW_PRIVATE") == "1",
         )
