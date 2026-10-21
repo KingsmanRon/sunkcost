@@ -1,5 +1,5 @@
 {
-  "commit": "1217d74",
+  "commit": "37f5de2",
   "dataset": "swe-bench-verified-mini",
   "title": "SWE-bench Verified, mini-SWE-agent 2.0.0",
   "domain": "software engineering (bash-only agent)",
