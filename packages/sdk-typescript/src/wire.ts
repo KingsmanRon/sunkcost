@@ -53,7 +53,7 @@ export interface StepDecision {
 }
 
 /** decision.v1 */
-export interface Decision extends StepDecision {
+export interface DecisionDoc extends StepDecision {
   schema_version: "1";
   mode: Mode;
   bundle_id: Uuid | null;
@@ -143,7 +143,7 @@ export interface LogisticV1 {
 }
 
 /** bundle.v1: the signed payload. */
-export interface Bundle {
+export interface BundleDoc {
   schema_version: "1";
   bundle_id: Uuid;
   org_id: Uuid;
@@ -176,7 +176,7 @@ export interface Bundle {
 /** bundle-response.v1: body of GET /v1/bundles/active. */
 export interface BundleResponse {
   schema_version: "1";
-  bundle: Bundle;
+  bundle: BundleDoc;
   key_id: string;
   /** Standard base64 of the Ed25519 signature over canonical_json(bundle). */
   signature: string;

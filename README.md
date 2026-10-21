@@ -15,6 +15,8 @@ shadow mode first and get a savings report computed only from observed spend.
 - P4: the worker, which handles calibration, re-signing, reports, drift and webhooks.
 - P5: the console (Next.js): sign-in, keys, workloads, savings reports, bundles, mode switches,
   the run explorer and the audit log.
+- P6: the TypeScript SDK ([`packages/sdk-typescript`](packages/sdk-typescript/)), passing the same
+  vectors, perf and failure gates as the Python SDK.
 
 See [`docs/PROGRESS.md`](docs/PROGRESS.md). Nothing is published yet.
 
@@ -38,8 +40,8 @@ make lint typecheck     # gate G0
 make test-unit          # gate G2
 make test-stats         # gate G2b: 500 simulated workloads (about 6 minutes on 4 cores)
 make bench              # gate G1: downloads public datasets, regenerates docs/BENCHMARKS.md
-make bench-sdk          # gate G3: check() latency, written to docs/PERF.md
-make test-failure       # gate G4: failure injection against a local HTTP server
+make bench-sdk          # gate G3: check() latency (Python and Node), written to docs/PERF.md
+make test-failure       # gate G4: failure injection against a local HTTP server (Python and Node)
 uv run python examples/basic_loop.py   # an agent stopped by Sunkcost, offline, no keys
 ```
 

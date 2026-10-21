@@ -207,7 +207,7 @@ Internals:
   - Deterministic and identical in both SDKs.
 - **Dependencies**
   - Python: `httpx`, `cryptography`.
-  - TypeScript: `@noble/ed25519` only; uses the platform `fetch`.
+  - TypeScript: `@noble/ed25519` only; uses the platform `fetch` (Node.js 22+; ADR-0008 records the port's decisions).
 
 ### C4 · Adapters (Python, v1)
 

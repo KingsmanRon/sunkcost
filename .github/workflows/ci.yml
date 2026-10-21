@@ -76,7 +76,7 @@ jobs:
       - run: make test-stats
 
   failure:
-    name: G4 failure injection
+    name: G4 failure injection (Python and Node)
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
@@ -86,11 +86,16 @@ jobs:
       - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
         with:
           version: ${{ env.UV_VERSION }}
-      - run: uv sync --locked --all-packages
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .node-version
+          cache: pnpm
+      - run: make setup
       - run: make test-failure
 
   sdk-perf:
-    name: G3 SDK perf (Python)
+    name: G3 SDK perf (Python and Node)
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
@@ -100,7 +105,12 @@ jobs:
       - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
         with:
           version: ${{ env.UV_VERSION }}
-      - run: uv sync --locked --all-packages
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .node-version
+          cache: pnpm
+      - run: make setup
       - run: make bench-sdk
 
   sdk-py310:
