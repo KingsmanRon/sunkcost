@@ -5,7 +5,10 @@ description = "Stop AI agent runs that are going to fail before they spend the r
 readme = "README.md"
 license = "Apache-2.0"
 requires-python = ">=3.10"
-dependencies = []
+dependencies = [
+    "cryptography>=44",
+    "httpx>=0.27",
+]
 classifiers = [
     "Development Status :: 2 - Pre-Alpha",
     "License :: OSI Approved :: Apache Software License",

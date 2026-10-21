@@ -9,7 +9,9 @@ UV ?= uv
 PNPM ?= pnpm
 
 # Python packages type-checked with mypy (strict settings come from pyproject.toml).
-PY_TYPECHECK := packages/spec packages/sdk-python services/worker bench
+PY_TYPECHECK := packages/spec packages/sdk-python services/worker bench \
+	adapters/langgraph adapters/openai-agents adapters/cycles examples
+PY_UNIT := packages/spec packages/sdk-python services/worker bench adapters
 
 define not_run
 	@echo "NOT RUN: $(1) ($(2))" >&2; exit 2
@@ -58,21 +60,31 @@ bench: ## G1: calibrate on public trajectory datasets; regenerates docs/BENCHMAR
 
 .PHONY: test-unit
 test-unit: ## G2: unit tests
-	$(UV) run --frozen pytest -m "not stats" packages/spec packages/sdk-python services/worker bench
+	$(UV) run --frozen pytest -m "not stats and not failure" $(PY_UNIT)
 
 .PHONY: test-stats
 test-stats: ## G2b: 500 simulated workloads, fixed seeds
 	$(UV) run --frozen pytest -m stats -s services/worker/tests/stats
 
-# --- Gates implemented in later phases ------------------------------------------------------
+# --- G3 SDK perf, G4 Failure ------------------------------------------------------------
 
 .PHONY: bench-sdk
-bench-sdk: ## G3: SDK check() latency (P2 Python, P6 Node)
-	$(call not_run,G3 bench-sdk,implemented in phase P2)
+bench-sdk: ## G3: check() p99 at step 200, written to docs/PERF.md (Python; Node joins in P6)
+	$(UV) run --frozen python packages/sdk-python/perf/bench_check.py
 
 .PHONY: test-failure
-test-failure: ## G4: failure-injection tests (P2)
-	$(call not_run,G4 test-failure,implemented in phase P2)
+test-failure: ## G4: failure injection against a real local HTTP server (Python; Node joins in P6)
+	$(UV) run --frozen pytest -m failure packages/sdk-python/tests/failure
+
+.PHONY: test-sdk-py310
+test-sdk-py310: ## SDK unit + G4 tests on Python 3.10, the oldest supported (fresh resolve, not the lockfile)
+	$(UV) venv --python 3.10 --clear .venv-py310
+	VIRTUAL_ENV=.venv-py310 $(UV) pip install -e packages/spec -e packages/sdk-python \
+		pytest jsonschema regress rfc3339-validator hypothesis
+	.venv-py310/bin/python -m pytest -o addopts="-ra --strict-markers --import-mode=importlib" \
+		packages/sdk-python/tests
+
+# --- Gates implemented in later phases ------------------------------------------------------
 
 .PHONY: test-db
 test-db: ## G5: pgTAP isolation tests against local Supabase (P3)

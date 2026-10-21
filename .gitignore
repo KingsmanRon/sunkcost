@@ -43,3 +43,4 @@ bench/.cache/
 .vscode/*
 !.vscode/extensions.json
 .DS_Store
+.venv-py310/

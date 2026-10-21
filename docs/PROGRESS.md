@@ -123,3 +123,50 @@ The results at 0.95, the confidence intervals and the curves are in `docs/BENCHM
 6. **arXiv 2608.23670 is unreadable here**, so the datasets it lists were not checked. The price
    table is still Anthropic-only; P1 did not need it, because every dataset records cost or has no
    tokens.
+
+## 2026-10-21 · P2: Python SDK, adapters, examples
+
+The owner said continue after P1; PRs #1 and #2 were merged into `main`.
+
+### Built
+
+- **Python SDK** (`packages/sdk-python`, `sunkcost`; Python ≥ 3.10; deps `httpx`, `cryptography`):
+  - `Sunkcost` / `Run` with `check()`, `record_step()`, `end()` and `outcome()`.
+  - Decision engine: a pure function, with no I/O in `check()`.
+  - Bundle manager:
+    - Ed25519 verification against pinned keys.
+    - Workload, expiry and rollback checks, ETag refresh and an optional disk cache.
+    - The unsigned override can only downgrade to shadow.
+  - Bounded event buffer and flusher: drops the oldest events on overflow, reports
+    `dropped_events`, backs off with jitter up to 60 s, and flushes on exit within 3 s.
+  - Price-table costing and argument HMAC.
+  - Fail-open everywhere: internal errors return `CONTINUE` / `sdk_error`.
+- **Adapters**: `sunkcost-langgraph` (callback handler), `sunkcost-openai-agents` (run hooks and
+  `run_agent`) and `sunkcost-cycles` (`guard` above `@cycles`, plus `reserve`/`commit`). Each hook
+  point was verified against the framework's released source.
+- **Examples** (`examples/`): a plain loop, LangGraph, OpenAI Agents and Cycles. All run offline
+  with fake LLMs and a bundle signed with the public test key, and each shows a real ABORT.
+- **ADR-0004**: 12 SDK and adapter decisions. `ARCHITECTURE.md` §4 C2, §4 C4 and §5.1 are updated
+  to match. `sunkcost_spec.validation` now holds the schema validator shared by the spec and SDK
+  tests.
+
+### Gates
+
+| Gate | Command | Result |
+|---|---|---|
+| G0 Static | `make lint typecheck` | **PASS**: ruff 0 errors and format clean, ESLint 0 warnings, mypy strict 0 errors in 75 files, tsc 0 errors. |
+| G2 Unit | `make test-unit` | **PASS**: 478 passed, 1 skipped. This includes every SDK event validated against `ingest-batch.v1` (schema and model), decision reasons against `decision.v1`, and the bundle-verification and buffer cases. The TypeScript half arrives in P6. |
+| G3 SDK perf (Python) | `make bench-sdk` | **PASS**: `check()` at step 200, p50 0.005 ms, p99 0.021 ms (limit 0.5 ms), 0 network connects. Recorded in `docs/PERF.md`. |
+| G4 Failure (Python) | `make test-failure` | **PASS**: 12 passed against a real local HTTP server. Cases: API down, API slow (10 s), 500s then recovery, bad signature, expired bundle, rollback, override, buffer overflow, process exit with and without a hung API, and `sdk_error` injection. The agent completed every run. |
+| SDK on Python 3.10 | `make test-sdk-py310` | **PASS**: 195 passed (unit tests and G4), on a fresh resolve. |
+
+Node halves of G3 and G4 are **NOT RUN** until the TypeScript SDK is built in P6.
+
+### Open issues
+
+1. **No production trusted key or endpoint yet.** The owner generates the signing key offline;
+   its public half goes into `sunkcost/keys.py` before release (P7).
+2. **ADR-0004 needs owner review**, in particular decision 1 (404 clears the cached bundle) and
+   decision 12 (the Cycles `guard` decorator).
+3. **Ingest and bundle endpoints are defined but not yet served.** The API arrives in P3;
+   ADR-0004 decisions 1 and 4 are the contract it must meet.

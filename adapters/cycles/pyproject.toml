@@ -1,0 +1,21 @@
+[project]
+name = "sunkcost-cycles"
+version = "0.1.0"
+description = "Sunkcost adapter for Cycles (runcycles): check() before every step, record_step() after it."
+readme = "README.md"
+license = "Apache-2.0"
+requires-python = ">=3.10"
+dependencies = ["sunkcost", "runcycles>=0.5"]
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Typing :: Typed",
+]
+
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["sunkcost_cycles"]
