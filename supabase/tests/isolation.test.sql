@@ -3,7 +3,7 @@
 -- authenticated with request.jwt.claims carrying the user id.
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(57);
+select plan(65);
 
 -- Fixtures, as the migration owner -------------------------------------------------------------
 -- The test session switches into the service roles; membership lasts only for this transaction.
@@ -79,7 +79,7 @@ select ok(not exists (select 1 from information_schema.column_privileges
           'secret hashes are not granted to the console');
 select is((select string_agg(p.proname, ',' order by p.proname) from pg_proc p
            where p.pronamespace = 'public'::regnamespace and p.prosecdef),
-          'ensure_step_partitions,list_due_work,my_org_ids,resolve_api_key',
+          'ensure_step_partitions,list_due_work,my_org_ids,org_webhook_target,resolve_api_key,set_org_webhook',
           'exactly the expected SECURITY DEFINER functions');
 select ok(not exists (select 1 from pg_proc p where p.pronamespace = 'public'::regnamespace and p.prosecdef
                       and not exists (select 1 from unnest(p.proconfig) c where c like 'search_path=%')),
@@ -106,6 +106,10 @@ select throws_ok($$insert into public.audit_log (org_id, actor, action) values (
 select throws_ok('select * from public.resolve_api_key(''aaaaaaaa'')', '42501', null,
                  'console cannot call resolve_api_key');
 select throws_ok('select * from public.list_due_work()', '42501', null, 'console cannot call list_due_work');
+select throws_ok($$select public.set_org_webhook('0aaaaaaa-0000-7000-8000-000000000001', 'https://x.test', 's')$$,
+                 '42501', null, 'console cannot set webhooks');
+select throws_ok($$select * from public.org_webhook_target('0aaaaaaa-0000-7000-8000-000000000001')$$,
+                 '42501', null, 'console cannot read webhook secrets');
 select throws_ok('select public.ensure_step_partitions(now()::date, 1)', '42501', null,
                  'console cannot create partitions');
 select throws_ok(format('select count(*) from public.%I', 'step_events_default'), '42501', null,
@@ -148,6 +152,14 @@ select is((select count(*)::int from public.resolve_api_key('bbbbbbbb')), 1,
 select is((select org_id from public.resolve_api_key('bbbbbbbb')), '0bbbbbbb-0000-7000-8000-000000000001'::uuid,
           'and reports which org it belongs to');
 select throws_ok('select * from public.list_due_work()', '42501', null, 'API cannot call list_due_work');
+select throws_ok($$select public.set_org_webhook('0bbbbbbb-0000-7000-8000-000000000001', 'https://x.test', 's')$$,
+                 '42501', null, 'API acting for A cannot set the webhook of B');
+select lives_ok($$select public.set_org_webhook('0aaaaaaa-0000-7000-8000-000000000001', 'https://a.test/hook', 'sekrit')$$,
+                'API acting for A can set the webhook of A');
+select is((select webhook_secret_hash from public.orgs where id = '0aaaaaaa-0000-7000-8000-000000000001'),
+          encode(extensions.digest('sekrit', 'sha256'), 'hex'), 'only the secret''s hash is stored on orgs');
+select throws_ok($$select * from public.org_webhook_target('0aaaaaaa-0000-7000-8000-000000000001')$$,
+                 '42501', null, 'API cannot read webhook secrets');
 select throws_ok($$update public.api_keys set secret_sha256 = repeat('c', 64)$$, '42501', null,
                  'API cannot rewrite key hashes');
 select throws_ok('delete from public.runs', '42501', null, 'API cannot delete runs');
@@ -160,13 +172,20 @@ set local role sunkcost_worker;
 set local app.org_id = '0bbbbbbb-0000-7000-8000-000000000001';
 select is(pg_temp.visible('0aaaaaaa-0000-7000-8000-000000000001'), 0::bigint, 'worker acting for B sees nothing of A');
 select ok(pg_temp.visible('0bbbbbbb-0000-7000-8000-000000000001') >= 9, 'worker acting for B sees B');
-select is((select count(*)::int from public.list_due_work()), 2, 'list_due_work spans orgs (scheduler only)');
+select is((select count(*)::int from public.list_due_work() where kind = 'workload'), 2,
+          'list_due_work spans orgs (scheduler only)');
 select throws_ok('select * from public.resolve_api_key(''aaaaaaaa'')', '42501', null,
                  'worker cannot call resolve_api_key');
 select throws_ok($$insert into public.policy_bundles (org_id, workload_id, version, status, payload, signature, key_id)
                    values ('0aaaaaaa-0000-7000-8000-000000000001', '0aaaaaaa-0000-7000-8000-000000000003', 2, 'validated', '{}', 's', 'k')$$,
                  '42501', null, 'worker acting for B cannot write bundles for A');
 select throws_ok($$update public.audit_log set action = 'x'$$, '42501', null, 'worker cannot update the audit log');
+select is((select count(*)::int from public.org_webhook_target('0aaaaaaa-0000-7000-8000-000000000001')), 0,
+          'worker acting for B cannot read the webhook secret of A');
+set local app.org_id = '0aaaaaaa-0000-7000-8000-000000000001';
+select is((select secret from public.org_webhook_target('0aaaaaaa-0000-7000-8000-000000000001')), 'sekrit',
+          'worker acting for A reads the webhook secret of A, to sign deliveries');
+set local app.org_id = '0bbbbbbb-0000-7000-8000-000000000001';
 select lives_ok('select public.ensure_step_partitions(now()::date, 2)', 'worker can maintain partitions');
 reset role;
 

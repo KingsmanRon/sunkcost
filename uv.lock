@@ -2803,19 +2803,29 @@ name = "sunkcost-worker"
 version = "0.1.0"
 source = { editable = "services/worker" }
 dependencies = [
+    { name = "cryptography" },
+    { name = "httpx" },
     { name = "numpy" },
+    { name = "psycopg", extra = ["binary"] },
+    { name = "psycopg-pool" },
     { name = "scikit-learn" },
     { name = "scipy" },
     { name = "sunkcost" },
+    { name = "sunkcost-spec" },
     { name = "threadpoolctl" },
 ]
 
 [package.metadata]
 requires-dist = [
+    { name = "cryptography", specifier = ">=44" },
+    { name = "httpx", specifier = ">=0.27" },
     { name = "numpy", specifier = ">=2.3" },
+    { name = "psycopg", extras = ["binary"], specifier = ">=3.3" },
+    { name = "psycopg-pool", specifier = ">=3.3" },
     { name = "scikit-learn", specifier = ">=1.7" },
     { name = "scipy", specifier = ">=1.16" },
     { name = "sunkcost", editable = "packages/sdk-python" },
+    { name = "sunkcost-spec", editable = "packages/spec" },
     { name = "threadpoolctl", specifier = ">=3.5" },
 ]
 

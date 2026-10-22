@@ -148,6 +148,8 @@ def make_client(api: FakeApi) -> Iterator[Callable[..., Sunkcost]]:
 
 def agent(client: Sunkcost, *, failing: bool = True) -> tuple[Run, list[Decision], float]:
     """A fake agent: up to STEPS tool steps, honouring ABORT. Returns the slowest SDK call (s)."""
+    me = threading.get_ident()
+    io_before = AGENT_IO.count(me)
     run = client.start_run(WORKLOAD)
     decisions: list[Decision] = []
     slowest = 0.0
@@ -164,6 +166,8 @@ def agent(client: Sunkcost, *, failing: bool = True) -> tuple[Run, list[Decision
     t0 = time.perf_counter()
     run.end("aborted" if decisions[-1].abort else "completed")
     slowest = max(slowest, time.perf_counter() - t0)
+    # The SDK's network I/O happens only on its own threads, never on the agent's (CLAUDE.md).
+    assert AGENT_IO.count(me) == io_before, "an SDK call did network I/O on the agent thread"
     return run, decisions, slowest
 
 
@@ -182,7 +186,31 @@ def free_port() -> int:
         return int(s.getsockname()[1])
 
 
-SLOW_CALL_S = 0.05  # no SDK call on the agent's path may take anywhere near a network round trip
+# No SDK call on the agent's path may block. agent() checks directly that none does network I/O on
+# the agent thread; this wall-clock bound also catches waiting on a lock held across I/O (the slow
+# API holds every request for 10 s). It is well above scheduler jitter on shared CI runners, which
+# once stretched a sub-millisecond call to 52 ms.
+SLOW_CALL_S = 0.5
+
+AGENT_IO: list[int] = []  # thread ids of every socket connect/sendall made during a test
+
+
+@pytest.fixture(autouse=True)
+def record_socket_io(monkeypatch: pytest.MonkeyPatch) -> Iterator[None]:
+    real_connect, real_sendall = socket.socket.connect, socket.socket.sendall
+
+    def connect(self: socket.socket, address: Any) -> None:
+        AGENT_IO.append(threading.get_ident())
+        real_connect(self, address)
+
+    def sendall(self: socket.socket, data: Any, flags: int = 0) -> None:
+        AGENT_IO.append(threading.get_ident())
+        real_sendall(self, data, flags)
+
+    monkeypatch.setattr(socket.socket, "connect", connect)
+    monkeypatch.setattr(socket.socket, "sendall", sendall)
+    yield
+    AGENT_IO.clear()
 
 
 # -- §10 rows ---------------------------------------------------------------------------------

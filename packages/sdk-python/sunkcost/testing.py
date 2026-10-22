@@ -70,7 +70,13 @@ def make_bundle(
             "target_recall": "0.95",
             "delta": "0.05",
         },
-        "metrics": {"n_train": 0, "n_calib_success": 0},
+        "metrics": {
+            "n_train": 0,
+            "n_calib_success": 0,
+            "test_false_abort_rate": "0.0",
+            "test_savings_share": "0.0",
+            "auroc": "0.5",
+        },
         "issued_at": format_timestamp_us(issued_at_us),
         "expires_at": format_timestamp_us(issued_at_us + ttl_s * 1_000_000),
     }

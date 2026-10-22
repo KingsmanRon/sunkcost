@@ -249,6 +249,7 @@ A pure-Python module in the SDK package, imported by both the SDK and the worker
 | `POST /v1/workloads/{id}/calibrate` | user JWT, role ≥ member | Enqueue a calibration job |
 | `POST /v1/bundles/{id}/activate` | user JWT, role ≥ admin | Promote a `validated` bundle to `active` |
 | `POST /v1/workloads/{id}/override` | user JWT, role ≥ member | Emergency `shadow` override: immediate, unsigned, can only reduce enforcement |
+| `PUT /v1/orgs/webhook` | user JWT, role ≥ admin | Set the webhook URL; returns a new signing secret once, stored in Supabase Vault (ADR-0006) |
 
 - **Errors:** RFC 9457 problem+json. Every response carries `x-request-id`.
 - **Console requests** name their organisation in an `x-sunkcost-org` header; workloads are also created on first use by `run_start` (ADR-0005).
@@ -272,7 +273,7 @@ A single process with two loops:
      - Retention purge daily.
      - Nightly recalibration for workloads with ≥ 200 new labelled runs.
 
-The worker holds `BUNDLE_SIGNING_KEY` and sends HMAC-SHA256-signed webhooks to per-org URLs.
+The worker holds `BUNDLE_SIGNING_KEY` and sends HMAC-SHA256-signed webhooks to per-org URLs. Job claiming, scheduler deduplication, calibration input, re-signing, drift and webhook delivery details are in ADR-0006.
 
 ### C8 · Database
 
@@ -323,7 +324,7 @@ The **enforce toggle is disabled** until the workload has at least one `validate
 | ⑤ | Worker → Postgres | TLS, **session** pooler (port 5432) for advisory locks and long jobs | DB role `sunkcost_worker` | Sync | SQL | Job retried up to 3×, then `dead` and visible in the console |
 | ⑥ | Console → Postgres | supabase-js over PostgREST | User JWT; RLS `SELECT`-only policies | Sync | Rows | Error state in the UI |
 | ⑦ | Console → API | HTTPS | `Authorization: Bearer <supabase access token>`; API verifies against the Supabase JWT secret or JWKS, then checks membership | Sync | JSON | Error toast; no partial writes (one transaction per request) |
-| ⑧ | Worker → customer webhook | HTTPS POST | `X-Sunkcost-Signature: t=…,v1=HMAC_SHA256(secret, t.body)` | Async | `{type, workload_id, …}` | 5 attempts over 1 h, then logged as failed |
+| ⑧ | Worker → customer webhook | HTTPS POST | `X-Sunkcost-Signature: t=…,v1=HMAC_SHA256(secret, t.body)`; the secret is kept in Supabase Vault (ADR-0006) | Async | `{type, workload_id, …}` | 5 attempts over 1 h, then logged as failed |
 | — | API ↔ Worker | **via `jobs` table only** | — | Async | `{type, payload}` | — |
 
 ### 5.2 Hot path: one agent step

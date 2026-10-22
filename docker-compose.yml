@@ -1,6 +1,6 @@
 # Local stack: `supabase start && docker compose up` (ARCHITECTURE.md §11.1).
 # The API connects to the local Supabase on the host as role sunkcost_api; the password is the
-# local-only one from supabase/seed.sql. The worker joins in phase P4.
+# local-only one from supabase/seed.sql.
 services:
   api:
     build:
@@ -12,6 +12,21 @@ services:
       DATABASE_URL: postgresql://sunkcost_api:sunkcost_api_local@host.docker.internal:54322/postgres
       SUPABASE_URL: http://host.docker.internal:54321
       CONSOLE_ORIGIN: http://localhost:3000
+      LOG_LEVEL: INFO
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  worker:
+    build:
+      context: .
+      dockerfile: services/worker/Dockerfile
+    environment:
+      DATABASE_URL: postgresql://sunkcost_worker:sunkcost_worker_local@host.docker.internal:54322/postgres
+      # The public RFC 8032 test key (§11.1 "test key, never valid in prod"). SDKs trust it only
+      # when it is passed explicitly (sunkcost.testing.TEST_TRUSTED_KEYS).
+      BUNDLE_SIGNING_KEY: nWGxne/9WmC6hEr0kuwsxERJxWl7MmkZcDusAxyuf2A=
+      BUNDLE_SIGNING_KEY_ID: rfc8032-test-1
+      WEBHOOK_ALLOW_PRIVATE: "1"
       LOG_LEVEL: INFO
     extra_hosts:
       - "host.docker.internal:host-gateway"

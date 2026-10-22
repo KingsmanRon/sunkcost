@@ -236,3 +236,64 @@ the worker.
    created on first use) and 12 (who may clear an override).
 3. **The ingest path makes several round trips per event.** Throughput is measured in P7
    (`make load-test`); batching the SQL is the first optimisation if it misses 1,000 events/s.
+
+## 2026-10-21 · P4: worker service
+
+### Built
+
+- **Worker service** (`services/worker/sunkcost_worker/service/`):
+  - A job runner that claims jobs with `SKIP LOCKED` and retries failures with backoff, then
+    marks them `dead`.
+  - A scheduler that runs only while it holds a Postgres advisory lock. It deduplicates per
+    period with `jobs.dedupe_key`.
+  - An internal `/healthz` endpoint and JSON logs.
+- **Job handlers**:
+  - `calibrate`: produces a validated bundle (signed) or a rejected bundle (stored unsigned).
+  - `resign_bundle`: the daily re-sign, plus a new version when the mode changes.
+  - `build_report`, from observed spend only.
+  - `drift_check`: downgrades the workload to shadow, writes an audit entry and sends a
+    webhook.
+  - `retention` (90 days) and `webhook`, which is HMAC-signed, retried 5 times, and blocks
+    private destinations.
+- **Signing**:
+  - The worker publishes its Ed25519 public key to `signing_keys` on start.
+  - `scripts/gen-signing-key.py` lets the owner generate the production key offline. It prints
+    the key and writes nothing.
+- **Migration `20261021000300_worker.sql`**:
+  - Job dedupe keys and results.
+  - `list_due_work()` now also lists due and stale jobs.
+  - Webhook secrets in Supabase Vault, behind `set_org_webhook()` (API) and
+    `org_webhook_target()` (worker).
+- **API**: `PUT /v1/orgs/webhook` (admin) creates the org's webhook secret and returns it once.
+- **Local stack**: a worker image (digest-pinned base, non-root) and a compose service. The
+  compose service signs with the public RFC 8032 test key.
+- **ADR-0006**: 10 decisions. It fixes a contradiction in §5.1 ⑧ and §8: an HMAC needs the
+  secret, but only its hash was stored, so the secret now lives in Vault. `ARCHITECTURE.md` is
+  updated to match.
+- **CI**: the image job now builds both the API and worker images.
+
+### Gates
+
+| Gate | Command | Result |
+|---|---|---|
+| G0 Static | `make lint typecheck` | **PASS**: ruff, ESLint and gitleaks clean; mypy strict 0 errors in 100 files; tsc 0 errors. |
+| G2 Unit | `make test-unit` | **PASS**: 508 passed, 1 skipped. These include the worker's signer (checked against the SDK verifier), bundle documents, webhook signatures and the SSRF guard. |
+| G5 Isolation | `make test-db` | **PASS**: 65 pgTAP tests (now including the webhook functions and Vault access by role) and 4 PostgREST HTTP tests. |
+| G6 Integration | `make test-integration` | **PASS**: 24 tests, against local Supabase, passing on two consecutive runs. 17 are the API tests from P3; 7 are new worker tests: <br>• SDK → API → calibrate → validated, signed bundle → activate → enforce re-sign → SDK aborts, with holdout runs never aborted <br>• a report equal to hand-computed figures <br>• drift → downgrade, audit entry and signed webhook → the SDK stops aborting <br>• the scheduler enqueues once per period and the runner drains the queue <br>• failing jobs retry, then die <br>• the signing key is published <br>• a calibration with no signal is stored as rejected and can't be activated |
+
+### Fixed during the phase
+
+- **G6 was nondeterministic**: one test failed in one full run. The local database keeps other
+  tests' due jobs, and `run_due_jobs()` handles at most 20 per pass, so a test's own job was
+  sometimes not reached. Each test now runs its own job, and the scheduler test checks the
+  runner loop separately. No assertion changed.
+
+### Open issues
+
+1. **Production signing key**: the owner generates it (`scripts/gen-signing-key.py`) and sets
+   `BUNDLE_SIGNING_KEY` and `BUNDLE_SIGNING_KEY_ID` on Railway. Its public half must be added
+   to `DEFAULT_TRUSTED_KEYS` in both SDKs before release (P7).
+2. **ADR-0006 needs owner review**, in particular decision 1 (webhook secrets in Vault) and
+   decision 9 (retention counted from when the server received a run).
+3. **Calibration runs in the worker process.** With 50,000 runs it takes minutes and blocks
+   that worker's other jobs. Scale out with more workers if this becomes a problem.
