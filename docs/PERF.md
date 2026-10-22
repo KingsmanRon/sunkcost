@@ -12,12 +12,12 @@ all 12 features, 50,000 timed `check()` calls after 5,000 warm-up calls.
 
 | Metric | Value |
 |---|---|
-| `check()` p50 | 0.0051 ms |
-| `check()` p90 | 0.0080 ms |
-| `check()` p99 | **0.0161 ms** (limit 0.5 ms) |
-| `check()` p99.9 | 0.0437 ms |
-| `check()` max | 2.3215 ms |
-| `record_step()` p99 over the 200 recorded steps | 0.0633 ms |
+| `check()` p50 | 0.0054 ms |
+| `check()` p90 | 0.0094 ms |
+| `check()` p99 | **0.0285 ms** (limit 0.5 ms) |
+| `check()` p99.9 | 0.0993 ms |
+| `check()` max | 3.0870 ms |
+| `record_step()` p99 over the 200 recorded steps | 0.1147 ms |
 | Network connects attempted during `check()` | 0 |
 
 **G3 (Python): PASS.**
@@ -36,9 +36,9 @@ using all 12 features, 50,000 timed `check()` calls after 5,000 warm-up calls.
 | `check()` p50 | 0.0005 ms |
 | `check()` p90 | 0.0006 ms |
 | `check()` p99 | **0.0010 ms** (limit 0.5 ms) |
-| `check()` p99.9 | 0.0093 ms |
-| `check()` max | 1.6237 ms |
-| `recordStep()` p99 over the 200 recorded steps | 0.4194 ms |
+| `check()` p99.9 | 0.0079 ms |
+| `check()` max | 1.7164 ms |
+| `recordStep()` p99 over the 200 recorded steps | 0.2916 ms |
 | Network calls attempted during `check()` | 0 |
 
 **G3 (Node): PASS.**

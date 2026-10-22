@@ -13,7 +13,9 @@ from collections.abc import Mapping
 from dataclasses import dataclass
 from datetime import date
 from decimal import ROUND_HALF_EVEN, Decimal
-from importlib import resources
+
+# importlib.resources is standard on every supported Python (>= 3.10); the 3.7 note is moot.
+from importlib import resources  # nosemgrep
 from typing import Any
 
 from sunkcost._money import NINE_PLACES

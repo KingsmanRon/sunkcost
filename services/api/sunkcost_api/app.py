@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import logging
+import os
 import time
 import uuid
 from collections.abc import AsyncIterator, Awaitable, Callable
@@ -170,7 +171,8 @@ def main() -> None:  # pragma: no cover - process entry point
     handler.setFormatter(JsonFormatter())
     logging.basicConfig(level=settings.log_level, handlers=[handler])
     host = "0.0.0.0"  # noqa: S104 - inside the container; the platform routes to it
-    uvicorn.run(create_app(settings), host=host, port=8000, proxy_headers=True, access_log=False)
+    port = int(os.environ.get("PORT", "8000"))  # Railway injects PORT and health-checks it
+    uvicorn.run(create_app(settings), host=host, port=port, proxy_headers=True, access_log=False)
 
 
 if __name__ == "__main__":  # pragma: no cover

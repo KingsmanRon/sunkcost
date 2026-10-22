@@ -34,15 +34,26 @@ See [`docs/PROGRESS.md`](docs/PROGRESS.md). Nothing is published yet.
 Prerequisites: [uv](https://docs.astral.sh/uv/) ≥ 0.12, Node.js 22 with pnpm 10 (via Corepack), and
 GNU Make. From phase P3 on, the database gates also need Docker and the Supabase CLI.
 
+Quickstart (`make docs-check` runs exactly this block in a clean container):
+
+<!-- docs-check:start -->
 ```sh
 make setup              # install Python and Node dependencies from the lockfiles
 make lint typecheck     # gate G0
 make test-unit          # gate G2
+uv run python examples/basic_loop.py   # an agent stopped by Sunkcost, offline, no keys
+```
+<!-- docs-check:end -->
+
+More gates:
+
+```sh
 make test-stats         # gate G2b: 500 simulated workloads (about 6 minutes on 4 cores)
 make bench              # gate G1: downloads public datasets, regenerates docs/BENCHMARKS.md
 make bench-sdk          # gate G3: check() latency (Python and Node), written to docs/PERF.md
 make test-failure       # gate G4: failure injection against a local HTTP server (Python and Node)
-uv run python examples/basic_loop.py   # an agent stopped by Sunkcost, offline, no keys
+make security           # gate G8: gitleaks, Semgrep, pip-audit, pnpm audit, Trivy
+make docs-check         # gate G8: Markdown links and the quickstart above
 ```
 
 The database gates and the local stack need Docker and the Supabase CLI:
@@ -53,7 +64,7 @@ make test-db            # gate G5: reset, pgTAP isolation tests, PostgREST over 
 make test-integration   # gate G6: the API and the worker against the local database
 make test-e2e           # gate G6b: the console in Chromium against the local stack (Playwright)
 docker compose up       # the API on http://localhost:8000 and the worker
-make help               # every gate; ones not built yet exit 2 with "NOT RUN"
+make help               # every gate; one that cannot run exits 2 with "NOT RUN"
 ```
 
 To run the console against that stack, take the anon key from `supabase status` and sign in at

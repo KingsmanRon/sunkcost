@@ -586,3 +586,35 @@ def test_calibration_without_signal_is_recorded_as_rejected(
         f"{api}/v1/bundles/{result['bundle_id']}/activate", headers=user, timeout=10
     )
     assert activate.status_code == 409  # a rejected bundle can never be activated
+
+
+def test_drift_checks_follow_the_configured_period(
+    api: str, tenant: Any, worker: Any, db_admin: Any
+) -> None:
+    ingest(api, tenant.key, run_events(_run(time.time_ns() // 1000, ["0.1"], "success"), "p.case"))
+    wid = str(
+        db_admin(
+            "select id from public.workloads where org_id = %s and name = %s",
+            (tenant.org_id, "p.case"),
+        )[0]["id"]
+    )
+    db_admin(
+        "insert into public.policy_bundles (org_id, workload_id, version, status, payload, "
+        "signature, key_id, activated_at) values (%s, %s, 1, 'active', '{}', 's', 'k', now())",
+        (tenant.org_id, wid),
+    )
+    worker.drift_interval_s = 60  # what staging sets with DRIFT_INTERVAL_S (ADR-0009)
+    worker.schedule()
+    worker.schedule()  # same period: deduplicated
+    keys = [
+        r["dedupe_key"]
+        for r in db_admin(
+            "select dedupe_key from public.jobs where org_id = %s and type = 'drift_check'",
+            (tenant.org_id,),
+        )
+    ]
+    assert len(keys) == 1
+    assert keys[0].startswith(f"drift:{wid}:60:")
+    # The placeholder bundle has no payload; retire it so later workers never check it.
+    db_admin("update public.policy_bundles set status = 'retired' where workload_id = %s", (wid,))
+    db_admin("delete from public.jobs where org_id = %s and type = 'drift_check'", (tenant.org_id,))

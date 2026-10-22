@@ -1,0 +1,163 @@
+# Production release (ARCHITECTURE.md §11.4). Runs only when the owner pushes a v* tag, and every
+# job that touches production waits for an approval of the GitHub environment "production":
+#   prod migrations (dry run first) → Railway prod + Vercel prod → prod smoke → publish packages.
+# Packages are published with PyPI and npm trusted publishing (OIDC); no publish tokens exist.
+name: release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+env:
+  UV_VERSION: "0.12.18"
+  SUPABASE_CLI_VERSION: "2.117.0"
+  SUPABASE_CLI_SHA256: "69c05f85b9e47ee706d30f1a6ca8a526b4e337bfd12c7ef1ef522d24e7280d24"
+  RAILWAY_CLI_VERSION: "5.63.4"
+  VERCEL_CLI_VERSION: "62.5.0"
+  NPM_VERSION: "11.21.0"
+
+jobs:
+  verify:
+    name: Tag is on main
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - run: git merge-base --is-ancestor "$GITHUB_SHA" origin/main
+
+  migrate:
+    name: Migrations → production (dry run, then apply)
+    needs: verify
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    environment: production
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Install the Supabase CLI (checksum-verified release binary)
+        run: |
+          archive="supabase_${SUPABASE_CLI_VERSION}_linux_amd64.tar.gz"
+          curl -sSfL -o "$RUNNER_TEMP/$archive" \
+            "https://github.com/supabase/cli/releases/download/v${SUPABASE_CLI_VERSION}/${archive}"
+          echo "${SUPABASE_CLI_SHA256}  $RUNNER_TEMP/$archive" | sha256sum --check --strict
+          tar -xzf "$RUNNER_TEMP/$archive" -C "$RUNNER_TEMP" supabase
+          echo "$RUNNER_TEMP" >> "$GITHUB_PATH"
+      - name: Dry run, then apply
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+          PROJECT_REF: ${{ vars.SUPABASE_PROJECT_REF }}
+        run: |
+          supabase link --project-ref "$PROJECT_REF" --password "$SUPABASE_DB_PASSWORD"
+          supabase db push --linked --skip-vault --dry-run --password "$SUPABASE_DB_PASSWORD"
+          supabase db push --linked --skip-vault --yes --password "$SUPABASE_DB_PASSWORD"
+
+  deploy:
+    name: Railway + Vercel production
+    needs: migrate
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    environment: production
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .node-version
+      - run: npm install --global "@railway/cli@${RAILWAY_CLI_VERSION}" "vercel@${VERCEL_CLI_VERSION}"
+      - name: Railway (api, worker)
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        run: |
+          railway up --ci --service api --environment production
+          railway up --ci --service worker --environment production
+      - name: Vercel (console)
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ vars.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ vars.VERCEL_PROJECT_ID }}
+        run: |
+          vercel pull --yes --environment=production --token "$VERCEL_TOKEN"
+          vercel build --prod --token "$VERCEL_TOKEN"
+          vercel deploy --prebuilt --prod --token "$VERCEL_TOKEN"
+
+  smoke:
+    name: Production smoke (read-only + synthetic workload)
+    needs: deploy
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    environment: production
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+        with:
+          version: ${{ env.UV_VERSION }}
+      - run: uv sync --locked --all-packages
+      - name: Smoke
+        env:
+          SMOKE_API_URL: ${{ vars.SMOKE_API_URL }}
+          SMOKE_SUPABASE_URL: ${{ vars.SMOKE_SUPABASE_URL }}
+          SMOKE_SUPABASE_ANON_KEY: ${{ vars.SMOKE_SUPABASE_ANON_KEY }}
+          SMOKE_SIGNING_KEY_ID: ${{ vars.SMOKE_SIGNING_KEY_ID }}
+          SMOKE_SIGNING_PUBLIC_KEY: ${{ vars.SMOKE_SIGNING_PUBLIC_KEY }}
+          SMOKE_USER_EMAIL: ${{ secrets.SMOKE_USER_EMAIL }}
+          SMOKE_USER_PASSWORD: ${{ secrets.SMOKE_USER_PASSWORD }}
+        run: uv run --frozen python scripts/smoke.py --quick
+
+  publish-pypi:
+    name: Publish to PyPI (trusted publishing)
+    needs: smoke
+    runs-on: ubuntu-24.04
+    environment: production
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+        with:
+          version: ${{ env.UV_VERSION }}
+      - run: |
+          for pkg in sunkcost sunkcost-langgraph sunkcost-openai-agents sunkcost-cycles; do
+            uv build --package "$pkg" --out-dir dist
+          done
+      - uses: pypa/gh-action-pypi-publish@dc37677b2e1c63e2034f94d8a5b11f265b73ba33 # v1.14.2
+
+  publish-npm:
+    name: Publish to npm (trusted publishing)
+    needs: smoke
+    runs-on: ubuntu-24.04
+    environment: production
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .node-version
+          registry-url: https://registry.npmjs.org
+      - run: npm install --global "npm@${NPM_VERSION}"
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter sunkcost run build
+      - working-directory: packages/sdk-typescript
+        run: npm publish --provenance --access public

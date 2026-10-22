@@ -406,3 +406,63 @@ the worker.
    until release.
 3. **`recordStep()` p99 is 0.55 ms in Node** (0.067 ms in Python), measured over only 200
    calls including warm-up. It is not a gate.
+
+## 2026-10-21 · P7: staging and release wiring, smoke, load, security, docs
+
+### Built
+
+- **Deployment wiring**:
+  - Railway config for `api` and `worker`; both services listen on `$PORT`, and their images
+    are now multi-stage, without uv.
+  - Vercel config for the console.
+  - `staging.yml`: after CI passes on `main`, migrations → Railway staging → the G7 smoke.
+  - `release.yml`: `v*` tags only, and every job waits for the owner's approval of the
+    `production` environment. It runs a migration dry run, then deploys, runs the production
+    smoke, and publishes through trusted publishing.
+  - A CodeQL workflow.
+- **Gates**:
+  - `scripts/smoke.py` (G7 and the production smoke).
+  - `scripts/load_test.py`.
+  - `scripts/security.sh` (G8, with NOT RUN reported honestly).
+  - `scripts/docs-check.sh` (G8: links, and the README quickstart in a clean container).
+  - A CI job running `make security`.
+- **Worker**: `DRIFT_INTERVAL_S` (default 3600) so staging can observe drift within minutes.
+- **Dependencies**: pillow upgraded to 13.0.0 for its advisories. It is a dependency of the
+  benchmark only.
+- **Docs**:
+  - `docs/DEPLOYMENT.md`: every service, setting, variable and secret.
+  - `docs/SELF_HOSTING.md`.
+  - ADR-0009.
+  - `RELEASE_REPORT.md`.
+
+### Gates
+
+See `RELEASE_REPORT.md`, which re-ran every gate on the P7 tree:
+
+- **PASS**: G0, G1, G2, G2b, G3, G4, G5, G6, G6b, and G8 docs-check.
+- **G8 security: PASS in CI** (all seven scanners, plus CodeQL), with the proposed waivers in
+  `security/waivers.md`. Locally it is NOT RUN, because Semgrep can't reach its registry from
+  this environment.
+- **G7 and Load: NOT RUN**, because staging isn't provisioned yet (owner action). Both scripts
+  passed dry runs against the local stack.
+
+### Fixed during the phase
+
+- **Trivy findings in the images**: the uv binary was left in the runtime images (fixed by the
+  multi-stage builds), and pillow had 8 advisories (upgraded).
+- **A G6 test left an active bundle without a payload.** Later local workers tried to
+  drift-check it; the test now retires it.
+- **Semgrep's first CI run found 14 findings.** One was real: a fork pull request from a branch
+  named `main` could have triggered `staging.yml` with staging secrets. The staging jobs now
+  run only for a push to `main` of this repository. Also fixed:
+  - Dependabot now has a 7-day cooldown, and pnpm `minimumReleaseAge` is 7 days.
+  - pnpm `blockExoticSubdeps` and `trustPolicy: no-downgrade` are set.
+  - The console's rate formatting no longer uses string `replace`.
+  - The benchmark downloader accepts https URLs only.
+
+  Four false positives are suppressed inline, each with its reason. The uv cooldown is a
+  proposed waiver until 2026-10-28 (`security/waivers.md`).
+
+### Open issues
+
+Listed in `RELEASE_REPORT.md` under "Before production" and "Known risks".
