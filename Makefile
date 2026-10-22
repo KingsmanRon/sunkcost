@@ -71,12 +71,14 @@ test-stats: ## G2b: 500 simulated workloads, fixed seeds
 # --- G3 SDK perf, G4 Failure ------------------------------------------------------------
 
 .PHONY: bench-sdk
-bench-sdk: ## G3: check() p99 at step 200, written to docs/PERF.md (Python; Node joins in P6)
+bench-sdk: ## G3: check() p99 at step 200 in Python and Node, written to docs/PERF.md
 	$(UV) run --frozen python packages/sdk-python/perf/bench_check.py
+	$(PNPM) --filter sunkcost run bench
 
 .PHONY: test-failure
-test-failure: ## G4: failure injection against a real local HTTP server (Python; Node joins in P6)
+test-failure: ## G4: failure injection against a real local HTTP server (Python and Node)
 	$(UV) run --frozen pytest -m failure packages/sdk-python/tests/failure
+	$(PNPM) --filter sunkcost run test:failure
 
 .PHONY: test-sdk-py310
 test-sdk-py310: ## SDK unit + G4 tests on Python 3.10, the oldest supported (fresh resolve, not the lockfile)

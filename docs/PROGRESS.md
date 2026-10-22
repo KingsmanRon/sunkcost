@@ -356,3 +356,53 @@ the worker.
 2. **ADR-0007 needs owner review**, in particular decision 3: the enforce gate is a console
    safeguard that the API doesn't apply.
 3. **PRs are stacked**: the P4 PR is green but unmerged, and the P5 PR is based on it.
+
+## 2026-10-21 · P6: TypeScript SDK
+
+### Built
+
+- **TypeScript SDK** (`packages/sdk-typescript`, package `sunkcost`, Node.js 22+).
+  - It mirrors the Python SDK in camelCase: `Sunkcost`, `Run`, `Decision`, `RunAborted` and
+    `findAbort`.
+  - **Core**: features v1 (incremental), the logistic score, RFC 8785 canonical JSON,
+    HMAC-SHA256 argument hashing, holdout buckets, timestamps in integer microseconds, UUIDv7,
+    and exact `bigint` money with the bundled price table.
+  - **Bundle manager**:
+    - Ed25519 verification via `@noble/ed25519`, strict RFC 8032.
+    - Pinned keys, a rollback floor, ETag refresh and backoff.
+    - A disk cache compatible with the Python SDK's.
+  - **Event buffer**: bounded, drops the oldest events and reports them, retries with
+    jittered backoff, uses unref'd timers, and flushes at exit within 3 s.
+  - **Decisions and transport**: the same decision engine and reason order, and the same wire
+    strings for scores (Python `repr`). Transport uses the platform `fetch`, with gzip.
+  - Fail-open everywhere. `check()` is synchronous and does no I/O.
+  - `sunkcost/testing`: test-key signer, `MemoryTransport`, `demoClient`.
+- **ADR-0008**: 10 decisions. `ARCHITECTURE.md` §4 C2/C3 points to it.
+- **CI**: the G3 and G4 jobs now run Node too. G2's job already ran `make test-unit`, which now
+  includes the SDK's Vitest suite.
+
+### Gates
+
+| Gate | Command | Result |
+|---|---|---|
+| G0 Static | `make lint typecheck` | **PASS**: ruff, ESLint (strict type-checked, SDK included) and gitleaks clean; mypy strict clean; tsc clean. |
+| G2 Unit | `make test-unit` | **PASS**: 508 Python tests passed, 1 skipped; 13 console tests passed; 162 TypeScript SDK tests passed. The TS tests cover: <br>• every shared golden vector (features and scores to 1e-12, canonical bytes and signatures, rejections, holdout, argument hashes) <br>• decision.v1 fixtures round-tripped byte for byte <br>• every emitted batch validated against `ingest-batch.v1` <br>• the same price, money, bundle, buffer and client cases as the Python suite |
+| G3 SDK perf | `make bench-sdk` | **PASS**: `check()` p99 at step 200 is 0.0161 ms in Python and 0.0010 ms in Node, against a 0.5 ms limit, with 0 network calls. Results are in `docs/PERF.md`. |
+| G4 Failure | `make test-failure` | **PASS**: 12 Python and 12 Node scenarios against a real local HTTP server: <br>• unreachable <br>• cached bundle until expiry <br>• slow 10 s <br>• 500s then recovery <br>• bad signature <br>• expired bundle <br>• rollback <br>• override <br>• buffer overflow <br>• `sdk_error` injection <br>• exit flush <br>• exit mid-flush bounded |
+
+### Fixed during the phase
+
+- **`close()` was unbounded while a request hung**: it waited out the 10 s fetch timeout. G4's
+  slow-API cases caught it. `flush()` now races the deadline, and `close()` aborts in-flight
+  requests.
+- **G4 Node checks the agent path directly.** It counts socket connects and fetches started
+  inside SDK calls, and a mutation that fetches in `check()` makes it fail.
+
+### Open issues
+
+1. **Production key**: `DEFAULT_TRUSTED_KEYS` is empty in both SDKs until the owner generates
+   the production key (P7).
+2. **Publishing**: npm trusted publishing is an owner action. The package stays `private`
+   until release.
+3. **`recordStep()` p99 is 0.55 ms in Node** (0.067 ms in Python), measured over only 200
+   calls including warm-up. It is not a gate.

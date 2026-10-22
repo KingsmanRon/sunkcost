@@ -12,13 +12,34 @@ all 12 features, 50,000 timed `check()` calls after 5,000 warm-up calls.
 
 | Metric | Value |
 |---|---|
-| `check()` p50 | 0.0052 ms |
-| `check()` p90 | 0.0082 ms |
-| `check()` p99 | **0.0205 ms** (limit 0.5 ms) |
-| `check()` p99.9 | 0.0559 ms |
-| `check()` max | 0.3197 ms |
-| `record_step()` p99 over the 200 recorded steps | 0.0666 ms |
+| `check()` p50 | 0.0051 ms |
+| `check()` p90 | 0.0080 ms |
+| `check()` p99 | **0.0161 ms** (limit 0.5 ms) |
+| `check()` p99.9 | 0.0437 ms |
+| `check()` max | 2.3215 ms |
+| `record_step()` p99 over the 200 recorded steps | 0.0633 ms |
 | Network connects attempted during `check()` | 0 |
 
 **G3 (Python): PASS.**
 <!-- python:end -->
+
+<!-- node:start -->
+## TypeScript SDK (`sunkcost` 0.1.0)
+
+Measured on 2026-10-21 with `make bench-sdk` (`packages/sdk-typescript/bench/check.mjs`):
+Node.js 22.22.2 on Linux 6.18.44-fc-v139 (x64),
+against the built package. One run with 200 recorded steps, an enforce-mode bundle
+using all 12 features, 50,000 timed `check()` calls after 5,000 warm-up calls.
+
+| Metric | Value |
+|---|---|
+| `check()` p50 | 0.0005 ms |
+| `check()` p90 | 0.0006 ms |
+| `check()` p99 | **0.0010 ms** (limit 0.5 ms) |
+| `check()` p99.9 | 0.0093 ms |
+| `check()` max | 1.6237 ms |
+| `recordStep()` p99 over the 200 recorded steps | 0.4194 ms |
+| Network calls attempted during `check()` | 0 |
+
+**G3 (Node): PASS.**
+<!-- node:end -->
