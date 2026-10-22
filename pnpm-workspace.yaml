@@ -1,5 +1,6 @@
 packages:
   - packages/sdk-typescript
+  - apps/console
 
 # Supply chain: skip versions published less than a day ago; install scripts stay blocked
 # (pnpm's default) unless a package is listed in onlyBuiltDependencies.

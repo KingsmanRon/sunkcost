@@ -10,7 +10,7 @@ PNPM ?= pnpm
 
 # Python packages type-checked with mypy (strict settings come from pyproject.toml).
 PY_TYPECHECK := packages/spec packages/sdk-python services/worker services/api bench \
-	adapters/langgraph adapters/openai-agents adapters/cycles examples
+	adapters/langgraph adapters/openai-agents adapters/cycles examples apps/console/e2e
 PY_UNIT := packages/spec packages/sdk-python services/worker services/api bench adapters
 NOT_UNIT := not stats and not failure and not integration and not db
 
@@ -60,8 +60,9 @@ bench: ## G1: calibrate on public trajectory datasets; regenerates docs/BENCHMAR
 # --- G2 Unit, G2b Statistical ----------------------------------------------------------------
 
 .PHONY: test-unit
-test-unit: ## G2: unit tests
+test-unit: ## G2: unit tests (Python, then the TypeScript packages' Vitest suites)
 	$(UV) run --frozen pytest -m "$(NOT_UNIT)" $(PY_UNIT)
+	$(PNPM) -r --if-present run test
 
 .PHONY: test-stats
 test-stats: ## G2b: 500 simulated workloads, fixed seeds
@@ -101,8 +102,13 @@ test-integration: ## G6: API (and from P4 the worker) against local Supabase
 
 
 .PHONY: test-e2e
-test-e2e: ## G6b: console Playwright tests (P5)
-	$(call not_run,G6b test-e2e,implemented in phase P5)
+test-e2e: ## G6b: console Playwright tests against local Supabase, the API and the worker
+	@supabase status >/dev/null 2>&1 || { echo "local Supabase is not running: supabase start" >&2; exit 1; }
+	eval "$$(supabase status -o env)"; \
+	export NEXT_PUBLIC_SUPABASE_URL="$$API_URL" NEXT_PUBLIC_SUPABASE_ANON_KEY="$$ANON_KEY" \
+		NEXT_PUBLIC_API_URL=http://127.0.0.1:8000 MAILPIT_URL="$$MAILPIT_URL" NEXT_TELEMETRY_DISABLED=1; \
+	$(PNPM) --filter @sunkcost/console run build; \
+	$(PNPM) --filter @sunkcost/console exec playwright test
 
 .PHONY: smoke-staging
 smoke-staging: ## G7: smoke test against deployed staging (P7)

@@ -18,6 +18,7 @@ from __future__ import annotations
 import json
 import random
 import time
+from datetime import datetime, timedelta
 from decimal import Decimal
 from typing import Any
 
@@ -417,6 +418,9 @@ def test_report_equals_hand_computed_figures(
     assert str(rep["estimated_saving_usd"]) == "0.250000000"
     assert (rep["failures_caught"], rep["successes_lost"], rep["false_abort_rate"]) == (2, 1, 0.5)
     assert (rep["fa_ci_low"], rep["fa_ci_high"]) == (low, high)
+    # Two runs were enforced (one held out); the first run started at 01:00 (ADR-0007).
+    assert rep["enforced_runs"] == 2
+    assert rep["first_run_at"].isoformat() == "2026-10-20T01:00:00+00:00"
 
 
 def test_drift_downgrades_audits_and_notifies(
@@ -509,6 +513,15 @@ def test_scheduler_enqueues_once_per_period(
         for r in db_admin("select type from public.jobs where org_id = %s", (tenant.org_id,))
     }
     assert {"build_report", "retention"} <= kinds
+    periods = {
+        (r["payload"]["period_end"], r["payload"]["period_start"])
+        for r in db_admin(
+            "select payload from public.jobs where org_id = %s and type = 'build_report'",
+            (tenant.org_id,),
+        )
+    }
+    lengths = {datetime.fromisoformat(e) - datetime.fromisoformat(b) for e, b in periods}
+    assert lengths == {timedelta(days=1), timedelta(days=7)}  # daily and trailing week (ADR-0007)
     # The runner loop drains the queue, other tests' leftovers included.
     assert worker.run_due_jobs(limit=10_000) >= 2
     statuses = db_admin(
